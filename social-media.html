@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Social Media | WabbleNews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Montserrat Bold Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            background-color: #020204; 
+            color: white; 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.5),
+                0 0 60px rgba(59, 130, 246, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .logo-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            animation: logoShine 3s ease-in-out infinite;
+        }
+
+        @keyframes logoShine {
+            0%, 100% { transform: rotate(0deg); opacity: 0.3; }
+            50% { transform: rotate(180deg); opacity: 0.6; }
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .blue {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Navigation */
+        nav a {
+            transition: color 0.2s ease;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        /* Advanced Social Card */
+        .social-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-card:hover .social-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .social-card:nth-child(even):hover .social-icon {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        /* X (Twitter) specific styling - WHITE theme */
+        .social-card.x-card {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .social-card.x-card .social-icon {
+            background: #000000;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .social-card.x-card:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                0 20px 60px rgba(255, 255, 255, 0.4),
+                0 0 40px rgba(255, 255, 255, 0.3),
+                inset 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .social-card.x-card:hover .social-icon {
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Instagram gradient - PURPLE/PINK theme */
+        .social-card.instagram-card {
+            border-color: rgba(131, 58, 180, 0.3);
+        }
+
+        .social-card.instagram-card .social-icon {
+            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+            box-shadow: 0 10px 30px rgba(131, 58, 180, 0.6);
+        }
+
+        .social-card.instagram-card:hover {
+            border-color: rgba(131, 58, 180, 0.8);
+            background: rgba(131, 58, 180, 0.1);
+            box-shadow: 
+                0 20px 60px rgba(131, 58, 180, 0.6),
+                0 0 40px rgba(253, 29, 29, 0.4),
+                inset 0 0 30px rgba(131, 58, 180, 0.2);
+        }
+
+        .social-card.instagram-card:hover .social-icon {
+            box-shadow: 0 15px 40px rgba(131, 58, 180, 0.8);
+        }
+
+        /* YouTube red - RED theme */
+        .social-card.youtube-card {
+            border-color: rgba(255, 0, 0, 0.3);
+        }
+
+        .social-card.youtube-card .social-icon {
+            background: #FF0000;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.6);
+        }
+
+        .social-card.youtube-card:hover {
+            border-color: rgba(255, 0, 0, 0.8);
+            background: rgba(255, 0, 0, 0.1);
+            box-shadow: 
+                0 20px 60px rgba(255, 0, 0, 0.6),
+                0 0 40px rgba(255, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 0, 0, 0.2);
+        }
+
+        .social-card.youtube-card:hover .social-icon {
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.8);
+        }
+
+        /* Telegram blue - BLUE theme */
+        .social-card.telegram-card {
+            border-color: rgba(0, 136, 204, 0.3);
+        }
+
+        .social-card.telegram-card .social-icon {
+            background: #0088cc;
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.6);
+        }
+
+        .social-card.telegram-card:hover {
+            border-color: rgba(0, 136, 204, 0.8);
+            background: rgba(0, 136, 204, 0.1);
+            box-shadow: 
+                0 20px 60px rgba(0, 136, 204, 0.6),
+                0 0 40px rgba(0, 136, 204, 0.4),
+                inset 0 0 30px rgba(0, 136, 204, 0.2);
+        }
+
+        .social-card.telegram-card:hover .social-icon {
+            box-shadow: 0 15px 40px rgba(0, 136, 204, 0.8);
+        }
+
+        .social-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .social-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+
+        .social-link {
+            color: #60a5fa;
+            font-weight: 900;
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .social-card:hover .social-link {
+            color: #93c5fd;
+            transform: translateX(4px);
+        }
+
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="logo-container cursor-pointer hover:opacity-90 transition-opacity" onclick="window.location.href='index.html'">
+                <div class="logo-circle">
+                    <img src="wabble.jpg" alt="WabbleNews Logo">
+                </div>
+                <span class="logo-text">Wabble<span class="blue">News</span></span>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="index.html" class="text-sm font-bold text-white">Home</a>
+                <a href="contact.html" class="text-sm font-bold text-white">Contact</a>
+                <a href="social-media.html" class="text-sm font-bold text-blue-400">Social Media</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-16 w-full">
+        <div class="text-center mb-20">
+            <h1 class="text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-300 to-purple-300 bg-clip-text text-transparent">
+                Connect With Us
+            </h1>
+            <p class="text-gray-400 text-xl font-bold">
+                Follow WabbleNews across all platforms for the latest crypto insights
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- X (formerly Twitter) -->
+            <div class="social-card x-card" onclick="window.open('https://x.com/CryptoWabble', '_blank')">
+                <div class="social-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </div>
+                <h3 class="social-title">X</h3>
+                <p class="social-description">Real-time crypto updates and breaking news</p>
+                <span class="social-link">@CryptoWabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+            </div>
+
+            <!-- Instagram -->
+            <div class="social-card instagram-card" onclick="window.open('https://www.instagram.com/cryptowabble?igsh=cjd3Z3k0YWQweDBi', '_blank')">
+                <div class="social-icon">
+                    <i data-lucide="instagram" class="w-10 h-10 text-white"></i>
+                </div>
+                <h3 class="social-title">Instagram</h3>
+                <p class="social-description">Visual crypto news, charts, and market insights</p>
+                <span class="social-link">@cryptowabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+            </div>
+
+            <!-- YouTube -->
+            <div class="social-card youtube-card" onclick="window.open('https://www.youtube.com/@CryptoWabble', '_blank')">
+                <div class="social-icon">
+                    <i data-lucide="youtube" class="w-10 h-10 text-white"></i>
+                </div>
+                <h3 class="social-title">YouTube</h3>
+                <p class="social-description">Video content, market analysis, and tutorials</p>
+                <span class="social-link">@CryptoWabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+            </div>
+
+            <!-- Telegram -->
+            <div class="social-card telegram-card" onclick="window.open('https://t.me/cryptowabble', '_blank')">
+                <div class="social-icon">
+                    <i data-lucide="send" class="w-10 h-10 text-white"></i>
+                </div>
+                <h3 class="social-title">Telegram</h3>
+                <p class="social-description">Instant crypto news alerts and community discussions</p>
+                <span class="social-link">@cryptowabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleMenu() {
+            console.log('Menu toggle');
+        }
+    </script>
+</body>
+</html>

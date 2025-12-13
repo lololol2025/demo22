@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WabbleNews | Premium Crypto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Montserrat Bold Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            background-color: #020204; 
+            color: white; 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.5),
+                0 0 60px rgba(59, 130, 246, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .logo-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            animation: logoShine 3s ease-in-out infinite;
+        }
+
+        @keyframes logoShine {
+            0%, 100% { transform: rotate(0deg); opacity: 0.3; }
+            50% { transform: rotate(180deg); opacity: 0.6; }
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .blue {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Ticker Container */
+        .ticker-wrapper {
+            width: 100%;
+            overflow: hidden;
+            background: rgba(5, 5, 10, 0.98);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .ticker-wrapper {
+                height: 90px;
+            }
+            
+            .coin-pill {
+                min-width: 240px;
+                padding: 10px 16px;
+                gap: 12px;
+            }
+            
+            .coin-icon {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .coin-symbol {
+                font-size: 15px;
+            }
+            
+            .coin-price {
+                font-size: 13px;
+            }
+            
+            .coin-change {
+                font-size: 12px;
+            }
+        }
+
+        .ticker-container {
+            display: flex;
+            width: max-content;
+            animation: scroll 35s linear infinite;
+            gap: 1.5rem;
+            will-change: transform;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        .ticker-wrapper:hover .ticker-container {
+            animation-play-state: paused;
+        }
+
+        /* Smooth fade-in for coin pills */
+        .coin-pill {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) translateZ(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        /* Loading spinner animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0) translateZ(0); }
+            100% { transform: translateX(-50%) translateZ(0); }
+        }
+
+        /* Coin Pills - Advanced Styling */
+        .coin-pill {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: transparent;
+            border-radius: 50px;
+            padding: 12px 20px;
+            min-width: 280px;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s ease,
+                        border-color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        /* Persistent Green Glow for Price Up */
+        .coin-pill.price-up {
+            border: 3px solid #22c55e;
+            background: transparent;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Persistent Red Glow for Price Down */
+        .coin-pill.price-down {
+            border: 3px solid #ef4444;
+            background: transparent;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .coin-pill:hover {
+            transform: translateY(-4px) scale(1.02) translateZ(0);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .coin-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            flex-shrink: 0;
+            border: none;
+        }
+
+        .coin-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .coin-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .coin-symbol-price {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .coin-symbol {
+            font-weight: 900;
+            font-size: 17px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+
+        .coin-price {
+            font-weight: 900;
+            font-size: 16px;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+            letter-spacing: 0.3px;
+        }
+
+        .coin-price.highlight-up {
+            animation: priceHighlightUp 1s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #22c55e;
+            font-weight: 900;
+        }
+
+        .coin-price.highlight-down {
+            animation: priceHighlightDown 1s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #ef4444;
+            font-weight: 900;
+        }
+
+        @keyframes priceHighlightUp {
+            0% { 
+                transform: scale(1) translateZ(0);
+                color: #22c55e;
+            }
+            50% { 
+                transform: scale(1.15) translateZ(0);
+                color: #16a34a;
+                text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            }
+            100% { 
+                transform: scale(1) translateZ(0);
+                color: #22c55e;
+            }
+        }
+
+        @keyframes priceHighlightDown {
+            0% { 
+                transform: scale(1) translateZ(0);
+                color: #ef4444;
+            }
+            50% { 
+                transform: scale(1.15) translateZ(0);
+                color: #dc2626;
+                text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            }
+            100% { 
+                transform: scale(1) translateZ(0);
+                color: #ef4444;
+            }
+        }
+
+        .coin-pill.highlight-border-up {
+            border-color: #22c55e !important;
+            animation: borderPulseGreen 1s ease-out;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.7),
+                        0 0 60px rgba(34, 197, 94, 0.4);
+        }
+
+        .coin-pill.highlight-border-down {
+            border-color: #ef4444 !important;
+            animation: borderPulseRed 1s ease-out;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.7),
+                        0 0 60px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes borderPulseGreen {
+            0% { 
+                box-shadow: 0 0 30px rgba(34, 197, 94, 0.7),
+                            0 0 60px rgba(34, 197, 94, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 50px rgba(34, 197, 94, 1),
+                            0 0 100px rgba(34, 197, 94, 0.6);
+            }
+            100% { 
+                box-shadow: 0 0 30px rgba(34, 197, 94, 0.7),
+                            0 0 60px rgba(34, 197, 94, 0.4);
+            }
+        }
+
+        @keyframes borderPulseRed {
+            0% { 
+                box-shadow: 0 0 30px rgba(239, 68, 68, 0.7),
+                            0 0 60px rgba(239, 68, 68, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 50px rgba(239, 68, 68, 1),
+                            0 0 100px rgba(239, 68, 68, 0.6);
+            }
+            100% { 
+                box-shadow: 0 0 30px rgba(239, 68, 68, 0.7),
+                            0 0 60px rgba(239, 68, 68, 0.4);
+            }
+        }
+
+        .coin-change {
+            font-weight: 900;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            line-height: 1;
+        }
+
+        .coin-change.up {
+            color: #22c55e;
+        }
+
+        .coin-change.down {
+            color: #ef4444;
+        }
+
+        /* Navigation */
+        nav a {
+            transition: color 0.2s ease;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        /* Content */
+        .news-section h1 {
+            font-weight: 900;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .news-section p {
+            color: #9ca3af;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-top: 8px;
+            font-weight: 700;
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Sign Up Modal */
+        .signup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-modal.active {
+            display: flex;
+        }
+
+        .signup-content {
+            background: rgba(15, 15, 25, 0.98);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+
+        .signup-content h2 {
+            font-weight: 900;
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .signup-content p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #e5e7eb;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .form-group input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .signup-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .success-message {
+            color: #22c55e;
+            font-size: 14px;
+            margin-top: 16px;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .toggle-link {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link:hover {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .signin-mode #signupForm {
+            display: none;
+        }
+
+        .signup-mode #signinForm {
+            display: none;
+        }
+
+        /* Profile Modal */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-modal.active {
+            display: flex;
+        }
+
+        .profile-content {
+            background: rgba(15, 15, 25, 0.98);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+
+        .profile-content h2 {
+            font-weight: 900;
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bio-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            resize: vertical;
+            min-height: 120px;
+            max-height: 400px;
+            overflow-y: auto;
+            transition: border-color 0.3s ease;
+        }
+
+        .bio-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .bio-textarea::-webkit-resizer {
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 0 0 12px 0;
+            cursor: ns-resize;
+        }
+
+        .profile-picture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-picture-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.2);
+            border: 3px solid rgba(59, 130, 246, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-picture-preview:hover {
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
+
+        .profile-picture-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-preview i {
+            font-size: 48px;
+            color: #60a5fa;
+        }
+
+        .file-input-label {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .file-input-label:hover {
+            color: #3b82f6;
+        }
+
+        #profilePictureInput {
+            display: none;
+        }
+
+        #profilePictureError {
+            margin-top: 8px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            color: #ef4444;
+            font-weight: 900;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="logo-container cursor-pointer hover:opacity-90 transition-opacity" onclick="window.location.reload()">
+                <div class="logo-circle">
+                    <img src="wabble.jpg" alt="WabbleNews Logo">
+                        </div>
+                <span class="logo-text">Wabble<span class="blue">News</span></span>
+                    </div>
+
+            <!-- Navigation -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="index.html" class="text-sm font-bold text-white">Home</a>
+                <a href="contact.html" class="text-sm font-bold text-white">Contact</a>
+                <a href="social-media.html" class="text-sm font-bold text-white">Social Media</a>
+                <!-- Sign Up/Sign In Button (hidden when logged in) -->
+                <a href="#" id="signUpBtn" onclick="openAuthModal('signup'); return false;" class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer">Sign Up/Sign In</a>
+                <!-- Profile Button (hidden when logged out) -->
+                <div id="profileBtn" class="hidden cursor-pointer" onclick="openProfileModal()">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center border-2 border-blue-400 overflow-hidden" id="headerProfilePicture">
+                        <img id="headerProfileImg" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                        <i data-lucide="user" id="headerProfileIcon" class="w-5 h-5 text-white"></i>
+                </div>
+                </div>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+        </div>
+    </header>
+
+    <!-- Ticker -->
+    <div class="ticker-wrapper">
+        <div id="ticker-container" class="ticker-container">
+            <!-- Coins will be injected here -->
+            <div class="flex items-center gap-2 pl-10 text-blue-400 text-sm font-bold">
+                <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                <span>Loading market data...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-8 w-full">
+        <!-- Latest Crypto News Section -->
+        <div class="news-section mb-10">
+            <h1 class="text-white">Latest Crypto News</h1>
+            <p>The fastest crypto and market news shared almost instantly.</p>
+        </div>
+
+        <!-- News Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Main Story -->
+            <article class="lg:col-span-8 relative aspect-[16/9] lg:h-[550px] rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-2xl">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1600&q=80" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Bitcoin">
+                <div class="absolute bottom-0 left-0 z-20 p-8 sm:p-12 w-full">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-blue-600 text-white text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded-lg">Market Update</span>
+                        <span class="text-white/80 text-xs font-bold bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg">2h ago</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
+                        Bitcoin Surges Past $92,000 as Institutional Demand Explodes
+                    </h2>
+                    <p class="text-gray-200 text-base sm:text-lg font-medium max-w-2xl">
+                        Global ETF inflows have reached a 6-month high, pushing the crypto market cap closer to the $3.5 Trillion milestone.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Side Stories -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <article class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition cursor-pointer group">
+                    <div class="h-40 overflow-hidden rounded-xl mb-4 relative">
+                        <img src="https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?auto=format&fit=crop&w=800&q=80" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="ETH">
+                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded uppercase">Altcoins</div>
+                    </div>
+                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition">Ethereum L2 Volume Flips Mainnet</h3>
+                    <p class="text-xs text-gray-400 font-medium">Arbitrum and Optimism now process more daily transactions than Ethereum L1 due to lower fees.</p>
+                </article>
+
+                <article class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition cursor-pointer group">
+                    <div class="h-40 overflow-hidden rounded-xl mb-4 relative">
+                        <img src="https://images.unsplash.com/photo-1622630998477-20aa696fab05?auto=format&fit=crop&w=800&q=80" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="SOL">
+                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded uppercase">Ecosystem</div>
+                    </div>
+                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition">Solana DEX Volume Hits ATH</h3>
+                    <p class="text-xs text-gray-400 font-medium">A surge in on-chain trading has propelled Solana to the #1 spot for daily volume.</p>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal (Sign Up/Sign In) -->
+    <div id="authModal" class="signup-modal">
+        <div class="signup-content relative signup-mode" id="authContent">
+            <button class="close-btn" onclick="closeAuthModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h2 id="authTitle">Join WabbleNews</h2>
+            <p id="authSubtitle">Create your account to stay updated with the latest crypto news</p>
+            
+            <!-- Sign Up Form -->
+            <form id="signupForm" onsubmit="handleSignUp(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        required 
+                        autocomplete="username"
+                        placeholder="Choose a username"
+                        pattern="^[a-zA-Z0-9.]+$"
+                        minlength="3"
+                        maxlength="20"
+                    >
+                    <div class="error-message" id="usernameError"></div>
+            </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        autocomplete="new-password"
+                        placeholder="Create a secure password"
+                        minlength="8"
+                    >
+                    <div class="error-message" id="passwordError"></div>
+        </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        required 
+                        autocomplete="new-password"
+                        placeholder="Confirm your password"
+                        minlength="8"
+                    >
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                
+                <button type="submit" class="signup-btn" id="signupSubmitBtn">Join Now</button>
+                <div class="success-message" id="successMessage">Account created successfully! Welcome to WabbleNews!</div>
+            </form>
+
+            <!-- Sign In Form -->
+            <form id="signinForm" onsubmit="handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signinUsername">Username</label>
+                    <input 
+                        type="text" 
+                        id="signinUsername" 
+                        name="signinUsername" 
+                        required 
+                        autocomplete="username"
+                        placeholder="Enter your username"
+                    >
+                    <div class="error-message" id="signinUsernameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signinPassword">Password</label>
+                    <input 
+                        type="password" 
+                        id="signinPassword" 
+                        name="signinPassword" 
+                        required 
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                    >
+                    <div class="error-message" id="signinPasswordError"></div>
+                </div>
+                
+                <button type="submit" class="signup-btn" id="signinSubmitBtn">Sign In</button>
+            </form>
+
+            <!-- Toggle Links -->
+            <div id="toggleToSignIn" class="toggle-link">
+                Have an account? <span onclick="switchToSignIn()" style="cursor: pointer; color: #3b82f6; font-weight: 700; text-decoration: none;">Sign in</span>
+            </div>
+            <div id="toggleToSignUp" class="toggle-link" style="display: none;">
+                Don't have an account? <span onclick="switchToSignUp()" style="cursor: pointer; color: #3b82f6; font-weight: 700; text-decoration: none;">Sign up</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-content relative">
+            <button class="close-btn" onclick="closeProfileModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h2>Profile Settings</h2>
+            <p style="margin-bottom: 24px; color: #9ca3af;">Customize your profile</p>
+            
+            <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+                <div class="profile-picture-container">
+                    <div class="profile-picture-preview" onclick="document.getElementById('profilePictureInput').click()">
+                        <img id="profilePicturePreview" src="" alt="Profile" style="display: none;">
+                        <i data-lucide="user" id="profilePictureIcon"></i>
+                    </div>
+                    <label for="profilePictureInput" class="file-input-label">Change Profile Picture</label>
+                    <input type="file" id="profilePictureInput" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="handleProfilePictureChange(event)">
+                    <div class="error-message" id="profilePictureError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileUsername">Username</label>
+                    <input 
+                        type="text" 
+                        id="profileUsername" 
+                        name="profileUsername" 
+                        placeholder="Enter your username"
+                        maxlength="20"
+                        pattern="^[a-zA-Z0-9.]+$"
+                    >
+                    <div class="error-message" id="usernameChangeError"></div>
+                    <div style="margin-top: 4px;">
+                        <span id="usernameChangeInfo" style="color: #9ca3af; font-size: 11px; font-weight: 700;"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileBio">Bio</label>
+                    <div style="position: relative;">
+                        <textarea 
+                            id="profileBio" 
+                            name="profileBio" 
+                            placeholder="Tell us about yourself"
+                            maxlength="500"
+                            class="bio-textarea"
+                        ></textarea>
+                        <div style="text-align: right; margin-top: 6px;">
+                            <span id="bioCharCount" style="color: #9ca3af; font-size: 12px; font-weight: 700;">0/500</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="signup-btn">Save Changes</button>
+                <button type="button" class="logout-btn" onclick="handleLogout()">Log Out</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Powered by CoinGecko API • Verified Data</p>
+            <p class="text-gray-500 text-xs font-bold mt-2">&copy; 2025 WabbleNews.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const API_KEY = 'CG-WGhyowZJTbpZiASkPAsWe2FU';
+        const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
+        
+        const VALID_COINS = [
+            'bitcoin', 'ethereum', 'ripple', 'solana', 'binancecoin', 'dogecoin', 
+            'cardano', 'tron', 'avalanche-2', 'shiba-inu', 'toncoin', 'polkadot', 
+            'chainlink', 'bitcoin-cash', 'near', 'litecoin', 'pepe', 'uniswap', 
+            'aptos', 'hedera-hashgraph', 'stellar', 'internet-computer', 'monero',
+            'ethereum-classic', 'render-token', 'cosmos', 'arbitrum', 'optimism', 'sui'
+        ];
+
+        let previousPrices = {};
+
+        function formatPrice(num) {
+            if (!num) return '-';
+            const options = { style: 'currency', currency: 'USD' };
+            if (num >= 10.0) {
+                options.minimumFractionDigits = 2;
+                options.maximumFractionDigits = 2;
+            } else if (num >= 0.01) {
+                options.minimumFractionDigits = 4;
+                options.maximumFractionDigits = 4;
+            } else {
+                options.minimumFractionDigits = 8;
+                options.maximumFractionDigits = 8;
+            }
+            return new Intl.NumberFormat('en-US', options).format(num);
+        }
+
+        let isFetching = false;
+        let fetchTimeout = null;
+        let retryCount = 0;
+        const MAX_RETRIES = 3;
+        const RETRY_DELAY = 5000; // 5 seconds
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        async function fetchData() {
+            // Prevent concurrent fetches
+            if (isFetching) return;
+            
+            isFetching = true;
+            
+            try {
+                // Show loading state only if container is empty or has error
+                const container = document.getElementById('ticker-container');
+                if (container && (container.children.length === 0 || container.querySelector('.text-yellow-500'))) {
+                    container.innerHTML = `
+                        <div class="flex items-center gap-2 pl-10 text-blue-400 text-sm font-bold">
+                            <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                            <span>Loading market data...</span>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                }
+                
+                // Create abort controller for timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
+                let res;
+                let lastError;
+                
+                // Try multiple authentication methods
+                const methods = [
+                    // Method 1: No auth (free tier)
+                    {
+                        url: `${API_URL}?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`,
+                        headers: { 'Accept': 'application/json' }
+                    },
+                    // Method 2: API key as query parameter
+                    {
+                        url: `${API_URL}?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h&x_cg_demo_api_key=${API_KEY}`,
+                        headers: { 'Accept': 'application/json' }
+                    },
+                    // Method 3: API key as header
+                    {
+                        url: `${API_URL}?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`,
+                        headers: { 
+                            'Accept': 'application/json',
+                            'x-cg-demo-api-key': API_KEY
+                        }
+                    }
+                ];
+                
+                for (const method of methods) {
+                    try {
+                        res = await fetch(method.url, {
+                            method: 'GET',
+                            headers: method.headers,
+                            signal: controller.signal
+                        });
+                        
+                        if (res.ok) {
+                            clearTimeout(timeoutId);
+                            break; // Success, exit loop
+                        } else if (res.status === 429) {
+                            // Rate limited, try next method
+                            lastError = new Error('Rate limited');
+                            continue;
+                        } else {
+                            // Other error, try next method
+                            const errorText = await res.text();
+                            lastError = new Error(`API Error: ${res.status}`);
+                            continue;
+                        }
+                    } catch (fetchError) {
+                        if (fetchError.name === 'AbortError') {
+                            throw new Error('Request timeout after 15 seconds');
+                        }
+                        lastError = fetchError;
+                        continue; // Try next method
+                    }
+                }
+                
+                clearTimeout(timeoutId);
+                
+                if (!res || !res.ok) {
+                    throw lastError || new Error('All API methods failed');
+                }
+                
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    console.error('API Response Error:', res.status, errorText);
+                    throw new Error(`API Error: ${res.status} - ${errorText.substring(0, 100)}`);
+                }
+                
+                const data = await res.json();
+
+                if (!Array.isArray(data)) {
+                    throw new Error('Invalid API response format');
+                }
+                
+                const cleanData = data.filter(c => VALID_COINS.includes(c.id));
+
+                if (cleanData.length > 0) {
+                    renderTicker(cleanData);
+                    retryCount = 0; // Reset retry count on success
+                } else {
+                    throw new Error('No valid coins found in response');
+                }
+            } catch (e) {
+                console.error("Error fetching data:", e);
+                retryCount++;
+                
+                // Show error state with more details
+                const container = document.getElementById('ticker-container');
+                if (container) {
+                    const errorMessage = e.message || 'Unknown error';
+                    const errorHtml = `
+                        <div class="flex flex-col items-start gap-2 pl-10 text-yellow-500 text-sm font-bold">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                <span>API Error${retryCount < MAX_RETRIES ? `. Retrying... (${retryCount}/${MAX_RETRIES})` : ''}</span>
+                            </div>
+                            <span class="text-xs text-yellow-400 font-normal">${errorMessage.substring(0, 80)}</span>
+                        </div>
+                    `;
+                    if (container.innerHTML !== errorHtml) {
+                        container.innerHTML = errorHtml;
+                        lucide.createIcons();
+                    }
+                }
+                
+                // Retry logic
+                if (retryCount < MAX_RETRIES) {
+                    fetchTimeout = setTimeout(() => {
+                        isFetching = false;
+                        fetchData();
+                    }, RETRY_DELAY);
+                    return; // Don't set isFetching to false yet
+                } else {
+                    // Show final error message
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="flex flex-col items-start gap-2 pl-10 text-red-500 text-sm font-bold">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                                    <span>Failed to load data. Please refresh the page.</span>
+                                </div>
+                                <button onclick="location.reload()" class="text-xs text-blue-400 hover:text-blue-300 underline mt-2">Click to refresh</button>
+                            </div>
+                        `;
+                        lucide.createIcons();
+                    }
+                }
+            } finally {
+                if (!fetchTimeout) {
+                    isFetching = false;
+                }
+            }
+        }
+
+
+        function renderTicker(coins) {
+            const container = document.getElementById('ticker-container');
+            if (!container) return;
+            
+            // Use DocumentFragment for better performance
+            const fragment = document.createDocumentFragment();
+            
+            // Duplicate coins for seamless infinite scroll
+            const duplicatedCoins = [...coins, ...coins];
+            
+            duplicatedCoins.forEach((coin, index) => {
+                // Check if price is up or down based on 24h change
+                const isUp = coin.price_change_percentage_24h >= 0;
+                const priceClass = isUp ? 'price-up' : 'price-down';
+                const changeClass = isUp ? 'up' : 'down';
+                const arrow = isUp ? '▲' : '▼';
+                
+                // Check if price changed compared to previous fetch
+                // Use proper floating point comparison with tolerance
+                const previousPrice = previousPrices[coin.id];
+                let highlightClass = '';
+                let borderHighlightClass = '';
+                
+                // Only check for first occurrence of each coin (not duplicates)
+                if (index < coins.length && previousPrice !== undefined) {
+                    // Compare with small tolerance for floating point precision
+                    const priceDiff = Math.abs(coin.current_price - previousPrice);
+                    const tolerance = 0.00000001; // Very small tolerance for comparison
+                    
+                    if (priceDiff > tolerance) {
+                        // Price changed - determine if up or down
+                        if (coin.current_price > previousPrice) {
+                            // Price went UP
+                            highlightClass = 'highlight-up';
+                            borderHighlightClass = 'highlight-border-up';
+                        } else {
+                            // Price went DOWN
+                            highlightClass = 'highlight-down';
+                            borderHighlightClass = 'highlight-border-down';
+                        }
+                    }
+                }
+                
+                // Create coin pill element
+                const coinPill = document.createElement('div');
+                coinPill.className = `coin-pill ${priceClass} ${borderHighlightClass}`;
+                coinPill.innerHTML = `
+                    <div class="coin-icon">
+                        <img src="${coin.image}" alt="${coin.symbol}" loading="lazy">
+                        </div>
+                    <div class="coin-info">
+                        <div class="coin-symbol-price">
+                            <span class="coin-symbol">${coin.symbol}</span>
+                            <span class="coin-price ${highlightClass}">${formatPrice(coin.current_price)}</span>
+                            </div>
+                        <span class="coin-change ${changeClass}">
+                            ${arrow} ${Math.abs(coin.price_change_percentage_24h || 0).toFixed(2)}%
+                            </span>
+                    </div>
+                `;
+                
+                fragment.appendChild(coinPill);
+                
+                // Update previous price AFTER rendering (only for unique coins)
+                if (index < coins.length) {
+                    previousPrices[coin.id] = coin.current_price;
+                }
+            });
+            
+            // Clear and update container
+            container.innerHTML = '';
+            container.appendChild(fragment);
+            
+            // Reinitialize icons after DOM update
+            lucide.createIcons();
+        }
+
+        // Initialize with debounced fetch
+        const debouncedFetchData = debounce(fetchData, 500);
+        
+        // Initial fetch
+        fetchData();
+        
+        // Set up interval for auto-refresh (every 15 seconds)
+        setInterval(() => {
+            if (!isFetching) {
+                fetchData();
+            }
+        }, 15000);
+        
+        // Add visibility change listener to pause/resume when tab is hidden/visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Tab is hidden - could pause updates here if needed
+            } else {
+                // Tab is visible - refresh data
+                if (!isFetching) {
+                    fetchData();
+                }
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            console.log('Menu toggle');
+        }
+
+        // Check if user is logged in on page load
+        function checkLoginStatus() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (currentUser) {
+                document.getElementById('signUpBtn').classList.add('hidden');
+                document.getElementById('profileBtn').classList.remove('hidden');
+                loadProfileData();
+            } else {
+                document.getElementById('signUpBtn').classList.remove('hidden');
+                document.getElementById('profileBtn').classList.add('hidden');
+            }
+        }
+
+        // Auth Modal Functions
+        function openAuthModal(mode = 'signup') {
+            document.getElementById('authModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (mode === 'signin') {
+                switchToSignIn();
+            } else {
+                switchToSignUp();
+            }
+            lucide.createIcons();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset forms
+            document.getElementById('signupForm').reset();
+            document.getElementById('signinForm').reset();
+            document.getElementById('successMessage').classList.remove('show');
+            clearAllErrors();
+            // Reset button states
+            const signupBtn = document.getElementById('signupSubmitBtn');
+            const signinBtn = document.getElementById('signinSubmitBtn');
+            if (signupBtn) {
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Join Now';
+                signupBtn.style.background = '';
+            }
+            if (signinBtn) {
+                signinBtn.disabled = false;
+                signinBtn.textContent = 'Sign In';
+                signinBtn.style.background = '';
+            }
+        }
+
+        function switchToSignIn() {
+            document.getElementById('authContent').classList.remove('signup-mode');
+            document.getElementById('authContent').classList.add('signin-mode');
+            document.getElementById('authTitle').textContent = 'Welcome Back';
+            document.getElementById('authSubtitle').textContent = 'Sign in to your account';
+            document.getElementById('toggleToSignIn').style.display = 'none';
+            document.getElementById('toggleToSignUp').style.display = 'block';
+            clearAllErrors();
+        }
+
+        function switchToSignUp() {
+            document.getElementById('authContent').classList.remove('signin-mode');
+            document.getElementById('authContent').classList.add('signup-mode');
+            document.getElementById('authTitle').textContent = 'Join WabbleNews';
+            document.getElementById('authSubtitle').textContent = 'Create your account to stay updated with the latest crypto news';
+            document.getElementById('toggleToSignIn').style.display = 'block';
+            document.getElementById('toggleToSignUp').style.display = 'none';
+            clearAllErrors();
+        }
+
+        function clearAllErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+        }
+
+        // Close modal on outside click
+        document.getElementById('authModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAuthModal();
+            }
+        });
+
+        document.getElementById('profileModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProfileModal();
+            }
+        });
+
+        // Username validation
+        function validateUsername(username) {
+            // Can't start with underscore
+            if (username.startsWith('_')) {
+                return { valid: false, error: 'Username cannot start with underscore' };
+            }
+            
+            // Only letters, digits, and dots allowed
+            if (!/^[a-zA-Z0-9.]+$/.test(username)) {
+                return { valid: false, error: 'Username can only contain letters, numbers, and dots' };
+            }
+            
+            // Can't contain underscore, plus, question mark, etc.
+            if (/[_+?@#$%^&*()!]/.test(username)) {
+                return { valid: false, error: 'Username cannot contain special characters like _, +, ?, etc.' };
+            }
+            
+            // Length check
+            if (username.length < 3) {
+                return { valid: false, error: 'Username must be at least 3 characters' };
+            }
+            
+            if (username.length > 20) {
+                return { valid: false, error: 'Username must be less than 20 characters' };
+            }
+            
+            return { valid: true };
+        }
+
+        // Check if username exists
+        function usernameExists(username) {
+            const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+            return accounts.hasOwnProperty(username.toLowerCase());
+        }
+
+        // Hash password (simple SHA-256 hash)
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Handle sign up form submission
+        async function handleSignUp(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const usernameError = document.getElementById('usernameError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const signupBtn = document.getElementById('signupSubmitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Reset errors
+            clearAllErrors();
+            successMessage.classList.remove('show');
+            
+            // Validate username
+            const usernameValidation = validateUsername(username);
+            if (!usernameValidation.valid) {
+                usernameError.textContent = usernameValidation.error;
+                usernameError.classList.add('show');
+                usernameInput.classList.add('error');
+                return;
+            }
+            
+            // Check if username already exists
+            if (usernameExists(username)) {
+                usernameError.textContent = 'Username already taken. Please choose another.';
+                usernameError.classList.add('show');
+                usernameInput.classList.add('error');
+                return;
+            }
+            
+            // Validate password
+            if (password.length < 8) {
+                passwordError.textContent = 'Password must be at least 8 characters';
+                passwordError.classList.add('show');
+                passwordInput.classList.add('error');
+                return;
+            }
+            
+            // Validate confirm password
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+                confirmPasswordError.classList.add('show');
+                confirmPasswordInput.classList.add('error');
+                return;
+            }
+            
+            // Disable button
+            signupBtn.disabled = true;
+            signupBtn.textContent = 'Creating Account...';
+            
+            try {
+                // Hash password
+                const hashedPassword = await hashPassword(password);
+                
+                // Store account (only store hashed password, never plaintext)
+                const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+                accounts[username.toLowerCase()] = {
+                    username: username,
+                    passwordHash: hashedPassword,
+                    createdAt: new Date().toISOString(),
+                    profile: {
+                        name: '',
+                        bio: '',
+                        picture: ''
+                    }
+                };
+                localStorage.setItem('wabblenews_accounts', JSON.stringify(accounts));
+                
+                // Auto sign in after sign up - create session
+                createSession(username);
+                checkLoginStatus();
+                
+                // Show success message
+                successMessage.classList.add('show');
+                signupBtn.textContent = 'Account Created!';
+                
+                // Close modal after 2 seconds
+                setTimeout(() => {
+                    closeAuthModal();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error creating account:', error);
+                passwordError.textContent = 'An error occurred. Please try again.';
+                passwordError.classList.add('show');
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Join Now';
+            }
+        }
+
+
+        // Real-time username validation
+        document.getElementById('username').addEventListener('input', function(e) {
+            const username = e.target.value.trim();
+            const usernameError = document.getElementById('usernameError');
+            const usernameInput = e.target;
+            
+            if (username.length === 0) {
+                usernameError.classList.remove('show');
+                usernameInput.classList.remove('error');
+                return;
+            }
+            
+            const validation = validateUsername(username);
+            if (!validation.valid) {
+                usernameError.textContent = validation.error;
+                usernameError.classList.add('show');
+                usernameInput.classList.add('error');
+            } else if (usernameExists(username)) {
+                usernameError.textContent = 'Username already taken';
+                usernameError.classList.add('show');
+                usernameInput.classList.add('error');
+            } else {
+                usernameError.classList.remove('show');
+                usernameInput.classList.remove('error');
+            }
+        });
+
+        // Real-time confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = e.target.value;
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const confirmPasswordInput = e.target;
+            
+            if (confirmPassword.length === 0) {
+                confirmPasswordError.classList.remove('show');
+                confirmPasswordInput.classList.remove('error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+                confirmPasswordError.classList.add('show');
+                confirmPasswordInput.classList.add('error');
+            } else {
+                confirmPasswordError.classList.remove('show');
+                confirmPasswordInput.classList.remove('error');
+            }
+        });
+
+        // Profile Modal Functions
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadProfileData();
+            lucide.createIcons();
+            
+            // Initialize bio character counter
+            setTimeout(() => {
+                updateBioCharCount();
+            }, 100);
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function loadProfileData() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) return;
+            
+            const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+            const account = accounts[currentUser];
+            
+            if (account) {
+                // Load username (show current username)
+                const usernameInput = document.getElementById('profileUsername');
+                if (usernameInput) {
+                    usernameInput.value = account.username || currentUser;
+                }
+                
+                // Check username change cooldown
+                checkUsernameChangeCooldown(account);
+                
+                // Load profile data
+                if (account.profile) {
+                    document.getElementById('profileBio').value = account.profile.bio || '';
+                    
+                    // Update bio character count
+                    updateBioCharCount();
+                    
+                    // Load profile picture
+                    if (account.profile.picture) {
+                        document.getElementById('profilePicturePreview').src = account.profile.picture;
+                        document.getElementById('profilePicturePreview').style.display = 'block';
+                        document.getElementById('profilePictureIcon').style.display = 'none';
+                    } else {
+                        document.getElementById('profilePicturePreview').style.display = 'none';
+                        document.getElementById('profilePictureIcon').style.display = 'block';
+                    }
+                } else {
+                    // Initialize empty profile
+                    document.getElementById('profileBio').value = '';
+                    document.getElementById('profilePicturePreview').style.display = 'none';
+                    document.getElementById('profilePictureIcon').style.display = 'block';
+                    updateBioCharCount();
+                }
+                
+                // Update header profile picture
+                updateHeaderProfilePicture(account.profile?.picture);
+            }
+        }
+
+        function checkUsernameChangeCooldown(account) {
+            const usernameInput = document.getElementById('profileUsername');
+            const errorDiv = document.getElementById('usernameChangeError');
+            const infoDiv = document.getElementById('usernameChangeInfo');
+            
+            if (!account.usernameLastChanged) {
+                // Never changed before
+                if (infoDiv) {
+                    infoDiv.textContent = 'You can change your username';
+                    infoDiv.style.color = '#22c55e';
+                }
+                if (usernameInput) {
+                    usernameInput.disabled = false;
+                }
+                return true;
+            }
+            
+            const lastChanged = new Date(account.usernameLastChanged);
+            const now = new Date();
+            const daysSinceChange = (now - lastChanged) / (1000 * 60 * 60 * 24);
+            const daysRemaining = Math.ceil(7 - daysSinceChange);
+            
+            if (daysSinceChange >= 7) {
+                // Cooldown expired
+                if (infoDiv) {
+                    infoDiv.textContent = 'You can change your username';
+                    infoDiv.style.color = '#22c55e';
+                }
+                if (usernameInput) {
+                    usernameInput.disabled = false;
+                }
+                return true;
+            } else {
+                // Still in cooldown
+                if (infoDiv) {
+                    infoDiv.textContent = `Username can be changed in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`;
+                    infoDiv.style.color = '#ef4444';
+                }
+                if (usernameInput) {
+                    usernameInput.disabled = true;
+                    usernameInput.style.opacity = '0.5';
+                    usernameInput.style.cursor = 'not-allowed';
+                }
+                return false;
+            }
+        }
+
+        function updateHeaderProfilePicture(pictureUrl) {
+            const headerImg = document.getElementById('headerProfileImg');
+            const headerIcon = document.getElementById('headerProfileIcon');
+            
+            if (pictureUrl) {
+                headerImg.src = pictureUrl;
+                headerImg.style.display = 'block';
+                headerIcon.style.display = 'none';
+            } else {
+                headerImg.style.display = 'none';
+                headerIcon.style.display = 'block';
+            }
+        }
+
+        function updateBioCharCount() {
+            const bio = document.getElementById('profileBio');
+            const charCount = document.getElementById('bioCharCount');
+            if (bio && charCount) {
+                const length = bio.value.length;
+                charCount.textContent = `${length}/500`;
+                if (length > 450) {
+                    charCount.style.color = '#ef4444';
+                } else {
+                    charCount.style.color = '#9ca3af';
+                }
+            }
+        }
+
+        function handleProfilePictureChange(event) {
+            const file = event.target.files[0];
+            const errorDiv = document.getElementById('profilePictureError');
+            
+            // Clear previous errors
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+                errorDiv.textContent = '';
+            }
+            
+            if (!file) {
+                return;
+            }
+            
+            // Validate file type - only allow safe image formats
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            const allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+            
+            // Check MIME type and extension
+            if (!allowedTypes.includes(file.type) || !allowedExtensions.includes(fileExtension)) {
+                if (errorDiv) {
+                    errorDiv.textContent = 'Only PNG, JPG, JPEG, WEBP, and GIF images are allowed';
+                    errorDiv.classList.add('show');
+                }
+                event.target.value = '';
+                return;
+            }
+            
+            // Check file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                if (errorDiv) {
+                    errorDiv.textContent = 'Image size must be less than 5MB';
+                    errorDiv.classList.add('show');
+                }
+                event.target.value = '';
+                return;
+            }
+            
+            // First validate file signature, then read as data URL for preview
+            const validationReader = new FileReader();
+            validationReader.onload = function(validationEvent) {
+                const arrayBuffer = validationEvent.target.result;
+                const bytes = new Uint8Array(arrayBuffer);
+                
+                // Check file signatures (magic numbers) for image files
+                let isValidImage = false;
+                
+                // PNG: 89 50 4E 47
+                if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) {
+                    isValidImage = true;
+                }
+                // JPEG: FF D8 FF
+                else if (bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) {
+                    isValidImage = true;
+                }
+                // GIF: 47 49 46 38
+                else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) {
+                    isValidImage = true;
+                }
+                // WEBP: Check for RIFF...WEBP
+                else if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) {
+                    // Check for WEBP further in the file
+                    const str = String.fromCharCode.apply(null, bytes.slice(8, 12));
+                    if (str === 'WEBP') {
+                        isValidImage = true;
+                    }
+                }
+                
+                if (!isValidImage) {
+                    if (errorDiv) {
+                        errorDiv.textContent = 'Invalid image file. Only PNG, JPG, WEBP, and GIF are allowed';
+                        errorDiv.classList.add('show');
+                    }
+                    event.target.value = '';
+                    return;
+                }
+                
+                // File is valid - now read as data URL for preview
+                const previewReader = new FileReader();
+                previewReader.onload = function(previewEvent) {
+                    const imageUrl = previewEvent.target.result;
+                    document.getElementById('profilePicturePreview').src = imageUrl;
+                    document.getElementById('profilePicturePreview').style.display = 'block';
+                    document.getElementById('profilePictureIcon').style.display = 'none';
+                };
+                
+                previewReader.onerror = function() {
+                    if (errorDiv) {
+                        errorDiv.textContent = 'Error reading file. Please try again.';
+                        errorDiv.classList.add('show');
+                    }
+                };
+                
+                previewReader.readAsDataURL(file);
+            };
+            
+            validationReader.onerror = function() {
+                if (errorDiv) {
+                    errorDiv.textContent = 'Error validating file. Please try again.';
+                    errorDiv.classList.add('show');
+                }
+            };
+            
+            validationReader.readAsArrayBuffer(file);
+        }
+
+        function handleProfileUpdate(event) {
+            event.preventDefault();
+            
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) return;
+            
+            const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+            const account = accounts[currentUser];
+            const usernameError = document.getElementById('usernameChangeError');
+            const usernameInput = document.getElementById('profileUsername');
+            
+            if (!account) return;
+            
+            // Validate and handle username change
+            const newUsername = usernameInput.value.trim();
+            const currentUsername = account.username || currentUser;
+            
+            if (newUsername && newUsername !== currentUsername) {
+                // Check cooldown
+                if (!checkUsernameChangeCooldown(account)) {
+                    if (usernameError) {
+                        usernameError.textContent = 'Username can only be changed once per week';
+                        usernameError.classList.add('show');
+                    }
+                    if (usernameInput) {
+                        usernameInput.classList.add('error');
+                    }
+                    return;
+                }
+                
+                // Validate username
+                const usernameValidation = validateUsername(newUsername);
+                if (!usernameValidation.valid) {
+                    if (usernameError) {
+                        usernameError.textContent = usernameValidation.error;
+                        usernameError.classList.add('show');
+                    }
+                    if (usernameInput) {
+                        usernameInput.classList.add('error');
+                    }
+                    return;
+                }
+                
+                // Check if username already exists
+                if (usernameExists(newUsername) && newUsername.toLowerCase() !== currentUser.toLowerCase()) {
+                    if (usernameError) {
+                        usernameError.textContent = 'Username already taken';
+                        usernameError.classList.add('show');
+                    }
+                    if (usernameInput) {
+                        usernameInput.classList.add('error');
+                    }
+                    return;
+                }
+                
+                // Update username and set cooldown
+                const oldUsername = currentUser;
+                const newUsernameLower = newUsername.toLowerCase();
+                
+                // Update account with new username
+                account.username = newUsername;
+                account.usernameLastChanged = new Date().toISOString();
+                
+                // Move account to new username key if username changed
+                if (oldUsername !== newUsernameLower) {
+                    accounts[newUsernameLower] = account;
+                    delete accounts[oldUsername];
+                    localStorage.setItem('wabblenews_current_user', newUsernameLower);
+                    // Update currentUser for rest of function
+                    currentUser = newUsernameLower;
+                }
+            }
+            
+            // Handle profile picture
+            const pictureSrc = document.getElementById('profilePicturePreview').src;
+            let pictureUrl = '';
+            
+            if (pictureSrc && pictureSrc.startsWith('data:image')) {
+                pictureUrl = pictureSrc;
+            } else if (account.profile?.picture) {
+                pictureUrl = account.profile.picture;
+            }
+            
+            // Update profile
+            if (!account.profile) {
+                account.profile = {};
+            }
+            
+            account.profile.bio = document.getElementById('profileBio').value.trim();
+            account.profile.picture = pictureUrl;
+            
+            const finalUsername = localStorage.getItem('wabblenews_current_user') || currentUser;
+            accounts[finalUsername.toLowerCase()] = account;
+            localStorage.setItem('wabblenews_accounts', JSON.stringify(accounts));
+            
+            // Update header profile picture immediately
+            updateHeaderProfilePicture(pictureUrl);
+            
+            // Clear errors
+            if (usernameError) {
+                usernameError.classList.remove('show');
+            }
+            if (usernameInput) {
+                usernameInput.classList.remove('error');
+            }
+            
+            // Show success
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Saved!';
+            btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+            
+            // Close modal after 1 second
+            setTimeout(() => {
+                closeProfileModal();
+                checkLoginStatus(); // Refresh to show updated username if changed
+                btn.textContent = originalText;
+                btn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+            }, 1000);
+        }
+
+        // Add bio character count listener when modal opens
+        const profileBio = document.getElementById('profileBio');
+        if (profileBio) {
+            profileBio.addEventListener('input', updateBioCharCount);
+        }
+
+        function handleLogout() {
+            // Clear session
+            localStorage.removeItem('wabblenews_current_user');
+            localStorage.removeItem('wabblenews_session_token');
+            
+            // Reset UI
+            checkLoginStatus();
+            closeProfileModal();
+            
+            // Reset auth modal to sign up mode
+            switchToSignUp();
+            
+            // Clear any form data
+            document.getElementById('signupForm').reset();
+            document.getElementById('signinForm').reset();
+            clearAllErrors();
+        }
+
+        // Enhanced Authentication System
+        function generateSessionToken() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        function createSession(username) {
+            const token = generateSessionToken();
+            const sessionData = {
+                username: username.toLowerCase(),
+                token: token,
+                createdAt: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
+            };
+            
+            localStorage.setItem('wabblenews_session_token', JSON.stringify(sessionData));
+            localStorage.setItem('wabblenews_current_user', username.toLowerCase());
+            
+            return token;
+        }
+
+        function validateSession() {
+            const sessionData = localStorage.getItem('wabblenews_session_token');
+            if (!sessionData) return false;
+            
+            try {
+                const session = JSON.parse(sessionData);
+                const expiresAt = new Date(session.expiresAt);
+                
+                if (expiresAt < new Date()) {
+                    // Session expired
+                    handleLogout();
+                    return false;
+                }
+                
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // Improved sign in with better error handling
+        async function handleSignIn(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('signinUsername').value.trim();
+            const password = document.getElementById('signinPassword').value;
+            const usernameError = document.getElementById('signinUsernameError');
+            const passwordError = document.getElementById('signinPasswordError');
+            const usernameInput = document.getElementById('signinUsername');
+            const passwordInput = document.getElementById('signinPassword');
+            const signinBtn = document.getElementById('signinSubmitBtn');
+            
+            // Reset errors
+            clearAllErrors();
+            
+            // Validate inputs
+            if (!username) {
+                usernameError.textContent = 'Username is required';
+                usernameError.classList.add('show');
+                usernameInput.classList.add('error');
+                return;
+            }
+            
+            if (!password) {
+                passwordError.textContent = 'Password is required';
+                passwordError.classList.add('show');
+                passwordInput.classList.add('error');
+                return;
+            }
+            
+            // Check if username exists
+            if (!usernameExists(username)) {
+                usernameError.textContent = 'Username not found';
+                usernameError.classList.add('show');
+                usernameInput.classList.add('error');
+                return;
+            }
+            
+            // Disable button
+            signinBtn.disabled = true;
+            signinBtn.textContent = 'Signing In...';
+            
+            try {
+                // Hash password and compare
+                const hashedPassword = await hashPassword(password);
+                const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+                const account = accounts[username.toLowerCase()];
+                
+                if (!account) {
+                    usernameError.textContent = 'Account not found';
+                    usernameError.classList.add('show');
+                    usernameInput.classList.add('error');
+                    signinBtn.disabled = false;
+                    signinBtn.textContent = 'Sign In';
+                    return;
+                }
+                
+                if (account.passwordHash !== hashedPassword) {
+                    passwordError.textContent = 'Incorrect password';
+                    passwordError.classList.add('show');
+                    passwordInput.classList.add('error');
+                    signinBtn.disabled = false;
+                    signinBtn.textContent = 'Sign In';
+                    return;
+                }
+                
+                // Sign in successful - create session
+                createSession(username);
+                checkLoginStatus();
+                
+                // Show success briefly
+                signinBtn.textContent = 'Success!';
+                signinBtn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+                
+                setTimeout(() => {
+                    closeAuthModal();
+                    signinBtn.textContent = 'Sign In';
+                    signinBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error signing in:', error);
+                passwordError.textContent = 'An error occurred. Please try again.';
+                passwordError.classList.add('show');
+                signinBtn.disabled = false;
+                signinBtn.textContent = 'Sign In';
+            }
+        }
+
+        // Enhanced checkLoginStatus with session validation
+        function checkLoginStatus() {
+            if (!validateSession()) {
+                document.getElementById('signUpBtn').classList.remove('hidden');
+                document.getElementById('profileBtn').classList.add('hidden');
+                return;
+            }
+            
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (currentUser) {
+                document.getElementById('signUpBtn').classList.add('hidden');
+                document.getElementById('profileBtn').classList.remove('hidden');
+                loadProfileData();
+            } else {
+                document.getElementById('signUpBtn').classList.remove('hidden');
+                document.getElementById('profileBtn').classList.add('hidden');
+            }
+        }
+
+        // Initialize on page load
+        checkLoginStatus();
+        lucide.createIcons();
+        
+        // Validate session on page load and periodically
+        setInterval(() => {
+            if (localStorage.getItem('wabblenews_current_user')) {
+                if (!validateSession()) {
+                    checkLoginStatus();
+                }
+            }
+        }, 60000); // Check every minute
+    </script>
+</body>
+</html>

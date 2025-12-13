@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contact Us | WabbleNews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Montserrat Bold Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            background-color: #020204; 
+            color: white; 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.5),
+                0 0 60px rgba(59, 130, 246, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .logo-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            animation: logoShine 3s ease-in-out infinite;
+        }
+
+        @keyframes logoShine {
+            0%, 100% { transform: rotate(0deg); opacity: 0.3; }
+            50% { transform: rotate(180deg); opacity: 0.6; }
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .blue {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Navigation */
+        nav a {
+            transition: color 0.2s ease;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        /* Advanced Contact Form */
+        .contact-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 48px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .contact-form:hover::before {
+            opacity: 1;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .test-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 12px;
+        }
+
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            color: white;
+            font-weight: 900;
+            margin-bottom: 10px;
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="logo-container cursor-pointer hover:opacity-90 transition-opacity" onclick="window.location.href='index.html'">
+                <div class="logo-circle">
+                    <img src="wabble.jpg" alt="WabbleNews Logo">
+                </div>
+                <span class="logo-text">Wabble<span class="blue">News</span></span>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="index.html" class="text-sm font-bold text-white">Home</a>
+                <a href="contact.html" class="text-sm font-bold text-blue-400">Contact</a>
+                <a href="social-media.html" class="text-sm font-bold text-white">Social Media</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-6 py-16 w-full">
+        <div class="text-center mb-16">
+            <h1 class="text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-300 to-purple-300 bg-clip-text text-transparent">
+                Get In Touch
+            </h1>
+            <p class="text-gray-400 text-xl font-bold">
+                Have a question or feedback? We'd love to hear from you
+            </p>
+        </div>
+
+        <div class="contact-form">
+            <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-input" 
+                        placeholder="Your full name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="your.email@example.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input 
+                        type="text" 
+                        id="subject" 
+                        name="subject" 
+                        class="form-input" 
+                        placeholder="What's this about?"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        class="form-textarea" 
+                        placeholder="Tell us what's on your mind..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="submit-btn">
+                        Send Message
+                    </button>
+                    <button type="button" class="test-btn" onclick="testResetEffect()">
+                        Test Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleMenu() {
+            console.log('Menu toggle');
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Get form values
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+            // Show success message
+            alert(`Thank you, ${name}! Your message has been sent. We'll get back to you at ${email} soon.`);
+            
+            // Reset form
+            form.reset();
+        }
+
+        function testResetEffect() {
+            const form = document.getElementById('contactForm');
+            const inputs = form.querySelectorAll('input, textarea');
+            
+            // Add reset animation
+            inputs.forEach((input, index) => {
+                setTimeout(() => {
+                    input.style.transition = 'all 0.3s ease';
+                    input.style.transform = 'scale(0.95)';
+                    input.style.opacity = '0.5';
+                    
+                    setTimeout(() => {
+                        input.value = '';
+                        input.style.transform = 'scale(1)';
+                        input.style.opacity = '1';
+                    }, 150);
+                }, index * 50);
+            });
+        }
+    </script>
+</body>
+</html>
