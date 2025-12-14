@@ -1366,15 +1366,27 @@
 
         function handleProfileUpdate(event) {
             event.preventDefault();
-            const currentUser = localStorage.getItem('wabblenews_current_user');
-            if (!currentUser) return;
+            
+            let currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) {
+                alert('You must be logged in to update your profile');
+                return;
+            }
+            
             const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
-            const account = accounts[currentUser];
+            let account = accounts[currentUser];
+            
+            if (!account) {
+                alert('Account not found');
+                return;
+            }
+            
             const usernameError = document.getElementById('usernameChangeError');
             const usernameInput = document.getElementById('profileUsername');
-            if (!account) return;
+            
             const newUsername = usernameInput ? usernameInput.value.trim() : '';
             const currentUsername = account.username || currentUser;
+            
             if (newUsername && newUsername !== currentUsername) {
                 if (!checkUsernameChangeCooldown(account)) {
                     if (usernameError) {
@@ -1409,25 +1421,34 @@
                     accounts[newUsernameLower] = account;
                     delete accounts[oldUsername];
                     localStorage.setItem('wabblenews_current_user', newUsernameLower);
+                    currentUser = newUsernameLower;
                 }
             }
+            
             const picturePreview = document.getElementById('profilePicturePreview');
             let pictureUrl = account.profile?.picture || '';
-            if (picturePreview && picturePreview.src && picturePreview.style.display !== 'none') {
+            
+            if (picturePreview) {
                 const pictureSrc = picturePreview.src;
-                if (pictureSrc.startsWith('data:image') || pictureSrc.startsWith('blob:')) {
+                if (pictureSrc && pictureSrc.startsWith('data:image')) {
                     pictureUrl = pictureSrc;
-                } else if (pictureSrc && pictureSrc.length > 0) {
+                } else if (pictureSrc && pictureSrc.startsWith('blob:')) {
                     pictureUrl = pictureSrc;
+                } else if (pictureSrc && pictureSrc.length > 0 && pictureSrc !== '') {
+                    if (picturePreview.style.display !== 'none') {
+                        pictureUrl = pictureSrc;
+                    }
                 }
             }
+            
             if (!account.profile) account.profile = {};
             const bioElement = document.getElementById('profileBio');
             account.profile.bio = bioElement ? bioElement.value.trim() : '';
             account.profile.picture = pictureUrl;
-            const finalUsername = localStorage.getItem('wabblenews_current_user') || currentUser;
-            accounts[finalUsername.toLowerCase()] = account;
+            
+            accounts[currentUser.toLowerCase()] = account;
             localStorage.setItem('wabblenews_accounts', JSON.stringify(accounts));
+            
             updateHeaderProfilePicture(pictureUrl);
             if (usernameError) usernameError.classList.remove('show');
             if (usernameInput) usernameInput.classList.remove('error');
@@ -1442,6 +1463,10 @@
                     btn.textContent = originalText;
                     btn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
                 }, 1000);
+            } else {
+                alert('Profile saved successfully!');
+                closeProfileModal();
+                checkLoginStatus();
             }
         }
 
