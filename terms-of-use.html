@@ -403,9 +403,27 @@
         function handleLogout() { localStorage.removeItem('wabblenews_current_user'); localStorage.removeItem('wabblenews_session_token'); checkLoginStatus(); closeProfileModal(); switchToSignUp(); const signupForm = document.getElementById('signupForm'); const signinForm = document.getElementById('signinForm'); if (signupForm) signupForm.reset(); if (signinForm) signinForm.reset(); clearAllErrors(); }
         const profileBio = document.getElementById('profileBio');
         if (profileBio) { profileBio.addEventListener('input', updateBioCharCount); }
-        document.getElementById('authModal')?.addEventListener('click', function(e) { if (e.target === this) closeAuthModal(); });
-        document.getElementById('profileModal')?.addEventListener('click', function(e) { if (e.target === this) closeProfileModal(); });
-        checkLoginStatus();
+        const authModalEl = document.getElementById('authModal');
+        if (authModalEl) {
+            authModalEl.addEventListener('click', function(e) { if (e.target === this) closeAuthModal(); });
+        }
+        const profileModalEl = document.getElementById('profileModal');
+        if (profileModalEl) {
+            profileModalEl.addEventListener('click', function(e) { if (e.target === this) closeProfileModal(); });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            lucide.createIcons();
+        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                checkLoginStatus();
+                lucide.createIcons();
+            });
+        } else {
+            checkLoginStatus();
+            lucide.createIcons();
+        }
         setInterval(() => { if (localStorage.getItem('wabblenews_current_user')) { if (!validateSession()) { checkLoginStatus(); } } }, 60000);
     </script>
 </body>
