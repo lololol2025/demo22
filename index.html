@@ -384,58 +384,18 @@
             color: #60a5fa;
         }
 
-        /* Intro Section (edgeX style) */
-        .intro-section {
-            position: relative;
-            padding: 60px 0;
-            border-radius: 24px;
-            margin-bottom: 60px;
-        }
-
         /* Content */
-        .news-section {
-            position: relative;
-            padding: 40px 0;
-        }
-
-        .news-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -20px;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 50%, #1e40af 100%);
-            border-radius: 2px;
-        }
-
         .news-section h1 {
             font-weight: 900;
             font-size: clamp(2.5rem, 5vw, 4rem);
             line-height: 1.1;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 50%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-
-        .news-section h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-            border-radius: 2px;
         }
 
         .news-section p {
             color: #9ca3af;
             font-size: clamp(1rem, 2vw, 1.25rem);
-            margin-top: 16px;
+            margin-top: 8px;
             font-weight: 700;
         }
 
@@ -847,39 +807,6 @@
 
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl mx-auto px-6 py-8 w-full">
-        <!-- Blue Intro Section (edgeX style) -->
-        <div class="intro-section mb-16 relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent"></div>
-            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-1 h-12 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-                    <span class="text-blue-400 text-sm font-black uppercase tracking-widest">Premium Crypto News</span>
-                </div>
-                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-                    <span class="bg-gradient-to-r from-white via-blue-200 to-blue-400 bg-clip-text text-transparent">Unlock Your</span><br>
-                    <span class="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">Trading Edge</span>
-                </h1>
-                <p class="text-xl text-gray-300 font-bold max-w-2xl mb-8">
-                    Real-time crypto market data, news, and insights. Stay ahead with instant updates.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <div class="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-2">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                        <span class="text-blue-300 text-sm font-bold">Live Updates</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-2">
-                        <i data-lucide="zap" class="w-4 h-4 text-blue-400"></i>
-                        <span class="text-blue-300 text-sm font-bold">Lightning Fast</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-2">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-blue-400"></i>
-                        <span class="text-blue-300 text-sm font-bold">Verified Data</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Latest Crypto News Section -->
         <div class="news-section mb-10">
             <h1 class="text-white">Latest Crypto News</h1>
@@ -889,17 +816,16 @@
         <!-- News Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Main Story -->
-            <article class="lg:col-span-8 relative aspect-[16/9] lg:h-[550px] rounded-3xl overflow-hidden group cursor-pointer border-2 border-blue-500/20 shadow-2xl hover:border-blue-500/40 transition-all duration-300">
+            <article class="lg:col-span-8 relative aspect-[16/9] lg:h-[550px] rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-2xl">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent z-9"></div>
                     <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1600&q=80" 
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Bitcoin">
                 <div class="absolute bottom-0 left-0 z-20 p-8 sm:p-12 w-full">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest rounded-lg shadow-lg shadow-blue-500/30">Market Update</span>
-                        <span class="text-white/80 text-xs font-bold bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">2h ago</span>
-                </div>
-                    <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4 drop-shadow-2xl">
+                        <span class="bg-blue-600 text-white text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded-lg">Market Update</span>
+                        <span class="text-white/80 text-xs font-bold bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg">2h ago</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
                         Bitcoin Surges Past $92,000 as Institutional Demand Explodes
                     </h2>
                     <p class="text-gray-200 text-base sm:text-lg font-medium max-w-2xl">
@@ -910,28 +836,26 @@
 
             <!-- Side Stories -->
             <div class="lg:col-span-4 flex flex-col gap-6">
-                <article class="bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-xl rounded-2xl p-6 border-2 border-blue-500/10 hover:border-blue-500/40 transition-all duration-300 cursor-pointer group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <article class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition cursor-pointer group">
                     <div class="h-40 overflow-hidden rounded-xl mb-4 relative">
                         <img src="https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?auto=format&fit=crop&w=800&q=80" 
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="ETH">
-                        <div class="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[10px] font-black px-3 py-1.5 rounded-lg uppercase shadow-lg shadow-blue-500/30">Altcoins</div>
-                </div>
-                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition relative z-10">Ethereum L2 Volume Flips Mainnet</h3>
-                    <p class="text-xs text-gray-400 font-medium relative z-10">Arbitrum and Optimism now process more daily transactions than Ethereum L1 due to lower fees.</p>
+                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded uppercase">Altcoins</div>
+                    </div>
+                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition">Ethereum L2 Volume Flips Mainnet</h3>
+                    <p class="text-xs text-gray-400 font-medium">Arbitrum and Optimism now process more daily transactions than Ethereum L1 due to lower fees.</p>
                 </article>
 
-                <article class="bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-xl rounded-2xl p-6 border-2 border-blue-500/10 hover:border-blue-500/40 transition-all duration-300 cursor-pointer group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <article class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition cursor-pointer group">
                     <div class="h-40 overflow-hidden rounded-xl mb-4 relative">
                         <img src="https://images.unsplash.com/photo-1622630998477-20aa696fab05?auto=format&fit=crop&w=800&q=80" 
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="SOL">
-                        <div class="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[10px] font-black px-3 py-1.5 rounded-lg uppercase shadow-lg shadow-blue-500/30">Ecosystem</div>
-                        </div>
-                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition relative z-10">Solana DEX Volume Hits ATH</h3>
-                    <p class="text-xs text-gray-400 font-medium relative z-10">A surge in on-chain trading has propelled Solana to the #1 spot for daily volume.</p>
-                </article>
+                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded uppercase">Ecosystem</div>
                     </div>
+                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition">Solana DEX Volume Hits ATH</h3>
+                    <p class="text-xs text-gray-400 font-medium">A surge in on-chain trading has propelled Solana to the #1 spot for daily volume.</p>
+                </article>
+            </div>
                 </div>
     </main>
 
