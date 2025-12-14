@@ -253,6 +253,335 @@
             position: relative;
             z-index: 1;
         }
+
+        /* Sign Up Modal */
+        .signup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-modal.active {
+            display: flex;
+        }
+
+        .signup-content {
+            background: rgba(15, 15, 25, 0.98);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+
+        .signup-content h2 {
+            font-weight: 900;
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .signup-content p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .signup-content .form-group {
+            margin-bottom: 20px;
+        }
+
+        .signup-content .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #e5e7eb;
+        }
+
+        .signup-content .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .signup-content .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .signup-content .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .signup-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .success-message {
+            color: #22c55e;
+            font-size: 14px;
+            margin-top: 16px;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .toggle-link {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .toggle-link .sign-in-link, .toggle-link .sign-up-link {
+            color: #3b82f6;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link .sign-in-link:hover, .toggle-link .sign-up-link:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+
+        .signin-mode #signupForm {
+            display: none;
+        }
+
+        .signup-mode #signinForm {
+            display: none;
+        }
+
+        /* Profile Modal */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-modal.active {
+            display: flex;
+        }
+
+        .profile-content {
+            background: rgba(15, 15, 25, 0.98);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+
+        .profile-content h2 {
+            font-weight: 900;
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bio-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            resize: vertical;
+            min-height: 120px;
+            max-height: 400px;
+            overflow-y: auto;
+            transition: border-color 0.3s ease;
+        }
+
+        .bio-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .bio-textarea::-webkit-resizer {
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 0 0 12px 0;
+            cursor: ns-resize;
+        }
+
+        .profile-picture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-picture-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.2);
+            border: 3px solid rgba(59, 130, 246, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-picture-preview:hover {
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
+
+        .profile-picture-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-preview i {
+            font-size: 48px;
+            color: #60a5fa;
+        }
+
+        .file-input-label {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .file-input-label:hover {
+            color: #3b82f6;
+        }
+
+        #profilePictureInput {
+            display: none;
+        }
+
+        #profilePictureError {
+            margin-top: 8px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            color: #ef4444;
+            font-weight: 900;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -272,6 +601,15 @@
                 <a href="index.html" class="text-sm font-bold text-white">Home</a>
                 <a href="contact.html" class="text-sm font-bold text-blue-400">Contact</a>
                 <a href="social-media.html" class="text-sm font-bold text-white">Social Media</a>
+                <!-- Sign Up/Sign In Button (hidden when logged in) -->
+                <a href="#" id="signUpBtn" onclick="openAuthModal('signup'); return false;" class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer">Sign Up/Sign In</a>
+                <!-- Profile Button (hidden when logged out) -->
+                <div id="profileBtn" class="hidden cursor-pointer" onclick="openProfileModal()">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center border-2 border-blue-400 overflow-hidden" id="headerProfilePicture">
+                        <img id="headerProfileImg" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                        <i data-lucide="user" id="headerProfileIcon" class="w-5 h-5 text-white"></i>
+                    </div>
+                </div>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -353,6 +691,106 @@
         </div>
     </main>
 
+    <!-- Auth Modal (Sign Up/Sign In) -->
+    <div id="authModal" class="signup-modal">
+        <div class="signup-content relative signup-mode" id="authContent">
+            <button class="close-btn" onclick="closeAuthModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h2 id="authTitle">Join WabbleNews</h2>
+            <p id="authSubtitle">Create your account to stay updated with the latest crypto news</p>
+            
+            <!-- Sign Up Form -->
+            <form id="signupForm" onsubmit="handleSignUp(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username" placeholder="Choose a username" pattern="^[a-zA-Z0-9.]+$" minlength="3" maxlength="20">
+                    <div class="error-message" id="usernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Create a secure password" minlength="8">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password" placeholder="Confirm your password" minlength="8">
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                <button type="submit" class="signup-btn" id="signupSubmitBtn">Join Now</button>
+                <div class="success-message" id="successMessage">Account created successfully! Welcome to WabbleNews!</div>
+            </form>
+
+            <!-- Sign In Form -->
+            <form id="signinForm" onsubmit="handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signinUsername">Username</label>
+                    <input type="text" id="signinUsername" name="signinUsername" required autocomplete="username" placeholder="Enter your username">
+                    <div class="error-message" id="signinUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="signinPassword">Password</label>
+                    <input type="password" id="signinPassword" name="signinPassword" required autocomplete="current-password" placeholder="Enter your password">
+                    <div class="error-message" id="signinPasswordError"></div>
+                </div>
+                <button type="submit" class="signup-btn" id="signinSubmitBtn">Sign In</button>
+            </form>
+
+            <!-- Toggle Links -->
+            <div id="toggleToSignIn" class="toggle-link">
+                Have an account? <span class="sign-in-link" onclick="switchToSignIn()">Sign in</span>
+            </div>
+            <div id="toggleToSignUp" class="toggle-link" style="display: none;">
+                Don't have an account? <span class="sign-up-link" onclick="switchToSignUp()">Sign up</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-content relative">
+            <button class="close-btn" onclick="closeProfileModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h2>Profile Settings</h2>
+            <p style="margin-bottom: 24px; color: #9ca3af;">Customize your profile</p>
+            
+            <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+                <div class="profile-picture-container">
+                    <div class="profile-picture-preview" onclick="document.getElementById('profilePictureInput').click()">
+                        <img id="profilePicturePreview" src="" alt="Profile" style="display: none;">
+                        <i data-lucide="user" id="profilePictureIcon"></i>
+                    </div>
+                    <label for="profilePictureInput" class="file-input-label">Change Profile Picture</label>
+                    <input type="file" id="profilePictureInput" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="handleProfilePictureChange(event)">
+                    <div class="error-message" id="profilePictureError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileUsername">Username</label>
+                    <input type="text" id="profileUsername" name="profileUsername" placeholder="Enter your username" maxlength="20" pattern="^[a-zA-Z0-9.]+$">
+                    <div class="error-message" id="usernameChangeError"></div>
+                    <div style="margin-top: 4px;">
+                        <span id="usernameChangeInfo" style="color: #9ca3af; font-size: 11px; font-weight: 700;"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileBio">Bio</label>
+                    <div style="position: relative;">
+                        <textarea id="profileBio" name="profileBio" placeholder="Tell us about yourself" maxlength="500" class="bio-textarea"></textarea>
+                        <div style="text-align: right; margin-top: 6px;">
+                            <span id="bioCharCount" style="color: #9ca3af; font-size: 12px; font-weight: 700;">0/500</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="signup-btn">Save Changes</button>
+                <button type="button" class="logout-btn" onclick="handleLogout()">Log Out</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
 
@@ -397,6 +835,662 @@
                 }, index * 50);
             });
         }
+
+        // Auth Functions - Copy from index.html
+        function checkLoginStatus() {
+            if (!validateSession()) {
+                const signUpBtn = document.getElementById('signUpBtn');
+                const profileBtn = document.getElementById('profileBtn');
+                if (signUpBtn) signUpBtn.classList.remove('hidden');
+                if (profileBtn) profileBtn.classList.add('hidden');
+                return;
+            }
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (currentUser) {
+                const signUpBtn = document.getElementById('signUpBtn');
+                const profileBtn = document.getElementById('profileBtn');
+                if (signUpBtn) signUpBtn.classList.add('hidden');
+                if (profileBtn) profileBtn.classList.remove('hidden');
+                loadProfileData();
+            } else {
+                const signUpBtn = document.getElementById('signUpBtn');
+                const profileBtn = document.getElementById('profileBtn');
+                if (signUpBtn) signUpBtn.classList.remove('hidden');
+                if (profileBtn) profileBtn.classList.add('hidden');
+            }
+        }
+
+        function validateSession() {
+            const sessionData = localStorage.getItem('wabblenews_session_token');
+            if (!sessionData) return false;
+            try {
+                const session = JSON.parse(sessionData);
+                const expiresAt = new Date(session.expiresAt);
+                if (expiresAt < new Date()) {
+                    handleLogout();
+                    return false;
+                }
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function openAuthModal(mode = 'signup') {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                if (mode === 'signin') {
+                    switchToSignIn();
+                } else {
+                    switchToSignUp();
+                }
+                lucide.createIcons();
+            }
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                const signupForm = document.getElementById('signupForm');
+                const signinForm = document.getElementById('signinForm');
+                const successMessage = document.getElementById('successMessage');
+                if (signupForm) signupForm.reset();
+                if (signinForm) signinForm.reset();
+                if (successMessage) successMessage.classList.remove('show');
+                clearAllErrors();
+            }
+        }
+
+        function switchToSignIn() {
+            const authContent = document.getElementById('authContent');
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
+            const toggleToSignIn = document.getElementById('toggleToSignIn');
+            const toggleToSignUp = document.getElementById('toggleToSignUp');
+            if (authContent) {
+                authContent.classList.remove('signup-mode');
+                authContent.classList.add('signin-mode');
+            }
+            if (authTitle) authTitle.textContent = 'Welcome Back';
+            if (authSubtitle) authSubtitle.textContent = 'Sign in to your account';
+            if (toggleToSignIn) toggleToSignIn.style.display = 'none';
+            if (toggleToSignUp) toggleToSignUp.style.display = 'block';
+            clearAllErrors();
+        }
+
+        function switchToSignUp() {
+            const authContent = document.getElementById('authContent');
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
+            const toggleToSignIn = document.getElementById('toggleToSignIn');
+            const toggleToSignUp = document.getElementById('toggleToSignUp');
+            if (authContent) {
+                authContent.classList.remove('signin-mode');
+                authContent.classList.add('signup-mode');
+            }
+            if (authTitle) authTitle.textContent = 'Join WabbleNews';
+            if (authSubtitle) authSubtitle.textContent = 'Create your account to stay updated with the latest crypto news';
+            if (toggleToSignIn) toggleToSignIn.style.display = 'block';
+            if (toggleToSignUp) toggleToSignUp.style.display = 'none';
+            clearAllErrors();
+        }
+
+        function clearAllErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+        }
+
+        function validateUsername(username) {
+            if (username.startsWith('_')) {
+                return { valid: false, error: 'Username cannot start with underscore' };
+            }
+            if (!/^[a-zA-Z0-9.]+$/.test(username)) {
+                return { valid: false, error: 'Username can only contain letters, numbers, and dots' };
+            }
+            if (/[_+?@#$%^&*()!]/.test(username)) {
+                return { valid: false, error: 'Username cannot contain special characters like _, +, ?, etc.' };
+            }
+            if (username.length < 3) {
+                return { valid: false, error: 'Username must be at least 3 characters' };
+            }
+            if (username.length > 20) {
+                return { valid: false, error: 'Username must be less than 20 characters' };
+            }
+            return { valid: true };
+        }
+
+        function usernameExists(username) {
+            const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+            return accounts.hasOwnProperty(username.toLowerCase());
+        }
+
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        function generateSessionToken() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        function createSession(username) {
+            const token = generateSessionToken();
+            const sessionData = {
+                username: username.toLowerCase(),
+                token: token,
+                createdAt: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+            };
+            localStorage.setItem('wabblenews_session_token', JSON.stringify(sessionData));
+            localStorage.setItem('wabblenews_current_user', username.toLowerCase());
+            return token;
+        }
+
+        async function handleSignUp(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const usernameError = document.getElementById('usernameError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const signupBtn = document.getElementById('signupSubmitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            clearAllErrors();
+            if (successMessage) successMessage.classList.remove('show');
+            
+            const usernameValidation = validateUsername(username);
+            if (!usernameValidation.valid) {
+                if (usernameError) {
+                    usernameError.textContent = usernameValidation.error;
+                    usernameError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (usernameExists(username)) {
+                if (usernameError) {
+                    usernameError.textContent = 'Username already taken. Please choose another.';
+                    usernameError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (password.length < 8) {
+                if (passwordError) {
+                    passwordError.textContent = 'Password must be at least 8 characters';
+                    passwordError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                if (confirmPasswordError) {
+                    confirmPasswordError.textContent = 'Passwords do not match';
+                    confirmPasswordError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (signupBtn) {
+                signupBtn.disabled = true;
+                signupBtn.textContent = 'Creating Account...';
+            }
+            
+            try {
+                const hashedPassword = await hashPassword(password);
+                const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+                accounts[username.toLowerCase()] = {
+                    username: username,
+                    passwordHash: hashedPassword,
+                    createdAt: new Date().toISOString(),
+                    profile: { name: '', bio: '', picture: '' }
+                };
+                localStorage.setItem('wabblenews_accounts', JSON.stringify(accounts));
+                createSession(username);
+                checkLoginStatus();
+                if (successMessage) successMessage.classList.add('show');
+                if (signupBtn) signupBtn.textContent = 'Account Created!';
+                setTimeout(() => {
+                    closeAuthModal();
+                }, 2000);
+            } catch (error) {
+                console.error('Error creating account:', error);
+                if (passwordError) {
+                    passwordError.textContent = 'An error occurred. Please try again.';
+                    passwordError.classList.add('show');
+                }
+                if (signupBtn) {
+                    signupBtn.disabled = false;
+                    signupBtn.textContent = 'Join Now';
+                }
+            }
+        }
+
+        async function handleSignIn(event) {
+            event.preventDefault();
+            const username = document.getElementById('signinUsername').value.trim();
+            const password = document.getElementById('signinPassword').value;
+            const usernameError = document.getElementById('signinUsernameError');
+            const passwordError = document.getElementById('signinPasswordError');
+            const signinBtn = document.getElementById('signinSubmitBtn');
+            
+            clearAllErrors();
+            
+            if (!username) {
+                if (usernameError) {
+                    usernameError.textContent = 'Username is required';
+                    usernameError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (!password) {
+                if (passwordError) {
+                    passwordError.textContent = 'Password is required';
+                    passwordError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (!usernameExists(username)) {
+                if (usernameError) {
+                    usernameError.textContent = 'Username not found';
+                    usernameError.classList.add('show');
+                }
+                return;
+            }
+            
+            if (signinBtn) {
+                signinBtn.disabled = true;
+                signinBtn.textContent = 'Signing In...';
+            }
+            
+            try {
+                const hashedPassword = await hashPassword(password);
+                const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+                const account = accounts[username.toLowerCase()];
+                
+                if (!account || account.passwordHash !== hashedPassword) {
+                    if (passwordError) {
+                        passwordError.textContent = 'Incorrect password';
+                        passwordError.classList.add('show');
+                    }
+                    if (signinBtn) {
+                        signinBtn.disabled = false;
+                        signinBtn.textContent = 'Sign In';
+                    }
+                    return;
+                }
+                
+                createSession(username);
+                checkLoginStatus();
+                if (signinBtn) {
+                    signinBtn.textContent = 'Success!';
+                    signinBtn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+                }
+                setTimeout(() => {
+                    closeAuthModal();
+                    if (signinBtn) {
+                        signinBtn.textContent = 'Sign In';
+                        signinBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error('Error signing in:', error);
+                if (passwordError) {
+                    passwordError.textContent = 'An error occurred. Please try again.';
+                    passwordError.classList.add('show');
+                }
+                if (signinBtn) {
+                    signinBtn.disabled = false;
+                    signinBtn.textContent = 'Sign In';
+                }
+            }
+        }
+
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                loadProfileData();
+                lucide.createIcons();
+                setTimeout(() => {
+                    updateBioCharCount();
+                }, 100);
+            }
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function loadProfileData() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) return;
+            const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+            const account = accounts[currentUser];
+            if (account) {
+                const usernameInput = document.getElementById('profileUsername');
+                if (usernameInput) {
+                    usernameInput.value = account.username || currentUser;
+                }
+                checkUsernameChangeCooldown(account);
+                if (account.profile) {
+                    const bio = document.getElementById('profileBio');
+                    if (bio) bio.value = account.profile.bio || '';
+                    updateBioCharCount();
+                    const preview = document.getElementById('profilePicturePreview');
+                    const icon = document.getElementById('profilePictureIcon');
+                    if (account.profile.picture) {
+                        if (preview) {
+                            preview.src = account.profile.picture;
+                            preview.style.display = 'block';
+                        }
+                        if (icon) icon.style.display = 'none';
+                    } else {
+                        if (preview) preview.style.display = 'none';
+                        if (icon) icon.style.display = 'block';
+                    }
+                } else {
+                    const bio = document.getElementById('profileBio');
+                    if (bio) bio.value = '';
+                    const preview = document.getElementById('profilePicturePreview');
+                    const icon = document.getElementById('profilePictureIcon');
+                    if (preview) preview.style.display = 'none';
+                    if (icon) icon.style.display = 'block';
+                    updateBioCharCount();
+                }
+                updateHeaderProfilePicture(account.profile?.picture);
+            }
+        }
+
+        function checkUsernameChangeCooldown(account) {
+            const usernameInput = document.getElementById('profileUsername');
+            const errorDiv = document.getElementById('usernameChangeError');
+            const infoDiv = document.getElementById('usernameChangeInfo');
+            if (!account.usernameLastChanged) {
+                if (infoDiv) {
+                    infoDiv.textContent = 'You can change your username';
+                    infoDiv.style.color = '#22c55e';
+                }
+                if (usernameInput) usernameInput.disabled = false;
+                return true;
+            }
+            const lastChanged = new Date(account.usernameLastChanged);
+            const now = new Date();
+            const daysSinceChange = (now - lastChanged) / (1000 * 60 * 60 * 24);
+            const daysRemaining = Math.ceil(7 - daysSinceChange);
+            if (daysSinceChange >= 7) {
+                if (infoDiv) {
+                    infoDiv.textContent = 'You can change your username';
+                    infoDiv.style.color = '#22c55e';
+                }
+                if (usernameInput) usernameInput.disabled = false;
+                return true;
+            } else {
+                if (infoDiv) {
+                    infoDiv.textContent = `Username can be changed in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`;
+                    infoDiv.style.color = '#ef4444';
+                }
+                if (usernameInput) {
+                    usernameInput.disabled = true;
+                    usernameInput.style.opacity = '0.5';
+                    usernameInput.style.cursor = 'not-allowed';
+                }
+                return false;
+            }
+        }
+
+        function updateHeaderProfilePicture(pictureUrl) {
+            const headerImg = document.getElementById('headerProfileImg');
+            const headerIcon = document.getElementById('headerProfileIcon');
+            if (pictureUrl) {
+                if (headerImg) {
+                    headerImg.src = pictureUrl;
+                    headerImg.style.display = 'block';
+                }
+                if (headerIcon) headerIcon.style.display = 'none';
+            } else {
+                if (headerImg) headerImg.style.display = 'none';
+                if (headerIcon) headerIcon.style.display = 'block';
+            }
+        }
+
+        function updateBioCharCount() {
+            const bio = document.getElementById('profileBio');
+            const charCount = document.getElementById('bioCharCount');
+            if (bio && charCount) {
+                const length = bio.value.length;
+                charCount.textContent = `${length}/500`;
+                charCount.style.color = length > 450 ? '#ef4444' : '#9ca3af';
+            }
+        }
+
+        function handleProfilePictureChange(event) {
+            const file = event.target.files[0];
+            const errorDiv = document.getElementById('profilePictureError');
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+                errorDiv.textContent = '';
+            }
+            if (!file) return;
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            const allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+            if (!allowedTypes.includes(file.type) || !allowedExtensions.includes(fileExtension)) {
+                if (errorDiv) {
+                    errorDiv.textContent = 'Only PNG, JPG, JPEG, WEBP, and GIF images are allowed';
+                    errorDiv.classList.add('show');
+                }
+                event.target.value = '';
+                return;
+            }
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                if (errorDiv) {
+                    errorDiv.textContent = 'Image size must be less than 5MB';
+                    errorDiv.classList.add('show');
+                }
+                event.target.value = '';
+                return;
+            }
+            const validationReader = new FileReader();
+            validationReader.onload = function(validationEvent) {
+                const arrayBuffer = validationEvent.target.result;
+                const bytes = new Uint8Array(arrayBuffer);
+                let isValidImage = false;
+                if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) {
+                    isValidImage = true;
+                } else if (bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) {
+                    isValidImage = true;
+                } else if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) {
+                    isValidImage = true;
+                } else if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) {
+                    const str = String.fromCharCode.apply(null, bytes.slice(8, 12));
+                    if (str === 'WEBP') {
+                        isValidImage = true;
+                    }
+                }
+                if (!isValidImage) {
+                    if (errorDiv) {
+                        errorDiv.textContent = 'Invalid image file. Only PNG, JPG, WEBP, and GIF are allowed';
+                        errorDiv.classList.add('show');
+                    }
+                    event.target.value = '';
+                    return;
+                }
+                const previewReader = new FileReader();
+                previewReader.onload = function(previewEvent) {
+                    const imageUrl = previewEvent.target.result;
+                    const preview = document.getElementById('profilePicturePreview');
+                    const icon = document.getElementById('profilePictureIcon');
+                    if (preview) {
+                        preview.src = imageUrl;
+                        preview.style.display = 'block';
+                    }
+                    if (icon) icon.style.display = 'none';
+                };
+                previewReader.onerror = function() {
+                    if (errorDiv) {
+                        errorDiv.textContent = 'Error reading file. Please try again.';
+                        errorDiv.classList.add('show');
+                    }
+                };
+                previewReader.readAsDataURL(file);
+            };
+            validationReader.onerror = function() {
+                if (errorDiv) {
+                    errorDiv.textContent = 'Error validating file. Please try again.';
+                    errorDiv.classList.add('show');
+                }
+            };
+            validationReader.readAsArrayBuffer(file);
+        }
+
+        function handleProfileUpdate(event) {
+            event.preventDefault();
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) return;
+            const accounts = JSON.parse(localStorage.getItem('wabblenews_accounts') || '{}');
+            const account = accounts[currentUser];
+            const usernameError = document.getElementById('usernameChangeError');
+            const usernameInput = document.getElementById('profileUsername');
+            if (!account) return;
+            const newUsername = usernameInput ? usernameInput.value.trim() : '';
+            const currentUsername = account.username || currentUser;
+            if (newUsername && newUsername !== currentUsername) {
+                if (!checkUsernameChangeCooldown(account)) {
+                    if (usernameError) {
+                        usernameError.textContent = 'Username can only be changed once per week';
+                        usernameError.classList.add('show');
+                    }
+                    if (usernameInput) usernameInput.classList.add('error');
+                    return;
+                }
+                const usernameValidation = validateUsername(newUsername);
+                if (!usernameValidation.valid) {
+                    if (usernameError) {
+                        usernameError.textContent = usernameValidation.error;
+                        usernameError.classList.add('show');
+                    }
+                    if (usernameInput) usernameInput.classList.add('error');
+                    return;
+                }
+                if (usernameExists(newUsername) && newUsername.toLowerCase() !== currentUser.toLowerCase()) {
+                    if (usernameError) {
+                        usernameError.textContent = 'Username already taken';
+                        usernameError.classList.add('show');
+                    }
+                    if (usernameInput) usernameInput.classList.add('error');
+                    return;
+                }
+                const oldUsername = currentUser;
+                const newUsernameLower = newUsername.toLowerCase();
+                account.username = newUsername;
+                account.usernameLastChanged = new Date().toISOString();
+                if (oldUsername !== newUsernameLower) {
+                    accounts[newUsernameLower] = account;
+                    delete accounts[oldUsername];
+                    localStorage.setItem('wabblenews_current_user', newUsernameLower);
+                }
+            }
+            const picturePreview = document.getElementById('profilePicturePreview');
+            let pictureUrl = account.profile?.picture || '';
+            if (picturePreview && picturePreview.src && picturePreview.style.display !== 'none') {
+                const pictureSrc = picturePreview.src;
+                if (pictureSrc.startsWith('data:image') || pictureSrc.startsWith('blob:')) {
+                    pictureUrl = pictureSrc;
+                } else if (pictureSrc && pictureSrc.length > 0) {
+                    pictureUrl = pictureSrc;
+                }
+            }
+            if (!account.profile) account.profile = {};
+            const bioElement = document.getElementById('profileBio');
+            account.profile.bio = bioElement ? bioElement.value.trim() : '';
+            account.profile.picture = pictureUrl;
+            const finalUsername = localStorage.getItem('wabblenews_current_user') || currentUser;
+            accounts[finalUsername.toLowerCase()] = account;
+            localStorage.setItem('wabblenews_accounts', JSON.stringify(accounts));
+            updateHeaderProfilePicture(pictureUrl);
+            if (usernameError) usernameError.classList.remove('show');
+            if (usernameInput) usernameInput.classList.remove('error');
+            const btn = event.target.querySelector('button[type="submit"]');
+            if (btn) {
+                const originalText = btn.textContent;
+                btn.textContent = 'Saved!';
+                btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+                setTimeout(() => {
+                    closeProfileModal();
+                    checkLoginStatus();
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                }, 1000);
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('wabblenews_current_user');
+            localStorage.removeItem('wabblenews_session_token');
+            checkLoginStatus();
+            closeProfileModal();
+            switchToSignUp();
+            const signupForm = document.getElementById('signupForm');
+            const signinForm = document.getElementById('signinForm');
+            if (signupForm) signupForm.reset();
+            if (signinForm) signinForm.reset();
+            clearAllErrors();
+        }
+
+        const profileBio = document.getElementById('profileBio');
+        if (profileBio) {
+            profileBio.addEventListener('input', updateBioCharCount);
+        }
+
+        document.getElementById('authModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeAuthModal();
+        });
+
+        document.getElementById('profileModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeProfileModal();
+        });
+
+        checkLoginStatus();
+        setInterval(() => {
+            if (localStorage.getItem('wabblenews_current_user')) {
+                if (!validateSession()) {
+                    checkLoginStatus();
+                }
+            }
+        }, 60000);
     </script>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex flex-wrap justify-center gap-4 mb-4">
+                <a href="terms-of-use.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Use</a>
+                <span class="text-gray-600">•</span>
+                <a href="terms-of-service.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Service</a>
+            </div>
+            <p class="text-gray-500 text-xs font-bold mt-2">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

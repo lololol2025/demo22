@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Social Media | WabbleNews</title>
+    <title>Terms of Use | WabbleNews</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -41,14 +41,12 @@
             overflow-x: hidden; 
         }
 
-        /* Header */
         header {
             background: rgba(0, 0, 0, 0.98);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Logo Container */
         .logo-container {
             position: relative;
             display: flex;
@@ -115,7 +113,6 @@
             background-clip: text;
         }
 
-        /* Navigation */
         nav a {
             transition: color 0.2s ease;
             font-size: 14px;
@@ -126,171 +123,66 @@
             color: #60a5fa;
         }
 
-        /* Advanced Social Card */
-        .social-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 40px;
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
         }
 
-        .social-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 1;
-        }
-
-        .social-card:hover .social-icon {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .social-card:nth-child(even):hover .social-icon {
-            transform: scale(1.15) rotate(-5deg);
-        }
-
-        /* X (Twitter) specific styling - WHITE theme */
-        .social-card.x-card {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .social-card.x-card .social-icon {
-            background: #000000;
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
-        }
-
-        .social-card.x-card:hover {
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 
-                0 20px 60px rgba(255, 255, 255, 0.4),
-                0 0 40px rgba(255, 255, 255, 0.3),
-                inset 0 0 30px rgba(255, 255, 255, 0.1);
-        }
-
-        .social-card.x-card:hover .social-icon {
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Instagram gradient - PURPLE/PINK theme */
-        .social-card.instagram-card {
-            border-color: rgba(131, 58, 180, 0.3);
-        }
-
-        .social-card.instagram-card .social-icon {
-            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
-            box-shadow: 0 10px 30px rgba(131, 58, 180, 0.6);
-        }
-
-        .social-card.instagram-card:hover {
-            border-color: rgba(131, 58, 180, 0.8);
-            background: rgba(131, 58, 180, 0.1);
-            box-shadow: 
-                0 20px 60px rgba(131, 58, 180, 0.6),
-                0 0 40px rgba(253, 29, 29, 0.4),
-                inset 0 0 30px rgba(131, 58, 180, 0.2);
-        }
-
-        .social-card.instagram-card:hover .social-icon {
-            box-shadow: 0 15px 40px rgba(131, 58, 180, 0.8);
-        }
-
-        /* YouTube red - RED theme */
-        .social-card.youtube-card {
-            border-color: rgba(255, 0, 0, 0.3);
-        }
-
-        .social-card.youtube-card .social-icon {
-            background: #FF0000;
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.6);
-        }
-
-        .social-card.youtube-card:hover {
-            border-color: rgba(255, 0, 0, 0.8);
-            background: rgba(255, 0, 0, 0.1);
-            box-shadow: 
-                0 20px 60px rgba(255, 0, 0, 0.6),
-                0 0 40px rgba(255, 0, 0, 0.4),
-                inset 0 0 30px rgba(255, 0, 0, 0.2);
-        }
-
-        .social-card.youtube-card:hover .social-icon {
-            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.8);
-        }
-
-        /* Telegram blue - BLUE theme */
-        .social-card.telegram-card {
-            border-color: rgba(0, 136, 204, 0.3);
-        }
-
-        .social-card.telegram-card .social-icon {
-            background: #0088cc;
-            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.6);
-        }
-
-        .social-card.telegram-card:hover {
-            border-color: rgba(0, 136, 204, 0.8);
-            background: rgba(0, 136, 204, 0.1);
-            box-shadow: 
-                0 20px 60px rgba(0, 136, 204, 0.6),
-                0 0 40px rgba(0, 136, 204, 0.4),
-                inset 0 0 30px rgba(0, 136, 204, 0.2);
-        }
-
-        .social-card.telegram-card:hover .social-icon {
-            box-shadow: 0 15px 40px rgba(0, 136, 204, 0.8);
-        }
-
-        .social-title {
-            font-size: 28px;
+        .content-section h1 {
+            font-size: 2.5rem;
             font-weight: 900;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .social-description {
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-            line-height: 1.6;
-        }
-
-        .social-link {
-            color: #60a5fa;
+        .content-section h2 {
+            font-size: 1.5rem;
             font-weight: 900;
-            font-size: 15px;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .content-section p {
+            color: #d1d5db;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+
+        .content-section li {
+            color: #d1d5db;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
             position: relative;
-            z-index: 1;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
+            font-weight: 700;
         }
 
-        .social-card:hover .social-link {
-            color: #93c5fd;
-            transform: translateX(4px);
+        .content-section li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
         }
 
-        /* Auth Modal CSS - Same as contact.html */
+        .content-section .effective-date {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Auth Modal CSS */
         .signup-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
         .signup-modal.active { display: flex; }
         .signup-content { background: rgba(15, 15, 25, 0.98); border: 2px solid rgba(59, 130, 246, 0.5); border-radius: 24px; padding: 40px; max-width: 450px; width: 90%; box-shadow: 0 0 50px rgba(59, 130, 246, 0.3); }
@@ -327,10 +219,10 @@
         .profile-picture-preview:hover { border-color: #3b82f6; transform: scale(1.05); }
         .profile-picture-preview img { width: 100%; height: 100%; object-fit: cover; }
         .profile-picture-preview i { font-size: 48px; color: #60a5fa; }
-        #profilePictureError { margin-top: 8px; }
         .file-input-label { color: #60a5fa; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: underline; margin-top: 8px; display: block; }
         .file-input-label:hover { color: #3b82f6; }
         #profilePictureInput { display: none; }
+        #profilePictureError { margin-top: 8px; }
         .logout-btn { width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.2); border: 2px solid rgba(239, 68, 68, 0.5); border-radius: 12px; color: #ef4444; font-weight: 900; font-size: 14px; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
         .logout-btn:hover { background: rgba(239, 68, 68, 0.3); border-color: #ef4444; }
     </style>
@@ -351,7 +243,7 @@
             <nav class="hidden lg:flex items-center gap-6">
                 <a href="index.html" class="text-sm font-bold text-white">Home</a>
                 <a href="contact.html" class="text-sm font-bold text-white">Contact</a>
-                <a href="social-media.html" class="text-sm font-bold text-blue-400">Social Media</a>
+                <a href="social-media.html" class="text-sm font-bold text-white">Social Media</a>
                 <!-- Sign Up/Sign In Button (hidden when logged in) -->
                 <a href="#" id="signUpBtn" onclick="openAuthModal('signup'); return false;" class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer">Sign Up/Sign In</a>
                 <!-- Profile Button (hidden when logged out) -->
@@ -362,69 +254,78 @@
                     </div>
                 </div>
             </nav>
-
-            <!-- Mobile Menu Button -->
-            <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-white">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-6 py-16 w-full">
-        <div class="text-center mb-20">
-            <h1 class="text-6xl font-black mb-6 bg-gradient-to-r from-white via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                Connect With Us
-            </h1>
-            <p class="text-gray-400 text-xl font-bold">
-                Follow WabbleNews across all platforms for the latest crypto insights
-            </p>
-        </div>
+    <main class="flex-grow">
+        <div class="content-section">
+            <h1>Wabble News / Crypto Wabble – Terms of Use (TOU)</h1>
+            <p class="effective-date">Effective Date: December 14, 2025</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- X (formerly Twitter) -->
-            <div class="social-card x-card" onclick="window.open('https://x.com/CryptoWabble', '_blank')">
-                <div class="social-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                </div>
-                <h3 class="social-title">X</h3>
-                <p class="social-description">Real-time crypto updates and breaking news</p>
-                <span class="social-link">@CryptoWabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-            </div>
+            <h2>1. Introduction</h2>
+            <p>These Terms of Use ("Terms") govern your access to and use of Wabble News / Crypto Wabble ("Website," "we," "us," or "our"). By accessing or using the Website, including curated news, economic calendar data, comments, and chat features, you agree to these Terms. If you do not agree, please do not use the Website.</p>
 
-            <!-- Instagram -->
-            <div class="social-card instagram-card" onclick="window.open('https://www.instagram.com/cryptowabble?igsh=cjd3Z3k0YWQweDBi', '_blank')">
-                <div class="social-icon">
-                    <i data-lucide="instagram" class="w-10 h-10 text-white"></i>
-                </div>
-                <h3 class="social-title">Instagram</h3>
-                <p class="social-description">Visual crypto news, charts, and market insights</p>
-                <span class="social-link">@cryptowabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-            </div>
+            <h2>2. Account Registration and Security</h2>
+            <p><strong>2.1.</strong> Registration is required to comment or use chat features.</p>
+            <p><strong>2.2.</strong> You must provide accurate and current information when creating an account.</p>
+            <p><strong>2.3.</strong> You are responsible for keeping your account credentials secure and for all activity under your account.</p>
+            <p><strong>2.4.</strong> Accounts may not be sold, shared, or transferred. Accounts may be suspended or removed if misuse is suspected.</p>
 
-            <!-- YouTube -->
-            <div class="social-card youtube-card" onclick="window.open('https://www.youtube.com/@CryptoWabble', '_blank')">
-                <div class="social-icon">
-                    <i data-lucide="youtube" class="w-10 h-10 text-white"></i>
-                </div>
-                <h3 class="social-title">YouTube</h3>
-                <p class="social-description">Video content, market analysis, and tutorials</p>
-                <span class="social-link">@CryptoWabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-            </div>
+            <h2>3. User Conduct</h2>
+            <p>You agree not to:</p>
+            <ul>
+                <li>Use bots, scripts, or automated tools to access, extract, or collect content;</li>
+                <li>Attempt to bypass or interfere with Website security;</li>
+                <li>Post illegal, harmful, abusive, defamatory, threatening, or spam content;</li>
+                <li>Impersonate others or misrepresent yourself;</li>
+                <li>Exploit the Website for commercial purposes without permission;</li>
+                <li>Sell, trade, or share your account.</li>
+            </ul>
 
-            <!-- Telegram -->
-            <div class="social-card telegram-card" onclick="window.open('https://t.me/cryptowabble', '_blank')">
-                <div class="social-icon">
-                    <i data-lucide="send" class="w-10 h-10 text-white"></i>
-                </div>
-                <h3 class="social-title">Telegram</h3>
-                <p class="social-description">Instant crypto news alerts and community discussions</p>
-                <span class="social-link">@cryptowabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-            </div>
+            <h2>4. Comments and Chat</h2>
+            <p><strong>4.1.</strong> You are fully responsible for anything you post in comments or chat.</p>
+            <p><strong>4.2.</strong> Wabble News may monitor, remove, or refuse any comments or messages that violate these Terms.</p>
+            <p><strong>4.3.</strong> Comments and chat messages are not private. Wabble News may review or retain content to enforce rules.</p>
+            <p><strong>4.4.</strong> By posting, you grant Wabble News a perpetual, worldwide, royalty-free license to use, reproduce, modify, distribute, or display your content for Website purposes.</p>
+
+            <h2>5. Curated News Content and Economic Calendar</h2>
+            <p><strong>5.1.</strong> The Website provides curated news summaries and an economic calendar for informational purposes only.</p>
+            <p><strong>5.2.</strong> Economic calendar data is collected from third-party sources and may be delayed, incomplete, or inaccurate. Wabble News does not guarantee its accuracy.</p>
+            <p><strong>5.3.</strong> All content is provided "as is" and "as available."</p>
+            <p><strong>5.4.</strong> Content is not financial or trading advice. Using the Website to make financial decisions is risky, and users accept full responsibility.</p>
+
+            <h2>6. Intellectual Property</h2>
+            <p><strong>6.1.</strong> All Website content, including curated news, articles, and text, is owned by Wabble News / Crypto Wabble.</p>
+            <p><strong>6.2.</strong> Users may share content via provided share links, with proper attribution to Wabble News / Crypto Wabble.</p>
+            <p><strong>6.3.</strong> Certain users may be granted permission to share content without attribution by contacting contact@wabblenews.com.</p>
+            <p><strong>6.4.</strong> Except as above, users may not copy or distribute content in any other way.</p>
+
+            <h2>7. Limitation of Liability</h2>
+            <p><strong>7.1.</strong> Wabble News is not responsible for any direct or indirect losses, damages, or consequences resulting from using the Website, including content, comments, chat, or economic calendar data.</p>
+            <p><strong>7.2.</strong> Use of the Website is at your own risk.</p>
+
+            <h2>8. Dispute Resolution</h2>
+            <p>If any issues arise, you agree to resolve them in good faith directly with the Website owner.</p>
+
+            <h2>9. Miscellaneous</h2>
+            <p><strong>9.1.</strong> If any part of these Terms is invalid, the remaining provisions remain in effect.</p>
+            <p><strong>9.2.</strong> Failure to enforce any provision does not waive rights under these Terms.</p>
+            <p><strong>9.3.</strong> These Terms, together with the Privacy Policy, are the entire agreement between you and Wabble News regarding the Website.</p>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex flex-wrap justify-center gap-4 mb-4">
+                <a href="terms-of-use.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Use</a>
+                <span class="text-gray-600">•</span>
+                <a href="terms-of-service.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Service</a>
+            </div>
+            <p class="text-gray-500 text-xs font-bold mt-2">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Auth Modal (Sign Up/Sign In) -->
     <div id="authModal" class="signup-modal">
@@ -475,12 +376,8 @@
 
     <script>
         lucide.createIcons();
-
-        function toggleMenu() {
-            console.log('Menu toggle');
-        }
-
-        // Copy all auth functions from contact.html - using same code
+        
+        // Copy all auth functions from contact.html - same code
         function checkLoginStatus() { if (!validateSession()) { const signUpBtn = document.getElementById('signUpBtn'); const profileBtn = document.getElementById('profileBtn'); if (signUpBtn) signUpBtn.classList.remove('hidden'); if (profileBtn) profileBtn.classList.add('hidden'); return; } const currentUser = localStorage.getItem('wabblenews_current_user'); if (currentUser) { const signUpBtn = document.getElementById('signUpBtn'); const profileBtn = document.getElementById('profileBtn'); if (signUpBtn) signUpBtn.classList.add('hidden'); if (profileBtn) profileBtn.classList.remove('hidden'); loadProfileData(); } else { const signUpBtn = document.getElementById('signUpBtn'); const profileBtn = document.getElementById('profileBtn'); if (signUpBtn) signUpBtn.classList.remove('hidden'); if (profileBtn) profileBtn.classList.add('hidden'); } }
         function validateSession() { const sessionData = localStorage.getItem('wabblenews_session_token'); if (!sessionData) return false; try { const session = JSON.parse(sessionData); const expiresAt = new Date(session.expiresAt); if (expiresAt < new Date()) { handleLogout(); return false; } return true; } catch (e) { return false; } }
         function openAuthModal(mode = 'signup') { const modal = document.getElementById('authModal'); if (modal) { modal.classList.add('active'); document.body.style.overflow = 'hidden'; if (mode === 'signin') { switchToSignIn(); } else { switchToSignUp(); } lucide.createIcons(); } }
@@ -511,17 +408,6 @@
         checkLoginStatus();
         setInterval(() => { if (localStorage.getItem('wabblenews_current_user')) { if (!validateSession()) { checkLoginStatus(); } } }, 60000);
     </script>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-black py-10 mt-auto">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="flex flex-wrap justify-center gap-4 mb-4">
-                <a href="terms-of-use.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Use</a>
-                <span class="text-gray-600">•</span>
-                <a href="terms-of-service.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Service</a>
-            </div>
-            <p class="text-gray-500 text-xs font-bold mt-2">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
-        </div>
-    </footer>
 </body>
 </html>
+

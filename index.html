@@ -127,6 +127,14 @@
             align-items: center;
         }
 
+        #testPriceChangeBtn {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
         @media (max-width: 768px) {
             .ticker-wrapper {
                 height: 90px;
@@ -207,45 +215,38 @@
             padding: 12px 20px;
             min-width: 280px;
             flex-shrink: 0;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                        box-shadow 0.3s ease,
-                        border-color 0.3s ease;
+            transition: border-color 0.3s ease;
             cursor: pointer;
             position: relative;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         /* Persistent Green Glow for Price Up */
         .coin-pill.price-up {
             border: 3px solid #22c55e;
             background: transparent;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
         }
 
         /* Persistent Red Glow for Price Down */
         .coin-pill.price-down {
             border: 3px solid #ef4444;
             background: transparent;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
         }
 
         .coin-pill:hover {
-            transform: translateY(-4px) scale(1.02) translateZ(0);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
         }
 
         .coin-icon {
             width: 42px;
             height: 42px;
             border-radius: 50%;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 4px;
             flex-shrink: 0;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .coin-icon img {
@@ -253,6 +254,7 @@
             height: 100%;
             object-fit: contain;
             border-radius: 50%;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
         }
 
         .coin-info {
@@ -284,96 +286,73 @@
             color: #ffffff;
             font-family: 'Montserrat', sans-serif;
             line-height: 1;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: color 0.3s ease;
             backface-visibility: hidden;
             letter-spacing: 0.3px;
         }
 
-        .coin-price.highlight-up {
-            animation: priceHighlightUp 1s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #22c55e;
-            font-weight: 900;
-        }
-
-        .coin-price.highlight-down {
-            animation: priceHighlightDown 1s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #ef4444;
-            font-weight: 900;
-        }
 
         @keyframes priceHighlightUp {
             0% { 
-                transform: scale(1) translateZ(0);
-                color: #22c55e;
+                color: #ffffff;
             }
             50% { 
-                transform: scale(1.15) translateZ(0);
-                color: #16a34a;
-                text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+                color: #22c55e;
             }
             100% { 
-                transform: scale(1) translateZ(0);
-                color: #22c55e;
+                color: #ffffff;
             }
         }
 
         @keyframes priceHighlightDown {
             0% { 
-                transform: scale(1) translateZ(0);
-                color: #ef4444;
+                color: #ffffff;
             }
             50% { 
-                transform: scale(1.15) translateZ(0);
-                color: #dc2626;
-                text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+                color: #ef4444;
             }
             100% { 
-                transform: scale(1) translateZ(0);
-                color: #ef4444;
+                color: #ffffff;
             }
         }
 
         .coin-pill.highlight-border-up {
-            border-color: #22c55e !important;
-            animation: borderPulseGreen 1s ease-out;
-            box-shadow: 0 0 30px rgba(34, 197, 94, 0.7),
-                        0 0 60px rgba(34, 197, 94, 0.4);
+            animation: borderPulseGreen 0.8s ease-out;
         }
 
         .coin-pill.highlight-border-down {
-            border-color: #ef4444 !important;
-            animation: borderPulseRed 1s ease-out;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.7),
-                        0 0 60px rgba(239, 68, 68, 0.4);
+            animation: borderPulseRed 0.8s ease-out;
+        }
+
+        .coin-price.highlight-up {
+            animation: priceHighlightUp 0.8s ease-out;
+        }
+
+        .coin-price.highlight-down {
+            animation: priceHighlightDown 0.8s ease-out;
         }
 
         @keyframes borderPulseGreen {
             0% { 
-                box-shadow: 0 0 30px rgba(34, 197, 94, 0.7),
-                            0 0 60px rgba(34, 197, 94, 0.4);
+                box-shadow: 0 0 0px rgba(34, 197, 94, 0);
             }
             50% { 
-                box-shadow: 0 0 50px rgba(34, 197, 94, 1),
-                            0 0 100px rgba(34, 197, 94, 0.6);
+                box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
             }
             100% { 
-                box-shadow: 0 0 30px rgba(34, 197, 94, 0.7),
-                            0 0 60px rgba(34, 197, 94, 0.4);
+                box-shadow: 0 0 0px rgba(34, 197, 94, 0);
             }
         }
 
         @keyframes borderPulseRed {
             0% { 
-                box-shadow: 0 0 30px rgba(239, 68, 68, 0.7),
-                            0 0 60px rgba(239, 68, 68, 0.4);
+                box-shadow: 0 0 0px rgba(239, 68, 68, 0);
             }
             50% { 
-                box-shadow: 0 0 50px rgba(239, 68, 68, 1),
-                            0 0 100px rgba(239, 68, 68, 0.6);
+                box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
             }
             100% { 
-                box-shadow: 0 0 30px rgba(239, 68, 68, 0.7),
-                            0 0 60px rgba(239, 68, 68, 0.4);
+                box-shadow: 0 0 0px rgba(239, 68, 68, 0);
             }
         }
 
@@ -584,17 +563,36 @@
         }
 
         .toggle-link {
-            color: #60a5fa;
+            color: #ffffff;
             font-size: 14px;
             font-weight: 700;
-            cursor: pointer;
             text-align: center;
             margin-top: 16px;
+        }
+
+        .toggle-link .sign-in-link {
+            color: #3b82f6;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .toggle-link:hover {
+        .toggle-link .sign-in-link:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+
+        .toggle-link .sign-up-link {
             color: #3b82f6;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link .sign-up-link:hover {
+            color: #60a5fa;
             text-decoration: underline;
         }
 
@@ -801,6 +799,10 @@
                 <span>Loading market data...</span>
             </div>
         </div>
+        <!-- Test Button -->
+        <button id="testPriceChangeBtn" onclick="testPriceChange()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+            Test Price Change
+        </button>
     </div>
 
     <!-- Main Content -->
@@ -949,10 +951,10 @@
 
             <!-- Toggle Links -->
             <div id="toggleToSignIn" class="toggle-link">
-                Have an account? <span onclick="switchToSignIn()" style="cursor: pointer; color: #3b82f6; font-weight: 700; text-decoration: none;">Sign in</span>
+                Have an account? <span class="sign-in-link" onclick="switchToSignIn()">Sign in</span>
             </div>
             <div id="toggleToSignUp" class="toggle-link" style="display: none;">
-                Don't have an account? <span onclick="switchToSignUp()" style="cursor: pointer; color: #3b82f6; font-weight: 700; text-decoration: none;">Sign up</span>
+                Don't have an account? <span class="sign-up-link" onclick="switchToSignUp()">Sign up</span>
             </div>
         </div>
     </div>
@@ -1018,8 +1020,12 @@
     <!-- Footer -->
     <footer class="border-t border-white/10 bg-black py-10 mt-auto">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Powered by CoinGecko API • Verified Data</p>
-            <p class="text-gray-500 text-xs font-bold mt-2">&copy; 2025 WabbleNews.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-4">
+                <a href="terms-of-use.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Use</a>
+                <span class="text-gray-600">•</span>
+                <a href="terms-of-service.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Service</a>
+            </div>
+            <p class="text-gray-500 text-xs font-bold mt-2">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
         </div>
     </footer>
 
@@ -1173,7 +1179,7 @@
                 const cleanData = data.filter(c => VALID_COINS.includes(c.id));
 
                 if (cleanData.length > 0) {
-                    renderTicker(cleanData);
+                renderTicker(cleanData);
                     retryCount = 0; // Reset retry count on success
                 } else {
                     throw new Error('No valid coins found in response');
@@ -1249,7 +1255,6 @@
                 const arrow = isUp ? '▲' : '▼';
                 
                 // Check if price changed compared to previous fetch
-                // Use proper floating point comparison with tolerance
                 const previousPrice = previousPrices[coin.id];
                 let highlightClass = '';
                 let borderHighlightClass = '';
@@ -1258,16 +1263,14 @@
                 if (index < coins.length && previousPrice !== undefined) {
                     // Compare with small tolerance for floating point precision
                     const priceDiff = Math.abs(coin.current_price - previousPrice);
-                    const tolerance = 0.00000001; // Very small tolerance for comparison
+                    const tolerance = 0.00000001;
                     
                     if (priceDiff > tolerance) {
                         // Price changed - determine if up or down
                         if (coin.current_price > previousPrice) {
-                            // Price went UP
                             highlightClass = 'highlight-up';
                             borderHighlightClass = 'highlight-border-up';
                         } else {
-                            // Price went DOWN
                             highlightClass = 'highlight-down';
                             borderHighlightClass = 'highlight-border-down';
                         }
@@ -1276,10 +1279,17 @@
                 
                 // Create coin pill element
                 const coinPill = document.createElement('div');
-                coinPill.className = `coin-pill ${priceClass} ${borderHighlightClass}`;
+                coinPill.className = `coin-pill ${priceClass}`;
+                coinPill.setAttribute('data-coin-id', coin.id);
+                
+                // Add border highlight class if price changed
+                if (borderHighlightClass) {
+                    coinPill.classList.add(borderHighlightClass);
+                }
+                
                 coinPill.innerHTML = `
                     <div class="coin-icon">
-                        <img src="${coin.image}" alt="${coin.symbol}" loading="lazy">
+                        <img src="${coin.image}" alt="${coin.symbol}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;\\'>${coin.symbol.substring(0,2)}</div>'">
                         </div>
                     <div class="coin-info">
                         <div class="coin-symbol-price">
@@ -1300,7 +1310,7 @@
                 }
             });
             
-            // Clear and update container
+            // Clear and update container smoothly
             container.innerHTML = '';
             container.appendChild(fragment);
             
@@ -1320,6 +1330,69 @@
                 fetchData();
             }
         }, 15000);
+
+        // Test function to simulate price changes
+        function testPriceChange() {
+            const container = document.getElementById('ticker-container');
+            if (!container) return;
+            
+            const coinPills = container.querySelectorAll('.coin-pill');
+            if (coinPills.length === 0) {
+                alert('Please wait for coins to load first!');
+                return;
+            }
+            
+            // Get first few coins and simulate price changes
+            coinPills.forEach((pill, index) => {
+                if (index >= 10) return; // Only test first 10 coins
+                
+                const priceElement = pill.querySelector('.coin-price');
+                if (!priceElement) return;
+                
+                // Get current price
+                const currentPriceText = priceElement.textContent;
+                const currentPrice = parseFloat(currentPriceText.replace(/[^0-9.]/g, ''));
+                
+                if (isNaN(currentPrice)) return;
+                
+                // Randomly decide if price goes up or down
+                const goesUp = Math.random() > 0.5;
+                const changePercent = (Math.random() * 5 + 1) / 100; // 1-6% change
+                
+                let newPrice;
+                if (goesUp) {
+                    newPrice = currentPrice * (1 + changePercent);
+                } else {
+                    newPrice = currentPrice * (1 - changePercent);
+                }
+                
+                // Temporarily store old price for comparison
+                const coinId = pill.getAttribute('data-coin-id') || `test-${index}`;
+                previousPrices[coinId] = currentPrice;
+                
+                // Remove old highlight classes
+                priceElement.classList.remove('highlight-up', 'highlight-down');
+                pill.classList.remove('highlight-border-up', 'highlight-border-down');
+                
+                // Update price
+                priceElement.textContent = formatPrice(newPrice);
+                
+                // Force reflow for smooth animation
+                void priceElement.offsetWidth;
+                
+                // Add appropriate highlight classes
+                if (goesUp) {
+                    priceElement.classList.add('highlight-up');
+                    pill.classList.add('highlight-border-up');
+                } else {
+                    priceElement.classList.add('highlight-down');
+                    pill.classList.add('highlight-border-down');
+                }
+                
+                // Update previous price
+                previousPrices[coinId] = newPrice;
+            });
+        }
         
         // Add visibility change listener to pause/resume when tab is hidden/visible
         document.addEventListener('visibilitychange', () => {
@@ -1938,13 +2011,16 @@
             }
             
             // Handle profile picture
-            const pictureSrc = document.getElementById('profilePicturePreview').src;
-            let pictureUrl = '';
+            const picturePreview = document.getElementById('profilePicturePreview');
+            let pictureUrl = account.profile?.picture || '';
             
-            if (pictureSrc && pictureSrc.startsWith('data:image')) {
-                pictureUrl = pictureSrc;
-            } else if (account.profile?.picture) {
-                pictureUrl = account.profile.picture;
+            if (picturePreview && picturePreview.src && picturePreview.style.display !== 'none') {
+                const pictureSrc = picturePreview.src;
+                if (pictureSrc.startsWith('data:image') || pictureSrc.startsWith('blob:')) {
+                    pictureUrl = pictureSrc;
+                } else if (pictureSrc && pictureSrc.length > 0) {
+                    pictureUrl = pictureSrc;
+                }
             }
             
             // Update profile
@@ -1952,7 +2028,8 @@
                 account.profile = {};
             }
             
-            account.profile.bio = document.getElementById('profileBio').value.trim();
+            const bioElement = document.getElementById('profileBio');
+            account.profile.bio = bioElement ? bioElement.value.trim() : '';
             account.profile.picture = pictureUrl;
             
             const finalUsername = localStorage.getItem('wabblenews_current_user') || currentUser;
@@ -1972,17 +2049,23 @@
             
             // Show success
             const btn = event.target.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
-            btn.textContent = 'Saved!';
-            btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
-            
-            // Close modal after 1 second
-            setTimeout(() => {
+            if (btn) {
+                const originalText = btn.textContent;
+                btn.textContent = 'Saved!';
+                btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+                
+                // Close modal after 1 second
+                setTimeout(() => {
+                    closeProfileModal();
+                    checkLoginStatus(); // Refresh to show updated username if changed
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                }, 1000);
+            } else {
+                // Fallback if button not found
                 closeProfileModal();
-                checkLoginStatus(); // Refresh to show updated username if changed
-                btn.textContent = originalText;
-                btn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
-            }, 1000);
+                checkLoginStatus();
+            }
         }
 
         // Add bio character count listener when modal opens
