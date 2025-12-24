@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Economic Calendar | WabbleNews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #020204; color: white; font-family: 'Montserrat', sans-serif; font-weight: 700; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        header { background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+
+        .logo-container { position: relative; display: flex; align-items: center; gap: 12px; }
+        .logo-circle { width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); border: 2px solid rgba(59, 130, 246, 0.5); overflow: hidden; }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .logo-text { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-text .blue { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        nav a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 14px; font-weight: 700; transition: color 0.3s ease; }
+        nav a:hover { color: #60a5fa; }
+
+        .settings-bar { background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 0; }
+        .settings-dropdown { position: relative; display: inline-block; }
+        .settings-btn { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #9ca3af; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .settings-btn:hover { background: rgba(255, 255, 255, 0.1); color: white; border-color: rgba(59, 130, 246, 0.5); }
+        .settings-btn i { width: 14px; height: 14px; }
+        .dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 4px; background: rgba(15, 15, 20, 0.98); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; min-width: 200px; max-height: 300px; overflow-y: auto; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+        .dropdown-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; color: #9ca3af; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+        .dropdown-item:hover { background: rgba(59, 130, 246, 0.1); color: white; }
+        .dropdown-item.selected { color: #60a5fa; background: rgba(59, 130, 246, 0.1); }
+
+        .calendar-container { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; }
+
+        .calendar-header { background: rgba(255, 255, 255, 0.03); padding: 20px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .calendar-title { font-size: 20px; font-weight: 900; color: white; }
+        .calendar-nav { display: flex; align-items: center; gap: 12px; }
+        .nav-btn { padding: 8px 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: #9ca3af; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .nav-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+        .nav-btn.active { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #60a5fa; }
+
+        .event-list { padding: 0; }
+        .event-day { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .event-day:last-child { border-bottom: none; }
+        .day-header { padding: 16px 24px; background: rgba(255, 255, 255, 0.02); font-size: 14px; font-weight: 800; color: #60a5fa; }
+
+        .event-item { display: grid; grid-template-columns: 100px 1fr 100px 80px; align-items: center; padding: 16px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); transition: all 0.3s ease; gap: 16px; }
+        .event-item:hover { background: rgba(255, 255, 255, 0.03); }
+        .event-item:last-child { border-bottom: none; }
+
+        .event-time { font-size: 13px; font-weight: 800; color: #9ca3af; }
+        .event-details { display: flex; flex-direction: column; gap: 4px; }
+        .event-name { font-size: 14px; font-weight: 800; color: white; }
+        .event-country { font-size: 12px; font-weight: 700; color: #6b7280; display: flex; align-items: center; gap: 6px; }
+        .event-country img { width: 16px; height: 12px; border-radius: 2px; }
+
+        .event-forecast { font-size: 13px; font-weight: 700; color: #9ca3af; text-align: center; }
+        .event-impact { display: flex; justify-content: center; }
+        .impact-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .impact-low { background: #22c55e; }
+        .impact-medium { background: #f59e0b; }
+        .impact-high { background: #ef4444; }
+
+        .no-events { padding: 60px 24px; text-align: center; color: #6b7280; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .event-item { grid-template-columns: 1fr; gap: 12px; }
+            .event-time { order: -1; }
+            .event-forecast, .event-impact { justify-content: flex-start; }
+            .calendar-header { flex-direction: column; align-items: flex-start; }
+        }
+
+        .signup-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
+        .signup-modal.active { display: flex; }
+        .signup-content { background: rgba(15, 15, 25, 0.98); border: 2px solid rgba(59, 130, 246, 0.5); border-radius: 24px; padding: 40px; max-width: 450px; width: 90%; box-shadow: 0 0 50px rgba(59, 130, 246, 0.3); position: relative; }
+        .signup-content h2 { font-weight: 900; font-size: 28px; margin-bottom: 8px; background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .signup-content p { color: #9ca3af; font-size: 14px; margin-bottom: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #e5e7eb; }
+        .form-group input { width: 100%; padding: 12px 16px; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-size: 15px; font-weight: 700; transition: all 0.3s ease; }
+        .form-group input:focus { outline: none; border-color: #3b82f6; background: rgba(255, 255, 255, 0.08); }
+        .signup-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border: none; border-radius: 12px; color: white; font-weight: 900; font-size: 16px; cursor: pointer; transition: all 0.3s ease; margin-top: 8px; }
+        .signup-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4); }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.1); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .close-btn:hover { background: rgba(255, 255, 255, 0.2); transform: rotate(90deg); }
+        .error-message { color: #ef4444; font-size: 12px; margin-top: 6px; font-weight: 700; display: none; }
+        .error-message.show { display: block; }
+        .toggle-link { color: #ffffff; font-size: 14px; font-weight: 700; text-align: center; margin-top: 16px; }
+        .toggle-link .sign-in-link, .toggle-link .sign-up-link { color: #3b82f6; cursor: pointer; font-weight: 700; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="logo-container cursor-pointer hover:opacity-90 transition-opacity" onclick="window.location.href='index.html'">
+                <div class="logo-circle">
+                    <img src="wabble.jpg" alt="WabbleNews Logo">
+                </div>
+                <span class="logo-text">Wabble<span class="blue">News</span></span>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="index.html" class="text-sm font-bold text-white" data-translate="home">Home</a>
+                <a href="contact.html" class="text-sm font-bold text-white" data-translate="contact">Contact</a>
+                <a href="social-media.html" class="text-sm font-bold text-white" data-translate="social">Social Media</a>
+                <a href="calendar.html" class="text-sm font-bold text-blue-400" data-translate="calendar">Calendar</a>
+                <a href="#" id="signUpBtn" onclick="openAuthModal('signup'); return false;" class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer" data-translate="signup">Sign Up/Sign In</a>
+                <div id="profileBtn" class="hidden cursor-pointer" onclick="openProfileModal()">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center border-2 border-blue-400 overflow-hidden">
+                        <i data-lucide="user" class="w-5 h-5 text-white"></i>
+                    </div>
+                </div>
+            </nav>
+
+            <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="settings-bar">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-end gap-4">
+            <div class="settings-dropdown" id="timezoneDropdown">
+                <button class="settings-btn" onclick="toggleDropdown('timezoneDropdown')">
+                    <i data-lucide="clock"></i>
+                    <span id="selectedTimezone">Auto</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                </button>
+                <div class="dropdown-menu" id="timezoneMenu">
+                    <div class="dropdown-item" data-tz="auto" onclick="setTimezone('auto', 'Auto')">Auto-detect</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT" onclick="setTimezone('Etc/GMT', 'UTC+0')">UTC+0</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-3" onclick="setTimezone('Etc/GMT-3', 'UTC+3')">UTC+3</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-8" onclick="setTimezone('Etc/GMT-8', 'UTC+8')">UTC+8</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT+5" onclick="setTimezone('Etc/GMT+5', 'UTC-5')">UTC-5</div>
+                </div>
+            </div>
+
+            <div class="settings-dropdown" id="languageDropdown">
+                <button class="settings-btn" onclick="toggleDropdown('languageDropdown')">
+                    <i data-lucide="globe"></i>
+                    <span id="selectedLanguage">English</span>
+                    <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                </button>
+                <div class="dropdown-menu" id="languageMenu">
+                    <div class="dropdown-item selected" data-lang="en" onclick="setLanguage('en')">English</div>
+                    <div class="dropdown-item" data-lang="tr" onclick="setLanguage('tr')">Türkçe</div>
+                    <div class="dropdown-item" data-lang="zh" onclick="setLanguage('zh')">中文</div>
+                    <div class="dropdown-item" data-lang="ja" onclick="setLanguage('ja')">日本語</div>
+                    <div class="dropdown-item" data-lang="ko" onclick="setLanguage('ko')">한국어</div>
+                    <div class="dropdown-item" data-lang="es" onclick="setLanguage('es')">Español</div>
+                    <div class="dropdown-item" data-lang="fr" onclick="setLanguage('fr')">Français</div>
+                    <div class="dropdown-item" data-lang="ru" onclick="setLanguage('ru')">Русский</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-8 w-full">
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-black mb-4 bg-gradient-to-r from-white via-blue-300 to-purple-300 bg-clip-text text-transparent" data-translate="calendarTitle">Economic Calendar</h1>
+            <p class="text-gray-400 text-lg font-bold" data-translate="calendarSub">Track important economic events and market-moving announcements</p>
+        </div>
+
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <h2 class="calendar-title" id="currentWeek">This Week</h2>
+                <div class="calendar-nav">
+                    <button class="nav-btn" onclick="changeWeek(-1)"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <button class="nav-btn active" onclick="goToToday()">Today</button>
+                    <button class="nav-btn" onclick="changeWeek(1)"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+
+            <div class="event-list" id="eventList">
+                <div class="event-day">
+                    <div class="day-header" id="day1Header">Loading...</div>
+                    <div class="event-item">
+                        <span class="event-time">08:30</span>
+                        <div class="event-details">
+                            <span class="event-name">US Unemployment Claims</span>
+                            <span class="event-country"><img src="https://flagcdn.com/w20/us.png" alt="US"> United States</span>
+                        </div>
+                        <span class="event-forecast">220K</span>
+                        <div class="event-impact"><span class="impact-dot impact-high"></span></div>
+                    </div>
+                    <div class="event-item">
+                        <span class="event-time">10:00</span>
+                        <div class="event-details">
+                            <span class="event-name">ECB Interest Rate Decision</span>
+                            <span class="event-country"><img src="https://flagcdn.com/w20/eu.png" alt="EU"> European Union</span>
+                        </div>
+                        <span class="event-forecast">4.25%</span>
+                        <div class="event-impact"><span class="impact-dot impact-high"></span></div>
+                    </div>
+                </div>
+
+                <div class="event-day">
+                    <div class="day-header" id="day2Header">Tomorrow</div>
+                    <div class="event-item">
+                        <span class="event-time">09:00</span>
+                        <div class="event-details">
+                            <span class="event-name">UK GDP (QoQ)</span>
+                            <span class="event-country"><img src="https://flagcdn.com/w20/gb.png" alt="UK"> United Kingdom</span>
+                        </div>
+                        <span class="event-forecast">0.2%</span>
+                        <div class="event-impact"><span class="impact-dot impact-medium"></span></div>
+                    </div>
+                    <div class="event-item">
+                        <span class="event-time">14:30</span>
+                        <div class="event-details">
+                            <span class="event-name">US Core PCE Price Index</span>
+                            <span class="event-country"><img src="https://flagcdn.com/w20/us.png" alt="US"> United States</span>
+                        </div>
+                        <span class="event-forecast">0.3%</span>
+                        <div class="event-impact"><span class="impact-dot impact-high"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm font-bold">
+            <p>&copy; 2024 WabbleNews. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        let currentTimezone = localStorage.getItem('wabblenews_timezone') || 'auto';
+        let currentLanguage = localStorage.getItem('wabblenews_language') || 'en';
+
+        const translations = {
+            en: { home: 'Home', contact: 'Contact', social: 'Social Media', calendar: 'Calendar', signup: 'Sign Up/Sign In', calendarTitle: 'Economic Calendar', calendarSub: 'Track important economic events and market-moving announcements' },
+            tr: { home: 'Anasayfa', contact: 'İletişim', social: 'Sosyal Medya', calendar: 'Takvim', signup: 'Kayıt/Giriş', calendarTitle: 'Ekonomik Takvim', calendarSub: 'Önemli ekonomik olayları ve piyasa hareketlerini takip edin' },
+            zh: { home: '首页', contact: '联系', social: '社交媒体', calendar: '日历', signup: '注册/登录', calendarTitle: '经济日历', calendarSub: '跟踪重要的经济事件和市场公告' },
+            ja: { home: 'ホーム', contact: 'お問い合わせ', social: 'ソーシャルメディア', calendar: 'カレンダー', signup: '登録/ログイン', calendarTitle: '経済カレンダー', calendarSub: '重要な経済イベントと市場動向を追跡' },
+            ko: { home: '홈', contact: '연락처', social: '소셜 미디어', calendar: '캘린더', signup: '가입/로그인', calendarTitle: '경제 캘린더', calendarSub: '중요한 경제 이벤트 및 시장 발표 추적' },
+            es: { home: 'Inicio', contact: 'Contacto', social: 'Redes Sociales', calendar: 'Calendario', signup: 'Registrarse', calendarTitle: 'Calendario Económico', calendarSub: 'Seguimiento de eventos económicos importantes' },
+            fr: { home: 'Accueil', contact: 'Contact', social: 'Réseaux Sociaux', calendar: 'Calendrier', signup: 'Inscription', calendarTitle: 'Calendrier Économique', calendarSub: 'Suivez les événements économiques importants' },
+            ru: { home: 'Главная', contact: 'Контакты', social: 'Соцсети', calendar: 'Календарь', signup: 'Регистрация', calendarTitle: 'Экономический Календарь', calendarSub: 'Отслеживайте важные экономические события' }
+        };
+
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const menu = dropdown.querySelector('.dropdown-menu');
+            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                if (m !== menu) m.classList.remove('active');
+            });
+            menu.classList.toggle('active');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.settings-dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+            }
+        });
+
+        function setTimezone(tz, display) {
+            currentTimezone = tz;
+            localStorage.setItem('wabblenews_timezone', tz);
+            localStorage.setItem('wabblenews_timezone_display', display || 'Auto');
+            document.getElementById('selectedTimezone').textContent = display || 'Auto';
+            document.querySelectorAll('#timezoneMenu .dropdown-item').forEach(item => {
+                item.classList.toggle('selected', item.dataset.tz === tz);
+            });
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+            updateEventTimes();
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('wabblenews_language', lang);
+            const langNames = { en: 'English', tr: 'Türkçe', zh: '中文', ja: '日本語', ko: '한국어', es: 'Español', fr: 'Français', ru: 'Русский' };
+            document.getElementById('selectedLanguage').textContent = langNames[lang] || 'English';
+            document.querySelectorAll('#languageMenu .dropdown-item').forEach(item => {
+                item.classList.toggle('selected', item.dataset.lang === lang);
+            });
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+            applyTranslations(lang);
+        }
+
+        function applyTranslations(lang) {
+            const t = translations[lang] || translations.en;
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.dataset.translate;
+                if (t[key]) el.textContent = t[key];
+            });
+        }
+
+        function getTimezone() {
+            if (currentTimezone === 'auto') {
+                return Intl.DateTimeFormat().resolvedOptions().timeZone;
+            }
+            return currentTimezone;
+        }
+
+        function updateEventTimes() {
+            const tz = getTimezone();
+            const now = new Date();
+            const options = { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz };
+            document.getElementById('day1Header').textContent = now.toLocaleDateString('en-US', options);
+            
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('day2Header').textContent = tomorrow.toLocaleDateString('en-US', options);
+        }
+
+        function changeWeek(delta) {
+            console.log('Change week by', delta);
+        }
+
+        function goToToday() {
+            updateEventTimes();
+        }
+
+        function toggleMenu() {
+            console.log('Menu toggle');
+        }
+
+        function initSettings() {
+            const savedTz = localStorage.getItem('wabblenews_timezone');
+            const savedTzDisplay = localStorage.getItem('wabblenews_timezone_display');
+            const savedLang = localStorage.getItem('wabblenews_language');
+            
+            if (savedTz && savedTzDisplay) {
+                document.getElementById('selectedTimezone').textContent = savedTzDisplay;
+                document.querySelectorAll('#timezoneMenu .dropdown-item').forEach(item => {
+                    item.classList.toggle('selected', item.dataset.tz === savedTz);
+                });
+            }
+            
+            if (savedLang) {
+                setLanguage(savedLang);
+            }
+            
+            updateEventTimes();
+        }
+
+        function checkLoginStatus() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (currentUser) {
+                document.getElementById('signUpBtn').classList.add('hidden');
+                document.getElementById('profileBtn').classList.remove('hidden');
+            }
+        }
+
+        function openAuthModal() {
+            window.location.href = 'index.html';
+        }
+
+        initSettings();
+        checkLoginStatus();
+    </script>
+</body>
+</html>

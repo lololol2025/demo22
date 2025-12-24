@@ -444,17 +444,28 @@
         .signup-content::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 200%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, transparent);
-            animation: borderGlow 3s linear infinite;
+            inset: -2px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: borderGradient 4s ease infinite;
+            opacity: 0.7;
         }
 
-        @keyframes borderGlow {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        .signup-content::after {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: 27px;
+            background: linear-gradient(145deg, rgba(20, 20, 35, 0.99), rgba(10, 10, 20, 0.99));
+            z-index: -1;
+        }
+
+        @keyframes borderGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .signup-content h2 {
@@ -1142,6 +1153,88 @@
             .media-grid.grid-4 .media-item { height: 100px; }
             .settings-btn { padding: 5px 10px; font-size: 11px; }
         }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 10px;
+        }
+
+        .strength-bars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .strength-bar .fill {
+            height: 100%;
+            width: 0;
+            border-radius: 2px;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .strength-bar.active .fill { width: 100%; }
+
+        .strength-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .strength-weak .fill { background: #ef4444; }
+        .strength-weak .strength-label { color: #ef4444; }
+
+        .strength-normal .fill { background: #f59e0b; }
+        .strength-normal .strength-label { color: #f59e0b; }
+
+        .strength-strong .fill { background: #22c55e; }
+        .strength-strong .strength-label { color: #22c55e; }
+
+        .strength-verystrong .fill { background: #3b82f6; }
+        .strength-verystrong .strength-label { color: #3b82f6; }
+
+        .strength-incredible .fill { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+        .strength-incredible .strength-label { 
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Comment Button */
+        .comment-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .comment-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            transform: translateY(-1px);
+        }
+
+        .comment-btn i { width: 14px; height: 14px; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -1159,11 +1252,12 @@
 
             <!-- Navigation -->
             <nav class="hidden lg:flex items-center gap-6">
-                <a href="index.html" class="text-sm font-bold text-white">Home</a>
-                <a href="contact.html" class="text-sm font-bold text-white">Contact</a>
-                <a href="social-media.html" class="text-sm font-bold text-white">Social Media</a>
+                <a href="index.html" class="text-sm font-bold text-white" data-translate="home">Home</a>
+                <a href="contact.html" class="text-sm font-bold text-white" data-translate="contact">Contact</a>
+                <a href="social-media.html" class="text-sm font-bold text-white" data-translate="social">Social Media</a>
+                <a href="calendar.html" class="text-sm font-bold text-white" data-translate="calendar">Calendar</a>
                 <!-- Sign Up/Sign In Button (hidden when logged in) -->
-                <a href="#" id="signUpBtn" onclick="openAuthModal('signup'); return false;" class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer">Sign Up/Sign In</a>
+                <a href="#" id="signUpBtn" onclick="openAuthModal('signup'); return false;" class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer" data-translate="signup">Sign Up/Sign In</a>
                 <!-- Profile Button (hidden when logged out) -->
                 <div id="profileBtn" class="hidden cursor-pointer" onclick="openProfileModal()">
                     <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center border-2 border-blue-400 overflow-hidden" id="headerProfilePicture">
@@ -1191,20 +1285,20 @@
                     <i data-lucide="chevron-down" class="w-3 h-3"></i>
                 </button>
                 <div class="dropdown-menu" id="timezoneMenu">
-                    <div class="dropdown-item" data-tz="auto" onclick="setTimezone('auto')">Auto-detect</div>
-                    <div class="dropdown-item" data-tz="UTC" onclick="setTimezone('UTC')">UTC</div>
-                    <div class="dropdown-item" data-tz="Europe/Istanbul" onclick="setTimezone('Europe/Istanbul')">UTC+3 Turkey</div>
-                    <div class="dropdown-item" data-tz="Europe/London" onclick="setTimezone('Europe/London')">UK London</div>
-                    <div class="dropdown-item" data-tz="Europe/Paris" onclick="setTimezone('Europe/Paris')">Europe Paris</div>
-                    <div class="dropdown-item" data-tz="Europe/Berlin" onclick="setTimezone('Europe/Berlin')">Europe Berlin</div>
-                    <div class="dropdown-item" data-tz="Europe/Moscow" onclick="setTimezone('Europe/Moscow')">Russia Moscow</div>
-                    <div class="dropdown-item" data-tz="America/New_York" onclick="setTimezone('America/New_York')">US Eastern</div>
-                    <div class="dropdown-item" data-tz="America/Los_Angeles" onclick="setTimezone('America/Los_Angeles')">US Pacific</div>
-                    <div class="dropdown-item" data-tz="Asia/Tokyo" onclick="setTimezone('Asia/Tokyo')">Japan Tokyo</div>
-                    <div class="dropdown-item" data-tz="Asia/Shanghai" onclick="setTimezone('Asia/Shanghai')">China Shanghai</div>
-                    <div class="dropdown-item" data-tz="Asia/Dubai" onclick="setTimezone('Asia/Dubai')">UAE Dubai</div>
-                    <div class="dropdown-item" data-tz="Asia/Singapore" onclick="setTimezone('Asia/Singapore')">Singapore</div>
-                    <div class="dropdown-item" data-tz="Australia/Sydney" onclick="setTimezone('Australia/Sydney')">Australia Sydney</div>
+                    <div class="dropdown-item" data-tz="auto" data-offset="auto" onclick="setTimezone('auto', 'Auto')">Auto-detect</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT" data-offset="0" onclick="setTimezone('Etc/GMT', 'UTC+0')">UTC+0 (UK, Portugal, Iceland)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-1" data-offset="1" onclick="setTimezone('Etc/GMT-1', 'UTC+1')">UTC+1 (Germany, France, Spain)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-2" data-offset="2" onclick="setTimezone('Etc/GMT-2', 'UTC+2')">UTC+2 (Greece, Israel, Egypt)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-3" data-offset="3" onclick="setTimezone('Etc/GMT-3', 'UTC+3')">UTC+3 (Turkey, Saudi Arabia, Russia)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-4" data-offset="4" onclick="setTimezone('Etc/GMT-4', 'UTC+4')">UTC+4 (UAE, Azerbaijan, Oman)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-5" data-offset="5" onclick="setTimezone('Etc/GMT-5', 'UTC+5')">UTC+5 (Pakistan, Uzbekistan)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-6" data-offset="6" onclick="setTimezone('Etc/GMT-6', 'UTC+6')">UTC+6 (Bangladesh, Kazakhstan)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-7" data-offset="7" onclick="setTimezone('Etc/GMT-7', 'UTC+7')">UTC+7 (Thailand, Vietnam, Indonesia)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-8" data-offset="8" onclick="setTimezone('Etc/GMT-8', 'UTC+8')">UTC+8 (China, Singapore, Malaysia)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-9" data-offset="9" onclick="setTimezone('Etc/GMT-9', 'UTC+9')">UTC+9 (Japan, South Korea)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT-10" data-offset="10" onclick="setTimezone('Etc/GMT-10', 'UTC+10')">UTC+10 (Australia East)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT+5" data-offset="-5" onclick="setTimezone('Etc/GMT+5', 'UTC-5')">UTC-5 (US Eastern, Colombia)</div>
+                    <div class="dropdown-item" data-tz="Etc/GMT+8" data-offset="-8" onclick="setTimezone('Etc/GMT+8', 'UTC-8')">UTC-8 (US Pacific)</div>
                 </div>
             </div>
 
@@ -1245,8 +1339,8 @@
     <main class="flex-grow max-w-7xl mx-auto px-6 py-8 w-full">
         <!-- Latest Crypto News Section -->
         <div class="news-section mb-10">
-            <h1 class="text-white">Latest Crypto News</h1>
-            <p>The fastest crypto and market news shared almost instantly.</p>
+            <h1 class="text-white" data-translate="latest">Latest Crypto News</h1>
+            <p data-translate="fastest">The fastest crypto and market news shared almost instantly.</p>
         </div>
 
         <!-- Telegram News Feed -->
@@ -1312,7 +1406,18 @@
                         autocomplete="new-password"
                         placeholder="Create a secure password"
                         minlength="8"
+                        oninput="checkPasswordStrength(this.value)"
                     >
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bars">
+                            <div class="strength-bar" id="bar1"><div class="fill"></div></div>
+                            <div class="strength-bar" id="bar2"><div class="fill"></div></div>
+                            <div class="strength-bar" id="bar3"><div class="fill"></div></div>
+                            <div class="strength-bar" id="bar4"><div class="fill"></div></div>
+                            <div class="strength-bar" id="bar5"><div class="fill"></div></div>
+                        </div>
+                        <span class="strength-label" id="strengthLabel"></span>
+                    </div>
                     <div class="error-message" id="passwordError"></div>
         </div>
 
@@ -2861,7 +2966,7 @@
         let currentLanguage = localStorage.getItem('wabblenews_language') || 'auto';
 
         const translations = {
-            en: { home: 'Home', contact: 'Contact', social: 'Social Media', signup: 'Sign Up/Sign In', latest: 'Latest Crypto News', fastest: 'The fastest crypto and market news shared almost instantly.', loading: 'Loading latest news from Telegram...', noposts: 'No posts available. Check back soon!', error: 'Unable to load posts. Please refresh the page.', joinTitle: 'Join WabbleNews', joinSub: 'Create your account to stay updated with the latest crypto news', signIn: 'Sign In', welcomeBack: 'Welcome Back', signInSub: 'Sign in to your account', username: 'Username', password: 'Password', confirmPassword: 'Confirm Password', joinNow: 'Join Now', haveAccount: 'Have an account?', noAccount: "Don't have an account?", google: 'Continue with Google', or: 'or' },
+            en: { home: 'Home', contact: 'Contact', social: 'Social Media', calendar: 'Calendar', signup: 'Sign Up/Sign In', latest: 'Latest Crypto News', fastest: 'The fastest crypto and market news shared almost instantly.', loading: 'Loading latest news from Telegram...', noposts: 'No posts available. Check back soon!', error: 'Unable to load posts. Please refresh the page.', joinTitle: 'Join WabbleNews', joinSub: 'Create your account to stay updated with the latest crypto news', signIn: 'Sign In', welcomeBack: 'Welcome Back', signInSub: 'Sign in to your account', username: 'Username', password: 'Password', confirmPassword: 'Confirm Password', joinNow: 'Join Now', haveAccount: 'Have an account?', noAccount: "Don't have an account?", google: 'Continue with Google', or: 'or', comment: 'Comment' },
             tr: { home: 'Anasayfa', contact: 'İletişim', social: 'Sosyal Medya', signup: 'Kayıt/Giriş', latest: 'Son Kripto Haberleri', fastest: 'En hızlı kripto ve piyasa haberleri anında paylaşılıyor.', loading: 'Telegram\'dan haberler yükleniyor...', noposts: 'Henüz gönderi yok. Daha sonra tekrar kontrol edin!', error: 'Gönderiler yüklenemedi. Lütfen sayfayı yenileyin.', joinTitle: 'WabbleNews\'e Katıl', joinSub: 'En son kripto haberlerinden haberdar olmak için hesap oluşturun', signIn: 'Giriş Yap', welcomeBack: 'Tekrar Hoşgeldiniz', signInSub: 'Hesabınıza giriş yapın', username: 'Kullanıcı Adı', password: 'Şifre', confirmPassword: 'Şifre Tekrar', joinNow: 'Şimdi Katıl', haveAccount: 'Hesabınız var mı?', noAccount: 'Hesabınız yok mu?', google: 'Google ile Devam Et', or: 'veya' },
             zh: { home: '首页', contact: '联系', social: '社交媒体', signup: '注册/登录', latest: '最新加密新闻', fastest: '最快的加密货币和市场新闻即时分享。', loading: '正在从Telegram加载最新新闻...', noposts: '暂无帖子。请稍后再来！', error: '无法加载帖子。请刷新页面。', joinTitle: '加入WabbleNews', joinSub: '创建账户以获取最新加密新闻', signIn: '登录', welcomeBack: '欢迎回来', signInSub: '登录您的账户', username: '用户名', password: '密码', confirmPassword: '确认密码', joinNow: '立即加入', haveAccount: '已有账户？', noAccount: '没有账户？', google: '使用Google继续', or: '或' },
             ja: { home: 'ホーム', contact: 'お問い合わせ', social: 'ソーシャルメディア', signup: '登録/ログイン', latest: '最新の暗号ニュース', fastest: '最速の暗号通貨と市場ニュースを即座に共有。', loading: 'Telegramから最新ニュースを読み込み中...', noposts: '投稿がありません。後でもう一度確認してください！', error: '投稿を読み込めませんでした。ページを更新してください。', joinTitle: 'WabbleNewsに参加', joinSub: '最新の暗号ニュースを入手するためにアカウントを作成', signIn: 'ログイン', welcomeBack: 'おかえりなさい', signInSub: 'アカウントにログイン', username: 'ユーザー名', password: 'パスワード', confirmPassword: 'パスワード確認', joinNow: '今すぐ参加', haveAccount: 'アカウントをお持ちですか？', noAccount: 'アカウントをお持ちでないですか？', google: 'Googleで続行', or: 'または' },
@@ -2887,11 +2992,11 @@
             }
         });
 
-        function setTimezone(tz) {
+        function setTimezone(tz, display) {
             currentTimezone = tz;
             localStorage.setItem('wabblenews_timezone', tz);
-            const display = tz === 'auto' ? 'Auto' : tz.split('/').pop().replace('_', ' ');
-            document.getElementById('selectedTimezone').textContent = display;
+            localStorage.setItem('wabblenews_timezone_display', display || 'Auto');
+            document.getElementById('selectedTimezone').textContent = display || 'Auto';
             document.querySelectorAll('#timezoneMenu .dropdown-item').forEach(item => {
                 item.classList.toggle('selected', item.dataset.tz === tz);
             });
@@ -2978,6 +3083,7 @@
             html += '<span class="news-card-time">' + dt.time + '</span>';
             html += '</div>';
             html += '<p class="news-card-title">' + post.text + '</p>';
+            html += '<button class="comment-btn" onclick="handleComment(event)"><i data-lucide="message-circle"></i><span data-translate="comment">Comment</span></button>';
             html += '</div>';
             card.innerHTML = html;
             card.addEventListener('mouseenter', () => {
@@ -2989,6 +3095,47 @@
                 if (video) { video.pause(); video.currentTime = 0; }
             });
             return card;
+        }
+
+        function handleComment(e) {
+            e.stopPropagation();
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) {
+                openAuthModal('signup');
+            } else {
+                // User is logged in - could open comment modal here
+                alert('Comment feature coming soon!');
+            }
+        }
+
+        function checkPasswordStrength(password) {
+            const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4'), document.getElementById('bar5')];
+            const label = document.getElementById('strengthLabel');
+            const container = document.getElementById('passwordStrength');
+            
+            if (!password) {
+                bars.forEach(b => b.classList.remove('active'));
+                label.textContent = '';
+                container.className = 'password-strength';
+                return;
+            }
+            
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^a-zA-Z0-9]/.test(password)) score++;
+            
+            const levels = ['', 'weak', 'normal', 'strong', 'verystrong', 'incredible'];
+            const labels = ['', 'Weak', 'Normal', 'Strong', 'Very Strong', 'Incredible'];
+            
+            bars.forEach((bar, i) => {
+                bar.classList.toggle('active', i < score);
+            });
+            
+            container.className = 'password-strength strength-' + levels[score];
+            label.textContent = labels[score];
         }
 
         async function getFileUrl(fileId) {
