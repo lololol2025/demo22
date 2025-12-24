@@ -732,24 +732,55 @@
             margin-bottom: 24px;
         }
 
+        .profile-picture-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin-bottom: 16px;
+        }
+
         .profile-picture-preview {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background: rgba(59, 130, 246, 0.2);
-            border: 3px solid rgba(59, 130, 246, 0.5);
+            border: 4px solid rgba(59, 130, 246, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .profile-picture-preview::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #3b82f6);
+            background-size: 200% 200%;
+            animation: gradient-rotate 3s ease infinite;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        @keyframes gradient-rotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .profile-picture-preview:hover::before {
+            opacity: 1;
         }
 
         .profile-picture-preview:hover {
-            border-color: #3b82f6;
+            border-color: transparent;
             transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
         }
 
         .profile-picture-preview img {
@@ -763,18 +794,50 @@
             color: #60a5fa;
         }
 
+        .profile-picture-edit-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: 3px solid #020204;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+            z-index: 10;
+        }
+
+        .profile-picture-edit-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.7);
+        }
+
+        .profile-picture-edit-btn i {
+            color: white;
+        }
+
         .file-input-label {
             color: #60a5fa;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            text-decoration: underline;
-            margin-top: 8px;
-            display: block;
+            padding: 8px 20px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .file-input-label:hover {
-            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
         }
 
         #profilePictureInput {
@@ -802,6 +865,72 @@
         .logout-btn:hover {
             background: rgba(239, 68, 68, 0.3);
             border-color: #ef4444;
+        }
+
+        /* News Card Styles */
+        .news-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            height: 420px;
+        }
+
+        .news-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+        }
+
+        .news-card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .news-card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .news-card-time {
+            color: #60a5fa;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .news-card-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 1.4;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .news-card-no-image {
+            height: 100%;
+        }
+
+        .news-card-no-image .news-card-content {
+            height: 100%;
+            justify-content: center;
+        }
+
+        .news-card-no-image .news-card-title {
+            font-size: 18px;
+            -webkit-line-clamp: 8;
         }
     </style>
 </head>
@@ -860,50 +989,15 @@
             <p>The fastest crypto and market news shared almost instantly.</p>
         </div>
 
-        <!-- News Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Main Story -->
-            <article class="lg:col-span-8 relative aspect-[16/9] lg:h-[550px] rounded-3xl overflow-hidden group cursor-pointer border border-white/10 shadow-2xl">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                    <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1600&q=80" 
-                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Bitcoin">
-                <div class="absolute bottom-0 left-0 z-20 p-8 sm:p-12 w-full">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="bg-blue-600 text-white text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded-lg">Market Update</span>
-                        <span class="text-white/80 text-xs font-bold bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg">2h ago</span>
-                    </div>
-                    <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
-                        Bitcoin Surges Past $92,000 as Institutional Demand Explodes
-                    </h2>
-                    <p class="text-gray-200 text-base sm:text-lg font-medium max-w-2xl">
-                        Global ETF inflows have reached a 6-month high, pushing the crypto market cap closer to the $3.5 Trillion milestone.
-                    </p>
+        <!-- Telegram News Feed -->
+        <div id="telegram-feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full flex items-center justify-center py-12">
+                <div class="flex items-center gap-3 text-blue-400">
+                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+                    <span class="font-bold">Loading latest news from Telegram...</span>
                 </div>
-            </article>
-
-            <!-- Side Stories -->
-            <div class="lg:col-span-4 flex flex-col gap-6">
-                <article class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition cursor-pointer group">
-                    <div class="h-40 overflow-hidden rounded-xl mb-4 relative">
-                        <img src="https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?auto=format&fit=crop&w=800&q=80" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="ETH">
-                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded uppercase">Altcoins</div>
-                    </div>
-                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition">Ethereum L2 Volume Flips Mainnet</h3>
-                    <p class="text-xs text-gray-400 font-medium">Arbitrum and Optimism now process more daily transactions than Ethereum L1 due to lower fees.</p>
-                </article>
-
-                <article class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 transition cursor-pointer group">
-                    <div class="h-40 overflow-hidden rounded-xl mb-4 relative">
-                        <img src="https://images.unsplash.com/photo-1622630998477-20aa696fab05?auto=format&fit=crop&w=800&q=80" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="SOL">
-                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded uppercase">Ecosystem</div>
-                    </div>
-                    <h3 class="text-xl font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition">Solana DEX Volume Hits ATH</h3>
-                    <p class="text-xs text-gray-400 font-medium">A surge in on-chain trading has propelled Solana to the #1 spot for daily volume.</p>
-                </article>
             </div>
-                </div>
+        </div>
     </main>
 
     <!-- Auth Modal (Sign Up/Sign In) -->
@@ -1032,14 +1126,19 @@
             
             <form id="profileForm" onsubmit="handleProfileUpdate(event)">
                 <div class="profile-picture-container">
-                    <div class="profile-picture-preview" onclick="document.getElementById('profilePictureInput').click()">
-                        <img id="profilePicturePreview" src="" alt="Profile" style="display: none;">
-                        <i data-lucide="user" id="profilePictureIcon"></i>
+                    <div class="profile-picture-wrapper">
+                        <div class="profile-picture-preview" onclick="document.getElementById('profilePictureInput').click()">
+                            <img id="profilePicturePreview" src="" alt="Profile" style="display: none;">
+                            <i data-lucide="user" id="profilePictureIcon"></i>
+                        </div>
+                        <div class="profile-picture-edit-btn" onclick="document.getElementById('profilePictureInput').click()">
+                            <i data-lucide="camera" class="w-5 h-5"></i>
+                        </div>
                     </div>
-                    <label for="profilePictureInput" class="file-input-label">Change Profile Picture</label>
+                    <label for="profilePictureInput" class="file-input-label">Change Photo</label>
                     <input type="file" id="profilePictureInput" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="handleProfilePictureChange(event)">
                     <div class="error-message" id="profilePictureError"></div>
-                    </div>
+                </div>
 
                 <div class="form-group">
                     <label for="profileUsername">Username</label>
@@ -2487,14 +2586,140 @@
             lucide.createIcons();
         }
         
-        // Validate session on page load and periodically
         setInterval(() => {
             if (localStorage.getItem('wabblenews_current_user')) {
                 if (!validateSession()) {
                     checkLoginStatus();
                 }
             }
-        }, 60000); // Check every minute
+        }, 60000);
+
+        const TELEGRAM_BOT_TOKEN = '8408761477:AAFwnjuRxUxNkmj5xVemHzirdYxtbmtiNRc';
+        const TELEGRAM_CHANNEL_ID = '-1002709853773';
+        
+        function removeEmojisExceptFlags(text) {
+            return text.replace(/(?![\u{1F1E0}-\u{1F1FF}])[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FA6F}]|[\u{1FA70}-\u{1FAFF}]|[\u{231A}-\u{231B}]|[\u{23E9}-\u{23F3}]|[\u{23F8}-\u{23FA}]|[\u{25AA}-\u{25AB}]|[\u{25B6}]|[\u{25C0}]|[\u{25FB}-\u{25FE}]|[\u{2614}-\u{2615}]|[\u{2648}-\u{2653}]|[\u{267F}]|[\u{2693}]|[\u{26A1}]|[\u{26AA}-\u{26AB}]|[\u{26BD}-\u{26BE}]|[\u{26C4}-\u{26C5}]|[\u{26CE}]|[\u{26D4}]|[\u{26EA}]|[\u{26F2}-\u{26F3}]|[\u{26F5}]|[\u{26FA}]|[\u{26FD}]|[\u{2702}]|[\u{2705}]|[\u{2708}-\u{270D}]|[\u{270F}]|[\u{2712}]|[\u{2714}]|[\u{2716}]|[\u{271D}]|[\u{2721}]|[\u{2728}]|[\u{2733}-\u{2734}]|[\u{2744}]|[\u{2747}]|[\u{274C}]|[\u{274E}]|[\u{2753}-\u{2755}]|[\u{2757}]|[\u{2763}-\u{2764}]|[\u{2795}-\u{2797}]|[\u{27A1}]|[\u{27B0}]|[\u{27BF}]|[\u{2934}-\u{2935}]|[\u{2B05}-\u{2B07}]|[\u{2B1B}-\u{2B1C}]|[\u{2B50}]|[\u{2B55}]|[\u{3030}]|[\u{303D}]|[\u{3297}]|[\u{3299}]/gu, '');
+        }
+
+        function cleanTelegramText(text) {
+            if (!text) return '';
+            let cleaned = text;
+            cleaned = cleaned.replace(/@cryptowabble/gi, '');
+            cleaned = cleaned.replace(/@misuterminal/gi, '');
+            cleaned = removeEmojisExceptFlags(cleaned);
+            cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+            cleaned = cleaned.trim();
+            return cleaned;
+        }
+
+        function formatTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp * 1000;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return minutes + 'm ago';
+            if (hours < 24) return hours + 'h ago';
+            return days + 'd ago';
+        }
+
+        function createNewsCard(post) {
+            const card = document.createElement('div');
+            card.className = 'news-card' + (post.photo ? '' : ' news-card-no-image');
+            
+            let html = '';
+            if (post.photo) {
+                html += '<img src="' + post.photo + '" alt="News" class="news-card-image" onerror="this.style.display=\'none\'">';
+            }
+            html += '<div class="news-card-content">';
+            html += '<span class="news-card-time">' + formatTimeAgo(post.date) + '</span>';
+            html += '<p class="news-card-title">' + post.text + '</p>';
+            html += '</div>';
+            
+            card.innerHTML = html;
+            return card;
+        }
+
+        async function fetchTelegramPosts() {
+            const feedContainer = document.getElementById('telegram-feed');
+            if (!feedContainer) return;
+
+            try {
+                const response = await fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/getUpdates?allowed_updates=["channel_post"]&limit=100');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch from Telegram');
+                }
+                
+                const data = await response.json();
+                
+                if (!data.ok) {
+                    const historyResponse = await fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/getChat?chat_id=' + TELEGRAM_CHANNEL_ID);
+                    throw new Error('Telegram API error');
+                }
+                
+                const channelPosts = [];
+                
+                if (data.result && data.result.length > 0) {
+                    for (const update of data.result) {
+                        const post = update.channel_post || update.message;
+                        if (!post) continue;
+                        
+                        const text = post.text || post.caption || '';
+                        
+                        if (text.toLowerCase().includes('@misuterminal')) {
+                            continue;
+                        }
+                        
+                        const cleanedText = cleanTelegramText(text);
+                        if (!cleanedText) continue;
+                        
+                        let photoUrl = null;
+                        if (post.photo && post.photo.length > 0) {
+                            const largestPhoto = post.photo[post.photo.length - 1];
+                            try {
+                                const fileResponse = await fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/getFile?file_id=' + largestPhoto.file_id);
+                                const fileData = await fileResponse.json();
+                                if (fileData.ok && fileData.result.file_path) {
+                                    photoUrl = 'https://api.telegram.org/file/bot' + TELEGRAM_BOT_TOKEN + '/' + fileData.result.file_path;
+                                }
+                            } catch (e) {
+                                console.log('Failed to get photo');
+                            }
+                        }
+                        
+                        channelPosts.push({
+                            id: post.message_id,
+                            text: cleanedText,
+                            date: post.date,
+                            photo: photoUrl
+                        });
+                    }
+                }
+                
+                channelPosts.sort((a, b) => b.date - a.date);
+                
+                if (channelPosts.length === 0) {
+                    feedContainer.innerHTML = '<div class="col-span-full text-center py-12"><p class="text-gray-400 font-bold">No posts available. Check back soon!</p></div>';
+                    return;
+                }
+                
+                feedContainer.innerHTML = '';
+                channelPosts.slice(0, 12).forEach(post => {
+                    feedContainer.appendChild(createNewsCard(post));
+                });
+                
+                lucide.createIcons();
+                
+            } catch (error) {
+                console.error('Error fetching Telegram posts:', error);
+                feedContainer.innerHTML = '<div class="col-span-full text-center py-12"><p class="text-gray-400 font-bold">Unable to load posts. Please refresh the page.</p></div>';
+            }
+        }
+
+        fetchTelegramPosts();
+        setInterval(fetchTelegramPosts, 60000);
     </script>
 </body>
 </html>
