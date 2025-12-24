@@ -705,6 +705,266 @@
         .business-card:hover .email-address {
             color: #c4b5fd;
         }
+
+        /* Contact Step System */
+        .contact-step {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+
+        .contact-step.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .category-card:hover::before {
+            left: 100%;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.8);
+            box-shadow: 0 25px 60px rgba(59, 130, 246, 0.4);
+        }
+
+        .category-card:active {
+            transform: translateY(-4px) scale(0.98);
+        }
+
+        .category-card.business {
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .category-card.business:hover {
+            border-color: rgba(139, 92, 246, 0.8);
+            box-shadow: 0 25px 60px rgba(139, 92, 246, 0.4);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .category-card.business .category-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .category-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .category-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .category-email {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .category-card.business .category-email {
+            color: #a78bfa;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(-4px);
+        }
+
+        /* Selected Badge */
+        .selected-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            color: #60a5fa;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .selected-badge.business {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            color: #a78bfa;
+        }
+
+        /* Business Fields */
+        .business-fields {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+
+        .business-fields.active {
+            display: block;
+        }
+
+        .optional {
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        /* Social Links Container */
+        .social-links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .social-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-link-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .social-link-item.selected {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        .social-logo {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+        }
+
+        .social-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-input-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        .social-input-row .social-logo {
+            width: 24px;
+            height: 24px;
+        }
+
+        .social-input-row input {
+            flex: 1;
+        }
+
+        .social-input-row .remove-btn {
+            padding: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-input-row .remove-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .category-card { padding: 24px; }
+            .category-icon { width: 60px; height: 60px; }
+            .category-title { font-size: 18px; }
+            .social-links-container { gap: 8px; }
+            .social-link-item { padding: 8px 12px; font-size: 12px; }
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -753,84 +1013,102 @@
             </p>
         </div>
 
-        <!-- Email Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            <!-- Contact Email Card -->
-            <div class="email-card contact-card" onclick="window.location.href='mailto:contact@wabblenews.com'">
-                <div class="email-icon">
-                    <i data-lucide="mail" class="w-10 h-10 text-white"></i>
+        <!-- Step 1: Category Selection -->
+        <div id="step1" class="contact-step active">
+            <h2 class="text-2xl font-black text-white text-center mb-8">How would you like to contact us?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="category-card" onclick="selectCategory('general')">
+                    <div class="category-icon">
+                        <i data-lucide="mail" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="category-title">General Inquiries</h3>
+                    <p class="category-desc">Questions, feedback, support requests</p>
+                    <span class="category-email">contact@wabblenews.com</span>
                 </div>
-                <h3 class="email-title">General Inquiries</h3>
-                <p class="email-description">Questions, feedback, or support requests</p>
-                <span class="email-address">contact@wabblenews.com</span>
-            </div>
-
-            <!-- Business Email Card -->
-            <div class="email-card business-card" onclick="window.location.href='mailto:business@wabblenews.com'">
-                <div class="email-icon business-icon">
-                    <i data-lucide="briefcase" class="w-10 h-10 text-white"></i>
+                <div class="category-card business" onclick="selectCategory('business')">
+                    <div class="category-icon">
+                        <i data-lucide="briefcase" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="category-title">Business Inquiries</h3>
+                    <p class="category-desc">Partnerships, sponsorships, collaborations</p>
+                    <span class="category-email">business@wabblenews.com</span>
                 </div>
-                <h3 class="email-title">Business Inquiries</h3>
-                <p class="email-description">Partnerships, sponsorships, and collaborations</p>
-                <span class="email-address">business@wabblenews.com</span>
             </div>
         </div>
 
-        <div class="contact-form">
-            <form id="contactForm" onsubmit="handleContactSubmit(event)">
-                <div class="form-group">
-                    <label for="name" class="form-label">Name</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        name="name" 
-                        class="form-input" 
-                        placeholder="Your full name"
-                        required
-                    >
-                </div>
+        <!-- Step 2: Contact Form -->
+        <div id="step2" class="contact-step">
+            <button class="back-btn" onclick="goBack()">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Back</span>
+            </button>
+            <div id="selectedCategoryBadge" class="selected-badge"></div>
+            
+            <div class="contact-form">
+                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="your.email@example.com" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        class="form-input" 
-                        placeholder="your.email@example.com"
-                        required
-                    >
-                </div>
+                    <!-- Business Fields (shown only for business category) -->
+                    <div id="businessFields" class="business-fields">
+                        <div class="form-group">
+                            <label for="company" class="form-label">Company Name <span class="optional">(optional)</span></label>
+                            <input type="text" id="company" name="company" class="form-input" placeholder="Your company name">
+                        </div>
+                        <div class="form-group">
+                            <label for="website" class="form-label">Website <span class="optional">(optional)</span></label>
+                            <input type="url" id="website" name="website" class="form-input" placeholder="https://yourwebsite.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Social Media <span class="optional">(optional)</span></label>
+                            <div class="social-links-container">
+                                <div class="social-link-item" onclick="toggleSocialInput('youtube')">
+                                    <img src="https://www.youtube.com/favicon.ico" alt="YouTube" class="social-logo">
+                                    <span>YouTube</span>
+                                </div>
+                                <div class="social-link-item" onclick="toggleSocialInput('twitter')">
+                                    <svg class="social-logo" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                    <span>X (Twitter)</span>
+                                </div>
+                                <div class="social-link-item" onclick="toggleSocialInput('instagram')">
+                                    <img src="https://www.instagram.com/favicon.ico" alt="Instagram" class="social-logo">
+                                    <span>Instagram</span>
+                                </div>
+                                <div class="social-link-item" onclick="toggleSocialInput('telegram')">
+                                    <svg class="social-logo" viewBox="0 0 24 24" fill="#0088cc"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                                    <span>Telegram</span>
+                                </div>
+                                <div class="social-link-item" onclick="toggleSocialInput('linkedin')">
+                                    <img src="https://www.linkedin.com/favicon.ico" alt="LinkedIn" class="social-logo">
+                                    <span>LinkedIn</span>
+                                </div>
+                            </div>
+                            <div id="socialInputs" class="social-inputs"></div>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="subject" class="form-label">Subject</label>
-                    <input 
-                        type="text" 
-                        id="subject" 
-                        name="subject" 
-                        class="form-input" 
-                        placeholder="What's this about?"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea 
-                        id="message" 
-                        name="message" 
-                        class="form-textarea" 
-                        placeholder="Tell us what's on your mind..."
-                        required
-                    ></textarea>
-                </div>
-
-                <div class="text-center">
-                    <button type="submit" class="submit-btn">
-                        Send Message
-                    </button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-input" placeholder="What's this about?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-textarea" placeholder="Tell us what's on your mind..." required></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="submit-btn">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            <span>Send Message</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
 
@@ -941,42 +1219,107 @@
             console.log('Menu toggle');
         }
 
+        let selectedCategory = null;
+        const activeSocials = new Set();
+
+        function selectCategory(category) {
+            selectedCategory = category;
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            
+            const badge = document.getElementById('selectedCategoryBadge');
+            const businessFields = document.getElementById('businessFields');
+            
+            if (category === 'business') {
+                badge.className = 'selected-badge business';
+                badge.innerHTML = '<i data-lucide="briefcase" class="w-4 h-4"></i> Business Inquiry';
+                businessFields.classList.add('active');
+            } else {
+                badge.className = 'selected-badge';
+                badge.innerHTML = '<i data-lucide="mail" class="w-4 h-4"></i> General Inquiry';
+                businessFields.classList.remove('active');
+            }
+            lucide.createIcons();
+        }
+
+        function goBack() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            selectedCategory = null;
+        }
+
+        function toggleSocialInput(platform) {
+            const container = document.getElementById('socialInputs');
+            const item = event.currentTarget;
+            
+            if (activeSocials.has(platform)) {
+                activeSocials.delete(platform);
+                item.classList.remove('selected');
+                const row = document.getElementById('social-' + platform);
+                if (row) row.remove();
+            } else {
+                activeSocials.add(platform);
+                item.classList.add('selected');
+                
+                const logos = {
+                    youtube: 'https://www.youtube.com/favicon.ico',
+                    twitter: '<svg viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+                    instagram: 'https://www.instagram.com/favicon.ico',
+                    telegram: '<svg viewBox="0 0 24 24" fill="#0088cc"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>',
+                    linkedin: 'https://www.linkedin.com/favicon.ico'
+                };
+                
+                const placeholders = {
+                    youtube: 'https://youtube.com/@yourchannel',
+                    twitter: 'https://x.com/yourusername',
+                    instagram: 'https://instagram.com/yourusername',
+                    telegram: 'https://t.me/yourusername',
+                    linkedin: 'https://linkedin.com/in/yourusername'
+                };
+                
+                const row = document.createElement('div');
+                row.className = 'social-input-row';
+                row.id = 'social-' + platform;
+                
+                const logoHtml = logos[platform].startsWith('http') 
+                    ? '<img src="' + logos[platform] + '" class="social-logo" alt="' + platform + '">'
+                    : '<div class="social-logo" style="display:flex;align-items:center;justify-content:center;">' + logos[platform] + '</div>';
+                
+                row.innerHTML = logoHtml + 
+                    '<input type="url" name="social_' + platform + '" class="form-input" placeholder="' + placeholders[platform] + '">' +
+                    '<button type="button" class="remove-btn" onclick="removeSocialInput(\'' + platform + '\')"><i data-lucide="x" class="w-4 h-4"></i></button>';
+                
+                container.appendChild(row);
+                lucide.createIcons();
+            }
+        }
+
+        function removeSocialInput(platform) {
+            activeSocials.delete(platform);
+            const row = document.getElementById('social-' + platform);
+            if (row) row.remove();
+            document.querySelectorAll('.social-link-item').forEach(item => {
+                if (item.textContent.toLowerCase().includes(platform === 'twitter' ? 'x' : platform)) {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+
         function handleContactSubmit(event) {
             event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
-            
-            // Get form values
             const name = formData.get('name');
             const email = formData.get('email');
-            const subject = formData.get('subject');
-            const message = formData.get('message');
+            const targetEmail = selectedCategory === 'business' ? 'business@wabblenews.com' : 'contact@wabblenews.com';
             
-            // Show success message
-            alert(`Thank you, ${name}! Your message has been sent. We'll get back to you at ${email} soon.`);
+            alert('Thank you, ' + name + '! Your message has been sent to ' + targetEmail + '. We will get back to you at ' + email + ' soon.');
             
-            // Reset form
             form.reset();
-        }
-
-        function testResetEffect() {
-            const form = document.getElementById('contactForm');
-            const inputs = form.querySelectorAll('input, textarea');
-            
-            // Add reset animation
-            inputs.forEach((input, index) => {
-                setTimeout(() => {
-                    input.style.transition = 'all 0.3s ease';
-                    input.style.transform = 'scale(0.95)';
-                    input.style.opacity = '0.5';
-                    
-                    setTimeout(() => {
-                        input.value = '';
-                        input.style.transform = 'scale(1)';
-                        input.style.opacity = '1';
-                    }, 150);
-                }, index * 50);
-            });
+            goBack();
+            activeSocials.clear();
+            document.getElementById('socialInputs').innerHTML = '';
+            document.querySelectorAll('.social-link-item').forEach(item => item.classList.remove('selected'));
         }
 
         function checkLoginStatus() {
