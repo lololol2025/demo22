@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Comments | WabbleNews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #020204; color: white; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        header { background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-circle { width: 48px; height: 48px; background: linear-gradient(135deg, #09B1F8 0%, #0088cc 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .logo-text { font-size: 24px; font-weight: 900; color: white; }
+        .logo-text .blue { color: #09B1F8; }
+
+        nav a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 14px; font-weight: 700; transition: color 0.3s ease; }
+        nav a:hover { color: #09B1F8; }
+
+        .comments-container { max-width: 800px; margin: 0 auto; }
+
+        .post-preview { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; margin-bottom: 24px; }
+        .post-preview-text { font-size: 16px; font-weight: 700; color: #e5e7eb; line-height: 1.6; }
+        .post-preview-meta { font-size: 12px; color: #6b7280; margin-top: 12px; }
+
+        .comment-form { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px; margin-bottom: 32px; }
+        .comment-input { width: 100%; padding: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-size: 14px; font-weight: 700; font-family: inherit; resize: none; min-height: 100px; transition: all 0.3s ease; }
+        .comment-input:focus { outline: none; border-color: #09B1F8; background: rgba(9, 177, 248, 0.05); }
+        .comment-input::placeholder { color: #6b7280; }
+
+        .submit-comment-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #09B1F8, #0088cc); border: none; border-radius: 12px; color: white; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.3s ease; margin-top: 12px; }
+        .submit-comment-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(9, 177, 248, 0.3); }
+        .submit-comment-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .comments-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .comment-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 20px; transition: all 0.3s ease; }
+        .comment-item:hover { border-color: rgba(9, 177, 248, 0.2); background: rgba(255, 255, 255, 0.03); }
+
+        .comment-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .comment-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #09B1F8, #0088cc); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .comment-avatar i { color: white; width: 20px; height: 20px; }
+
+        .comment-author { font-size: 14px; font-weight: 800; color: white; }
+        .comment-time { font-size: 11px; color: #6b7280; font-weight: 700; }
+
+        .comment-text { font-size: 14px; font-weight: 700; color: #d1d5db; line-height: 1.6; }
+
+        .no-comments { text-align: center; padding: 60px 20px; color: #6b7280; }
+        .no-comments svg { width: 48px; height: 48px; margin: 0 auto 16px; opacity: 0.5; }
+
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: #9ca3af; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.3s ease; margin-bottom: 24px; }
+        .back-btn:hover { background: rgba(9, 177, 248, 0.1); border-color: rgba(9, 177, 248, 0.3); color: #09B1F8; }
+
+        .login-prompt { text-align: center; padding: 40px; background: rgba(9, 177, 248, 0.05); border: 1px solid rgba(9, 177, 248, 0.2); border-radius: 16px; margin-bottom: 32px; }
+        .login-prompt p { color: #9ca3af; margin-bottom: 16px; }
+        .login-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #09B1F8, #0088cc); border: none; border-radius: 12px; color: white; font-size: 14px; font-weight: 800; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(9, 177, 248, 0.3); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="logo-container cursor-pointer hover:opacity-90 transition-opacity" onclick="window.location.href='index.html'">
+                <div class="logo-circle">
+                    <img src="wabble.jpg" alt="WabbleNews Logo">
+                </div>
+                <span class="logo-text">Wabble<span class="blue">News</span></span>
+            </div>
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="index.html">Home</a>
+                <a href="contact.html">Contact</a>
+                <a href="social-media.html">Social Media</a>
+                <a href="calendar.html">Calendar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-8 w-full">
+        <div class="comments-container">
+            <a href="index.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to News
+            </a>
+
+            <div class="post-preview" id="postPreview">
+                <p class="post-preview-text" id="postText">Loading post...</p>
+                <div class="post-preview-meta" id="postMeta"></div>
+            </div>
+
+            <div id="loginPrompt" class="login-prompt" style="display: none;">
+                <p>Sign in to join the conversation</p>
+                <a href="index.html" class="login-btn" onclick="localStorage.setItem('authRedirect', window.location.href)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+                    Sign In
+                </a>
+            </div>
+
+            <div id="commentForm" class="comment-form" style="display: none;">
+                <textarea class="comment-input" id="commentInput" placeholder="Write a comment..." maxlength="500"></textarea>
+                <button class="submit-comment-btn" id="submitComment" onclick="submitComment()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    Post Comment
+                </button>
+            </div>
+
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 20px; color: white;">Comments</h3>
+
+            <div class="comments-list" id="commentsList">
+                <div class="no-comments">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <p style="font-weight: 800;">No comments yet</p>
+                    <p style="font-size: 13px; margin-top: 8px;">Be the first to share your thoughts!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-500 text-xs font-bold">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('post');
+
+        function checkAuth() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (currentUser) {
+                document.getElementById('commentForm').style.display = 'block';
+                document.getElementById('loginPrompt').style.display = 'none';
+            } else {
+                document.getElementById('commentForm').style.display = 'none';
+                document.getElementById('loginPrompt').style.display = 'block';
+            }
+        }
+
+        function getRelativeTime(timestamp) {
+            const now = Date.now();
+            const postTime = timestamp;
+            const diff = now - postTime;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return minutes + ' minute' + (minutes > 1 ? 's' : '') + ' ago';
+            if (hours < 24) return hours + ' hour' + (hours > 1 ? 's' : '') + ' ago';
+            return days + ' day' + (days > 1 ? 's' : '') + ' ago';
+        }
+
+        function loadComments() {
+            const comments = JSON.parse(localStorage.getItem('wabblenews_comments_' + postId) || '[]');
+            const container = document.getElementById('commentsList');
+            
+            if (comments.length === 0) {
+                container.innerHTML = `
+                    <div class="no-comments">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <p style="font-weight: 800;">No comments yet</p>
+                        <p style="font-size: 13px; margin-top: 8px;">Be the first to share your thoughts!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = comments.map(comment => `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-avatar">
+                            ${comment.avatar ? '<img src="' + comment.avatar + '" alt="' + comment.username + '">' : '<i data-lucide="user"></i>'}
+                        </div>
+                        <div>
+                            <div class="comment-author">${comment.username}</div>
+                            <div class="comment-time">${getRelativeTime(comment.timestamp)}</div>
+                        </div>
+                    </div>
+                    <p class="comment-text">${comment.text}</p>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            if (!currentUser) return;
+
+            const userData = JSON.parse(localStorage.getItem('wabblenews_user_' + currentUser) || '{}');
+            
+            const comment = {
+                id: Date.now(),
+                username: currentUser,
+                avatar: userData.profilePicture || null,
+                text: text,
+                timestamp: Date.now()
+            };
+
+            const comments = JSON.parse(localStorage.getItem('wabblenews_comments_' + postId) || '[]');
+            comments.unshift(comment);
+            localStorage.setItem('wabblenews_comments_' + postId, JSON.stringify(comments));
+
+            input.value = '';
+            loadComments();
+        }
+
+        document.getElementById('commentInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitComment();
+            }
+        });
+
+        checkAuth();
+        loadComments();
+    </script>
+</body>
+</html>
