@@ -253,20 +253,21 @@
                     const post = JSON.parse(savedPost);
                     postText.textContent = post.text || 'Post content';
                     const date = new Date(post.date * 1000);
-                    postMeta.textContent = date.toLocaleDateString('en-US', { 
-                        month: 'long', day: 'numeric', year: 'numeric',
-                        hour: '2-digit', minute: '2-digit'
-                    });
+                    const tz = localStorage.getItem('wabblenews_timezone') || 'auto';
+                    const options = { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    if (tz !== 'auto') {
+                        try { options.timeZone = tz; } catch(e) {}
+                    }
+                    const formattedDate = date.toLocaleDateString('en-US', options);
+                    const relTime = getRelativeTime(post.date * 1000);
+                    postMeta.innerHTML = '<span style="color: #09B1F8; font-weight: 800;">' + formattedDate + '</span><br><span style="color: #6b7280;">' + relTime + '</span>';
                 } catch (e) {
-                    postText.textContent = 'Post #' + postId;
-                    postMeta.textContent = '';
+                    postText.textContent = 'Unable to load post content';
+                    postMeta.innerHTML = '<a href="index.html" style="color: #09B1F8;">← Return to home page</a>';
                 }
-            } else if (postId) {
-                postText.textContent = 'Post #' + postId;
-                postMeta.textContent = 'Click a post from the home page to see full details';
             } else {
                 postText.textContent = 'No post selected';
-                postMeta.textContent = 'Return to home page and click Comments on a post';
+                postMeta.innerHTML = '<a href="index.html" style="color: #09B1F8;">← Return to home page and click Comments on a post</a>';
             }
         }
 

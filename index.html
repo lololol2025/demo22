@@ -1225,27 +1225,38 @@
         /* News Card Time Display */
         .news-card-meta {
             display: flex;
-            flex-direction: column;
-            gap: 2px;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
             margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .news-card-date {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
-            color: #4b5563;
+            color: #9ca3af;
         }
 
         .news-card-exact-time {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #09B1F8;
         }
 
+        .news-card-time-separator {
+            color: #4b5563;
+            font-size: 10px;
+        }
+
         .news-card-relative-time {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #6b7280;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px 8px;
+            border-radius: 6px;
         }
 
         /* Mobile Responsiveness */
@@ -3253,6 +3264,7 @@
             html += '<div class="news-card-content">';
             html += '<div class="news-card-meta">';
             html += '<span class="news-card-date">' + dt.date + '</span>';
+            html += '<span class="news-card-time-separator">•</span>';
             html += '<span class="news-card-exact-time">' + dt.time + '</span>';
             html += '<span class="news-card-relative-time">' + relTime + '</span>';
             html += '</div>';
