@@ -1230,6 +1230,12 @@
             margin-bottom: 12px;
         }
 
+        .news-card-date {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4b5563;
+        }
+
         .news-card-exact-time {
             font-size: 14px;
             font-weight: 800;
@@ -1240,6 +1246,50 @@
             font-size: 12px;
             font-weight: 700;
             color: #6b7280;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .logo-text { font-size: 20px; }
+            .logo-circle { width: 40px; height: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .news-section h1 { font-size: 2rem; }
+            .news-section p { font-size: 0.9rem; }
+            .news-grid { grid-template-columns: 1fr; gap: 16px; }
+            .news-card { border-radius: 16px; }
+            .news-card-content { padding: 16px; }
+            .news-card-title { font-size: 14px; }
+            .comment-btn { padding: 10px 16px; font-size: 12px; }
+            .footer-selectors { flex-direction: column; gap: 12px; }
+            .coin-ticker { gap: 12px; }
+            .coin-card { padding: 10px 14px; min-width: 140px; }
+            .coin-symbol { font-size: 14px; }
+            .coin-price { font-size: 14px; }
+            .signup-content { padding: 24px; width: 95%; }
+            .signup-content h2 { font-size: 24px; }
+        }
+
+        @media (max-width: 480px) {
+            header .max-w-7xl { padding: 0 12px; }
+            .logo-text { font-size: 16px; }
+            .logo-circle { width: 32px; height: 32px; }
+            .news-section { padding: 20px 12px; }
+            .news-section h1 { font-size: 1.5rem; }
+            .news-card-content { padding: 14px; }
+            .news-card-title { font-size: 13px; }
+            .comment-btn { padding: 8px 12px; font-size: 11px; gap: 6px; }
+            .comment-icon { width: 14px; height: 14px; }
+            .coin-ticker { padding: 8px 0; }
+            .coin-card { padding: 8px 10px; min-width: 120px; }
+            .coin-icon { width: 24px; height: 24px; }
+            .coin-symbol { font-size: 12px; }
+            .coin-price { font-size: 12px; }
+            .signup-content { padding: 20px; border-radius: 20px; }
+            .signup-content h2 { font-size: 22px; }
+            .form-group input { padding: 10px 14px; font-size: 14px; }
+            .signup-btn { padding: 12px; font-size: 14px; }
         }
 
         /* News Card Actions */
@@ -1638,6 +1688,28 @@
 
     <script>
         lucide.createIcons();
+
+        // Current time display
+        function updateCurrentTime() {
+            const now = new Date();
+            const tz = localStorage.getItem('wabblenews_timezone') || 'auto';
+            const options = { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+            if (tz !== 'auto') {
+                try { options.timeZone = tz; } catch(e) {}
+            }
+            const display = document.getElementById('currentTimeDisplay');
+            if (display) display.textContent = now.toLocaleString('en-US', options).replace(',', '');
+        }
+        
+        // Add time display element
+        if (!document.getElementById('currentTimeDisplay')) {
+            const timeEl = document.createElement('div');
+            timeEl.id = 'currentTimeDisplay';
+            timeEl.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 12px; font-size: 11px; font-weight: 700; color: #9ca3af; z-index: 100;';
+            document.body.appendChild(timeEl);
+        }
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
 
         const API_KEY = 'CG-WGhyowZJTbpZiASkPAsWe2FU';
         const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
@@ -3180,6 +3252,7 @@
             let html = createMediaGrid(post.media);
             html += '<div class="news-card-content">';
             html += '<div class="news-card-meta">';
+            html += '<span class="news-card-date">' + dt.date + '</span>';
             html += '<span class="news-card-exact-time">' + dt.time + '</span>';
             html += '<span class="news-card-relative-time">' + relTime + '</span>';
             html += '</div>';
@@ -3200,9 +3273,17 @@
             return card;
         }
 
+        // Store posts for comments page
+        let allPosts = [];
+
         function handleCommentClick(e, postId) {
             e.preventDefault();
             e.stopPropagation();
+            // Save post data for comments page
+            const post = allPosts.find(p => p.id === postId);
+            if (post) {
+                localStorage.setItem('wabblenews_current_post', JSON.stringify(post));
+            }
             const currentUser = localStorage.getItem('wabblenews_current_user');
             if (!currentUser) {
                 openAuthModal('signup');
@@ -3305,6 +3386,9 @@
                 }
                 
                 const channelPosts = Array.from(postsMap.values()).filter(p => p.text).sort((a, b) => b.date - a.date);
+                
+                // Store posts globally for comments page
+                allPosts = channelPosts;
                 
                 if (channelPosts.length === 0) {
                     const t = translations[currentLanguage] || translations.en;

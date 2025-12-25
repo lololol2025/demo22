@@ -217,9 +217,10 @@
                     </button>
                 </div>
                 <div class="calendar-nav">
-                    <button class="nav-btn" onclick="changeWeek(-1)"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                    <button class="nav-btn active" onclick="goToToday()">Today</button>
-                    <button class="nav-btn" onclick="changeWeek(1)"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    <button class="nav-btn" data-view="today" onclick="setDateView('today')">Today</button>
+                    <button class="nav-btn active" data-view="week" onclick="setDateView('week')">This Week</button>
+                    <button class="nav-btn" data-view="nextday" onclick="setDateView('nextday')">Tomorrow</button>
+                    <button class="nav-btn" data-view="nextweek" onclick="setDateView('nextweek')">Next Week</button>
                 </div>
             </div>
 
@@ -251,9 +252,14 @@
         </div>
     </main>
 
-    <footer class="border-t border-white/10 py-8 mt-auto">
-        <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm font-bold">
-            <p>&copy; 2024 WabbleNews. All rights reserved.</p>
+    <footer class="border-t border-white/10 bg-black py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex flex-wrap justify-center gap-4 mb-4">
+                <a href="terms-of-use.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Use</a>
+                <span class="text-gray-600">•</span>
+                <a href="terms-of-service.html" class="text-gray-400 hover:text-white text-xs font-bold transition-colors">Terms of Service</a>
+            </div>
+            <p class="text-gray-500 text-xs font-bold mt-2">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
         </div>
     </footer>
 
@@ -373,18 +379,44 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
+        // Multi-select filter state
+        let selectedCountries = new Set(['all']);
+        let selectedImpacts = new Set(['all']);
+
         function setCountryFilter(country) {
-            currentCountryFilter = country;
+            if (country === 'all') {
+                selectedCountries.clear();
+                selectedCountries.add('all');
+            } else {
+                selectedCountries.delete('all');
+                if (selectedCountries.has(country)) {
+                    selectedCountries.delete(country);
+                    if (selectedCountries.size === 0) selectedCountries.add('all');
+                } else {
+                    selectedCountries.add(country);
+                }
+            }
             document.querySelectorAll('[data-country]').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.country === country);
+                btn.classList.toggle('active', selectedCountries.has(btn.dataset.country));
             });
             renderEvents();
         }
 
         function setImpactFilter(impact) {
-            currentImpactFilter = impact;
+            if (impact === 'all') {
+                selectedImpacts.clear();
+                selectedImpacts.add('all');
+            } else {
+                selectedImpacts.delete('all');
+                if (selectedImpacts.has(impact)) {
+                    selectedImpacts.delete(impact);
+                    if (selectedImpacts.size === 0) selectedImpacts.add('all');
+                } else {
+                    selectedImpacts.add(impact);
+                }
+            }
             document.querySelectorAll('[data-impact]').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.impact === impact);
+                btn.classList.toggle('active', selectedImpacts.has(btn.dataset.impact));
             });
             renderEvents();
         }
@@ -417,6 +449,18 @@
             }
         }
 
+        let currentDateView = 'week';
+
+        function setDateView(view) {
+            currentDateView = view;
+            const titles = { today: 'Today', week: 'This Week', nextday: 'Tomorrow', nextweek: 'Next Week' };
+            document.getElementById('currentWeek').textContent = titles[view] || 'This Week';
+            document.querySelectorAll('.calendar-nav .nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === view);
+            });
+            renderEvents();
+        }
+
         function changeWeek(delta) {
             currentWeekOffset += delta;
             document.getElementById('currentWeek').textContent = currentWeekOffset === 0 ? 'This Week' : (currentWeekOffset > 0 ? `+${currentWeekOffset} Week${currentWeekOffset > 1 ? 's' : ''}` : `${currentWeekOffset} Week${currentWeekOffset < -1 ? 's' : ''}`);
@@ -425,15 +469,16 @@
 
         function goToToday() {
             currentWeekOffset = 0;
-            document.getElementById('currentWeek').textContent = 'This Week';
-            renderEvents();
+            setDateView('today');
         }
 
         function renderEvents() {
             const container = document.getElementById('eventList');
             let filtered = sampleEvents.filter(e => {
-                if (currentCountryFilter !== 'all' && e.country !== currentCountryFilter) return false;
-                if (currentImpactFilter !== 'all' && e.impact !== currentImpactFilter) return false;
+                // Multi-select country filter
+                if (!selectedCountries.has('all') && !selectedCountries.has(e.country)) return false;
+                // Multi-select impact filter
+                if (!selectedImpacts.has('all') && !selectedImpacts.has(e.impact)) return false;
                 return true;
             });
 

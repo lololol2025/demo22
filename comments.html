@@ -135,8 +135,13 @@
         </div>
     </main>
 
-    <footer class="border-t border-white/10 py-8 mt-auto">
+    <footer class="border-t border-white/10 bg-black py-10 mt-auto">
         <div class="max-w-7xl mx-auto px-6 text-center">
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 16px;">
+                <a href="terms-of-use.html" style="color: #9ca3af; font-size: 12px; font-weight: 700; text-decoration: none; transition: color 0.3s;">Terms of Use</a>
+                <span style="color: #4b5563;">•</span>
+                <a href="terms-of-service.html" style="color: #9ca3af; font-size: 12px; font-weight: 700; text-decoration: none; transition: color 0.3s;">Terms of Service</a>
+            </div>
             <p class="text-gray-500 text-xs font-bold">Copyright © 2025 Wabble News / Crypto Wabble. All rights reserved.</p>
         </div>
     </footer>
@@ -237,7 +242,36 @@
             }
         });
 
+        // Load post data from localStorage (saved when clicking comment)
+        function loadPostData() {
+            const savedPost = localStorage.getItem('wabblenews_current_post');
+            const postText = document.getElementById('postText');
+            const postMeta = document.getElementById('postMeta');
+            
+            if (savedPost) {
+                try {
+                    const post = JSON.parse(savedPost);
+                    postText.textContent = post.text || 'Post content';
+                    const date = new Date(post.date * 1000);
+                    postMeta.textContent = date.toLocaleDateString('en-US', { 
+                        month: 'long', day: 'numeric', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+                } catch (e) {
+                    postText.textContent = 'Post #' + postId;
+                    postMeta.textContent = '';
+                }
+            } else if (postId) {
+                postText.textContent = 'Post #' + postId;
+                postMeta.textContent = 'Click a post from the home page to see full details';
+            } else {
+                postText.textContent = 'No post selected';
+                postMeta.textContent = 'Return to home page and click Comments on a post';
+            }
+        }
+
         checkAuth();
+        loadPostData();
         loadComments();
     </script>
 </body>
