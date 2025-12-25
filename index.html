@@ -446,11 +446,11 @@
             position: absolute;
             inset: -2px;
             border-radius: 30px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+            background: linear-gradient(135deg, #09B1F8, #0088cc, #09B1F8, #0077b5);
             background-size: 300% 300%;
             z-index: -1;
             animation: borderGradient 4s ease infinite;
-            opacity: 0.7;
+            opacity: 0.9;
         }
 
         .signup-content::after {
@@ -1222,6 +1222,26 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* News Card Time Display */
+        .news-card-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 12px;
+        }
+
+        .news-card-exact-time {
+            font-size: 14px;
+            font-weight: 800;
+            color: #09B1F8;
+        }
+
+        .news-card-relative-time {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+        }
+
         /* News Card Actions */
         .news-card-actions {
             display: flex;
@@ -1235,31 +1255,54 @@
         .comment-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            background: linear-gradient(135deg, rgba(9, 177, 248, 0.1), rgba(9, 177, 248, 0.05));
-            border: 1px solid rgba(9, 177, 248, 0.2);
-            border-radius: 12px;
+            gap: 10px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(9, 177, 248, 0.08), rgba(9, 177, 248, 0.02));
+            border: 1px solid rgba(9, 177, 248, 0.15);
+            border-radius: 14px;
             color: #09B1F8;
             font-size: 13px;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
+
+        .comment-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(9, 177, 248, 0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .comment-btn:hover::before { opacity: 1; }
 
         .comment-btn:hover {
-            background: linear-gradient(135deg, rgba(9, 177, 248, 0.2), rgba(9, 177, 248, 0.1));
-            border-color: rgba(9, 177, 248, 0.5);
-            color: #09B1F8;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(9, 177, 248, 0.2);
+            border-color: rgba(9, 177, 248, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(9, 177, 248, 0.15);
         }
 
+        .comment-btn:active { transform: translateY(-1px); }
+
         .comment-icon {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             stroke: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .comment-btn:hover .comment-icon {
+            transform: scale(1.1);
+        }
+
+        .comment-btn span {
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
@@ -3132,11 +3175,13 @@
         function createNewsCard(post) {
             const card = document.createElement('div');
             card.className = 'news-card' + (post.media.length === 0 ? ' news-card-no-image' : '');
+            const dt = formatDateTime(post.date);
             const relTime = getRelativeTime(post.date);
             let html = createMediaGrid(post.media);
             html += '<div class="news-card-content">';
             html += '<div class="news-card-meta">';
-            html += '<span class="news-card-time">' + relTime + '</span>';
+            html += '<span class="news-card-exact-time">' + dt.time + '</span>';
+            html += '<span class="news-card-relative-time">' + relTime + '</span>';
             html += '</div>';
             html += '<p class="news-card-title">' + post.text + '</p>';
             html += '<div class="news-card-actions">';
@@ -3268,7 +3313,7 @@
                 }
                 
                 feedContainer.innerHTML = '';
-                channelPosts.slice(0, 12).forEach(post => {
+                channelPosts.slice(0, 50).forEach(post => {
                     feedContainer.appendChild(createNewsCard(post));
                 });
                 lucide.createIcons();

@@ -126,186 +126,132 @@
             color: #60a5fa;
         }
 
-        /* Advanced Social Card */
+        /* Advanced Social Card - Full Redesign */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .social-grid { grid-template-columns: 1fr; }
+        }
+
         .social-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 28px;
-            padding: 44px;
-            backdrop-filter: blur(30px);
-            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-            cursor: pointer;
             position: relative;
+            background: linear-gradient(145deg, rgba(15, 15, 25, 0.9), rgba(5, 5, 15, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 32px;
+            cursor: pointer;
             overflow: hidden;
-            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .social-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08), transparent 60%);
+            background: radial-gradient(ellipse at 30% 0%, var(--card-glow, rgba(9, 177, 248, 0.08)) 0%, transparent 50%);
             opacity: 0;
             transition: opacity 0.5s ease;
-            pointer-events: none;
         }
 
-        .social-card:hover::before {
-            opacity: 1;
-        }
-
-        .social-card::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 30px;
-            background: conic-gradient(from 0deg, transparent, rgba(9, 177, 248, 0.2), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            z-index: -1;
-            animation: borderRotate 4s linear infinite paused;
-        }
-
-        @keyframes borderRotate {
-            to { transform: rotate(360deg); }
-        }
-
-        .social-card:hover::after {
-            opacity: 1;
-            animation-play-state: running;
-        }
+        .social-card:hover::before { opacity: 1; }
 
         .social-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            backdrop-filter: blur(40px);
-            border-color: rgba(9, 177, 248, 0.2);
+            transform: translateY(-6px);
+            border-color: var(--card-border, rgba(9, 177, 248, 0.3));
+        }
+
+        .social-card-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .social-icon {
-            width: 76px;
-            height: 76px;
-            border-radius: 22px;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 28px;
-            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            position: relative;
-            z-index: 1;
+            flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .social-card:hover .social-icon {
-            transform: scale(1.15) translateY(-6px);
-            filter: brightness(1.1) saturate(1.2);
+            transform: scale(1.1) rotate(3deg);
         }
 
-        .social-card:nth-child(even):hover .social-icon {
-            transform: scale(1.15) translateY(-6px) rotate(-3deg);
-        }
-
-        .social-card:nth-child(odd):hover .social-icon {
-            transform: scale(1.15) translateY(-6px) rotate(3deg);
-        }
+        .social-info { flex: 1; }
 
         .social-title {
-            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 4px;
+            transition: all 0.3s ease;
         }
 
-        .social-card:hover .social-title {
+        .social-description {
+            font-size: 13px;
+            font-weight: 700;
+            color: #6b7280;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .social-handle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--card-accent, #09B1F8);
+            transition: all 0.3s ease;
+        }
+
+        .social-card:hover .social-handle {
             transform: translateX(4px);
-            letter-spacing: 0.5px;
         }
 
-        .social-link {
-            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        .social-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            flex-shrink: 0;
         }
 
-        .social-card:hover .social-link {
-            opacity: 1;
-            transform: translateX(6px);
+        .social-card:hover .social-arrow {
+            background: var(--card-accent, #09B1F8);
+            border-color: var(--card-accent, #09B1F8);
+            color: white;
+            transform: translateX(4px);
         }
 
-        /* X (Twitter) - Minimal, clean */
-        .social-card.x-card {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
+        /* Platform-specific styles */
+        .x-card { --card-glow: rgba(255, 255, 255, 0.06); --card-border: rgba(255, 255, 255, 0.15); --card-accent: #ffffff; }
+        .x-card .social-icon { background: linear-gradient(135deg, #1a1a1a, #000000); }
 
-        .social-card.x-card .social-icon {
-            background: linear-gradient(145deg, #1a1a1a, #000000);
-        }
+        .instagram-card { --card-glow: rgba(225, 48, 108, 0.12); --card-border: rgba(225, 48, 108, 0.3); --card-accent: #E1306C; }
+        .instagram-card .social-icon { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
 
-        .social-card.x-card:hover {
-            border-color: rgba(255, 255, 255, 0.25);
-            background: rgba(255, 255, 255, 0.04);
-        }
+        .youtube-card { --card-glow: rgba(255, 0, 0, 0.1); --card-border: rgba(255, 0, 0, 0.3); --card-accent: #FF0000; }
+        .youtube-card .social-icon { background: linear-gradient(135deg, #ff1a1a, #cc0000); }
 
-        .social-card.x-card:hover .social-icon {
-            filter: brightness(1.3);
-        }
-
-        /* Instagram - Gradient motion */
-        .social-card.instagram-card {
-            border-color: rgba(131, 58, 180, 0.15);
-        }
-
-        .social-card.instagram-card .social-icon {
-            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 3s ease infinite paused;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .social-card.instagram-card:hover .social-icon {
-            animation-play-state: running;
-        }
-
-        .social-card.instagram-card:hover {
-            border-color: rgba(131, 58, 180, 0.4);
-            background: rgba(131, 58, 180, 0.06);
-        }
-
-        /* YouTube - Clean red */
-        .social-card.youtube-card {
-            border-color: rgba(255, 0, 0, 0.12);
-        }
-
-        .social-card.youtube-card .social-icon {
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-        }
-
-        .social-card.youtube-card:hover {
-            border-color: rgba(255, 0, 0, 0.35);
-            background: rgba(255, 0, 0, 0.05);
-        }
-
-        .social-card.youtube-card:hover .social-icon {
-            filter: brightness(1.2) saturate(1.3);
-        }
-
-        /* Telegram - Brand blue #09B1F8 */
-        .social-card.telegram-card {
-            border-color: rgba(9, 177, 248, 0.12);
-        }
-
-        .social-card.telegram-card .social-icon {
-            background: linear-gradient(145deg, #09B1F8, #0088cc);
-        }
-
-        .social-card.telegram-card:hover {
-            border-color: rgba(9, 177, 248, 0.4);
-            background: rgba(9, 177, 248, 0.05);
-        }
-
-        .social-card.telegram-card:hover .social-icon {
-            filter: brightness(1.15);
-        }
+        .telegram-card { --card-glow: rgba(9, 177, 248, 0.12); --card-border: rgba(9, 177, 248, 0.4); --card-accent: #09B1F8; }
+        .telegram-card .social-icon { background: linear-gradient(135deg, #09B1F8, #0088cc); }
 
         .social-title {
             font-size: 28px;
@@ -444,47 +390,75 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="social-grid">
             <!-- X (formerly Twitter) -->
             <div class="social-card x-card" onclick="window.open('https://x.com/CryptoWabble', '_blank')">
-                <div class="social-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
+                <div class="social-card-inner">
+                    <div class="social-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </div>
+                    <div class="social-info">
+                        <h3 class="social-title">X</h3>
+                        <p class="social-description">Real-time crypto updates and breaking news</p>
+                        <span class="social-handle">@CryptoWabble</span>
+                    </div>
+                    <div class="social-arrow">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </div>
                 </div>
-                <h3 class="social-title">X</h3>
-                <p class="social-description">Real-time crypto updates and breaking news</p>
-                <span class="social-link">@CryptoWabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
             </div>
 
             <!-- Instagram -->
-            <div class="social-card instagram-card" onclick="window.open('https://www.instagram.com/cryptowabble?igsh=cjd3Z3k0YWQweDBi', '_blank')">
-                <div class="social-icon">
-                    <i data-lucide="instagram" class="w-10 h-10 text-white"></i>
+            <div class="social-card instagram-card" onclick="window.open('https://www.instagram.com/cryptowabble', '_blank')">
+                <div class="social-card-inner">
+                    <div class="social-icon">
+                        <i data-lucide="instagram" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div class="social-info">
+                        <h3 class="social-title">Instagram</h3>
+                        <p class="social-description">Visual crypto news, charts, and market insights</p>
+                        <span class="social-handle">@cryptowabble</span>
+                    </div>
+                    <div class="social-arrow">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </div>
                 </div>
-                <h3 class="social-title">Instagram</h3>
-                <p class="social-description">Visual crypto news, charts, and market insights</p>
-                <span class="social-link">@cryptowabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
             </div>
 
             <!-- YouTube -->
             <div class="social-card youtube-card" onclick="window.open('https://www.youtube.com/@CryptoWabble', '_blank')">
-                <div class="social-icon">
-                    <i data-lucide="youtube" class="w-10 h-10 text-white"></i>
+                <div class="social-card-inner">
+                    <div class="social-icon">
+                        <i data-lucide="youtube" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div class="social-info">
+                        <h3 class="social-title">YouTube</h3>
+                        <p class="social-description">Video content, market analysis, and tutorials</p>
+                        <span class="social-handle">@CryptoWabble</span>
+                    </div>
+                    <div class="social-arrow">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </div>
                 </div>
-                <h3 class="social-title">YouTube</h3>
-                <p class="social-description">Video content, market analysis, and tutorials</p>
-                <span class="social-link">@CryptoWabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
             </div>
 
             <!-- Telegram -->
             <div class="social-card telegram-card" onclick="window.open('https://t.me/cryptowabble', '_blank')">
-                <div class="social-icon">
-                    <i data-lucide="send" class="w-10 h-10 text-white"></i>
+                <div class="social-card-inner">
+                    <div class="social-icon">
+                        <i data-lucide="send" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div class="social-info">
+                        <h3 class="social-title">Telegram</h3>
+                        <p class="social-description">Instant crypto alerts and community discussions</p>
+                        <span class="social-handle">@cryptowabble</span>
+                    </div>
+                    <div class="social-arrow">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </div>
                 </div>
-                <h3 class="social-title">Telegram</h3>
-                <p class="social-description">Instant crypto news alerts and community discussions</p>
-                <span class="social-link">@cryptowabble <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
             </div>
         </div>
     </main>
