@@ -434,7 +434,7 @@
             display: none;
         }
 
-        /* Profile Modal */
+        /* Profile Modal - Exact copy from index.html */
         .profile-modal {
             display: none;
             position: fixed;
@@ -511,24 +511,55 @@
             margin-bottom: 24px;
         }
 
+        .profile-picture-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin-bottom: 16px;
+        }
+
         .profile-picture-preview {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background: rgba(59, 130, 246, 0.2);
-            border: 3px solid rgba(59, 130, 246, 0.5);
+            border: 4px solid rgba(59, 130, 246, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .profile-picture-preview::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #3b82f6);
+            background-size: 200% 200%;
+            animation: gradient-rotate 3s ease infinite;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        @keyframes gradient-rotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .profile-picture-preview:hover::before {
+            opacity: 1;
         }
 
         .profile-picture-preview:hover {
-            border-color: #3b82f6;
+            border-color: transparent;
             transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
         }
 
         .profile-picture-preview img {
@@ -542,14 +573,50 @@
             color: #60a5fa;
         }
 
+        .profile-picture-edit-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: 3px solid #020204;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+            z-index: 10;
+        }
+
+        .profile-picture-edit-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.7);
+        }
+
+        .profile-picture-edit-btn i {
+            color: white;
+        }
+
         .file-input-label {
             color: #60a5fa;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            text-decoration: underline;
-            margin-top: 8px;
-            display: block;
+            padding: 8px 20px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .file-input-label:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
         }
 
         .file-input-label:hover {
@@ -1295,7 +1362,7 @@
         </div>
     </div>
 
-    <!-- Profile Modal -->
+    <!-- Profile Modal - Exact copy from index.html -->
     <div id="profileModal" class="profile-modal">
         <div class="profile-content relative">
             <button class="close-btn" onclick="closeProfileModal()">
@@ -1306,18 +1373,30 @@
             
             <form id="profileForm" onsubmit="handleProfileUpdate(event)">
                 <div class="profile-picture-container">
-                    <div class="profile-picture-preview" onclick="document.getElementById('profilePictureInput').click()">
-                        <img id="profilePicturePreview" src="" alt="Profile" style="display: none;">
-                        <i data-lucide="user" id="profilePictureIcon"></i>
+                    <div class="profile-picture-wrapper">
+                        <div class="profile-picture-preview" onclick="document.getElementById('profilePictureInput').click()">
+                            <img id="profilePicturePreview" src="" alt="Profile" style="display: none;">
+                            <i data-lucide="user" id="profilePictureIcon"></i>
+                        </div>
+                        <div class="profile-picture-edit-btn" onclick="document.getElementById('profilePictureInput').click()">
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
+                        </div>
                     </div>
-                    <label for="profilePictureInput" class="file-input-label">Change Profile Picture</label>
+                    <label for="profilePictureInput" class="file-input-label">Change Photo</label>
                     <input type="file" id="profilePictureInput" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="handleProfilePictureChange(event)">
                     <div class="error-message" id="profilePictureError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="profileUsername">Username</label>
-                    <input type="text" id="profileUsername" name="profileUsername" placeholder="Enter your username" maxlength="20" pattern="^[a-zA-Z0-9.]+$">
+                    <input 
+                        type="text" 
+                        id="profileUsername" 
+                        name="profileUsername" 
+                        placeholder="Enter your username"
+                        maxlength="20"
+                        pattern="^[a-zA-Z0-9.]+$"
+                    >
                     <div class="error-message" id="usernameChangeError"></div>
                     <div style="margin-top: 4px;">
                         <span id="usernameChangeInfo" style="color: #9ca3af; font-size: 11px; font-weight: 700;"></span>
@@ -1327,13 +1406,19 @@
                 <div class="form-group">
                     <label for="profileBio">Bio</label>
                     <div style="position: relative;">
-                        <textarea id="profileBio" name="profileBio" placeholder="Tell us about yourself" maxlength="500" class="bio-textarea"></textarea>
+                        <textarea 
+                            id="profileBio" 
+                            name="profileBio" 
+                            placeholder="Tell us about yourself"
+                            maxlength="500"
+                            class="bio-textarea"
+                        ></textarea>
                         <div style="text-align: right; margin-top: 6px;">
                             <span id="bioCharCount" style="color: #9ca3af; font-size: 12px; font-weight: 700;">0/500</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="signup-btn">Save Changes</button>
                 <button type="button" class="logout-btn" onclick="handleLogout()">Log Out</button>
             </form>
