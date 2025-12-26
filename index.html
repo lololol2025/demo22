@@ -3397,19 +3397,38 @@
                     }
                 }
                 
-                const channelPosts = Array.from(postsMap.values()).filter(p => p.text).sort((a, b) => b.date - a.date);
+                const newPosts = Array.from(postsMap.values()).filter(p => p.text);
+                
+                // Load stored posts from localStorage and merge with new posts (PERMANENT STORAGE)
+                let storedPosts = [];
+                try {
+                    const stored = localStorage.getItem('wabblenews_posts');
+                    if (stored) storedPosts = JSON.parse(stored);
+                } catch(e) { storedPosts = []; }
+                
+                // Merge: add new posts that don't exist in stored posts
+                const existingIds = new Set(storedPosts.map(p => p.id));
+                for (const post of newPosts) {
+                    if (!existingIds.has(post.id)) {
+                        storedPosts.push(post);
+                    }
+                }
+                
+                // Sort by date (newest first) and save permanently
+                storedPosts.sort((a, b) => b.date - a.date);
+                localStorage.setItem('wabblenews_posts', JSON.stringify(storedPosts));
                 
                 // Store posts globally for comments page
-                allPosts = channelPosts;
+                allPosts = storedPosts;
                 
-                if (channelPosts.length === 0) {
+                if (storedPosts.length === 0) {
                     const t = translations[currentLanguage] || translations.en;
                     feedContainer.innerHTML = '<div class="col-span-full text-center py-12"><p class="text-gray-400 font-bold">' + t.noposts + '</p></div>';
                     return;
                 }
                 
                 feedContainer.innerHTML = '';
-                channelPosts.slice(0, 50).forEach(post => {
+                storedPosts.slice(0, 100).forEach(post => {
                     feedContainer.appendChild(createNewsCard(post));
                 });
                 lucide.createIcons();
