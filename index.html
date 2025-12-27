@@ -6,6 +6,7 @@
     <title>WabbleNews | Premium Crypto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="config.js"></script>
     
     <!-- Montserrat Bold Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1725,8 +1726,8 @@
         updateCurrentTime();
         setInterval(updateCurrentTime, 1000);
 
-        const API_KEY = 'CG-WGhyowZJTbpZiASkPAsWe2FU';
-        const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
+        const API_KEY = CONFIG.COINGECKO_API_KEY;
+        const API_URL = CONFIG.COINGECKO_API_URL;
         
         const VALID_COINS = [
             'bitcoin', 'ethereum', 'ripple', 'solana', 'binancecoin', 'dogecoin', 
@@ -3126,8 +3127,8 @@
             }
         }, 60000);
 
-        const TELEGRAM_BOT_TOKEN = '8408761477:AAFwnjuRxUxNkmj5xVemHzirdYxtbmtiNRc';
-        const TELEGRAM_CHANNEL_ID = '-1002709853773';
+        const TELEGRAM_BOT_TOKEN = CONFIG.TELEGRAM_BOT_TOKEN;
+        const TELEGRAM_CHANNEL_ID = CONFIG.TELEGRAM_CHANNEL_ID;
         
         let currentTimezone = localStorage.getItem('wabblenews_timezone') || 'auto';
         let currentLanguage = localStorage.getItem('wabblenews_language') || 'auto';
