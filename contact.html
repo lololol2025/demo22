@@ -41,6 +41,29 @@
             overflow-x: hidden; 
         }
 
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 9999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .mobile-menu-content { padding: 20px; height: 100%; display: flex; flex-direction: column; }
+        .mobile-menu-close { align-self: flex-end; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 12px; padding: 12px; color: white; cursor: pointer; }
+        .mobile-menu-close:hover { background: rgba(255, 255, 255, 0.2); }
+        .mobile-nav { display: flex; flex-direction: column; gap: 8px; margin-top: 40px; }
+        .mobile-nav-link { padding: 16px 20px; color: white; text-decoration: none; font-weight: 700; font-size: 18px; border-radius: 12px; }
+        .mobile-nav-link:hover, .mobile-nav-link.active { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .mobile-nav-link.signup-link { background: linear-gradient(135deg, #3b82f6, #2563eb); text-align: center; margin-top: 20px; }
+        .mobile-profile-btn { display: flex; align-items: center; gap: 12px; padding: 16px 20px; color: white; font-weight: 700; font-size: 18px; border-radius: 12px; cursor: pointer; background: rgba(59, 130, 246, 0.2); margin-top: 20px; }
+        .mobile-profile-btn.hidden { display: none; }
+
         /* Header */
         header {
             background: rgba(0, 0, 0, 0.98);
@@ -1227,6 +1250,26 @@
         </div>
     </header>
 
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu hidden">
+        <div class="mobile-menu-content">
+            <button onclick="toggleMenu()" class="mobile-menu-close">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <nav class="mobile-nav">
+                <a href="index.html" class="mobile-nav-link">Home</a>
+                <a href="contact.html" class="mobile-nav-link active">Contact</a>
+                <a href="social-media.html" class="mobile-nav-link">Social Media</a>
+                <a href="calendar.html" class="mobile-nav-link">Calendar</a>
+                <a href="#" id="mobileSignUpBtn" onclick="openAuthModal('signup'); toggleMenu(); return false;" class="mobile-nav-link signup-link">Sign Up/Sign In</a>
+                <div id="mobileProfileBtn" class="mobile-profile-btn hidden" onclick="openProfileModal(); toggleMenu();">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span>Profile</span>
+                </div>
+            </nav>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <main class="flex-grow max-w-5xl mx-auto px-6 py-16 w-full">
         <div class="text-center mb-16">
@@ -1471,7 +1514,24 @@
         lucide.createIcons();
 
         function toggleMenu() {
-            console.log('Menu toggle');
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+                document.body.style.overflow = menu.classList.contains('hidden') ? '' : 'hidden';
+            }
+            lucide.createIcons();
+        }
+        function updateMobileMenu() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            const mobileSignUp = document.getElementById('mobileSignUpBtn');
+            const mobileProfile = document.getElementById('mobileProfileBtn');
+            if (currentUser) {
+                if (mobileSignUp) mobileSignUp.classList.add('hidden');
+                if (mobileProfile) mobileProfile.classList.remove('hidden');
+            } else {
+                if (mobileSignUp) mobileSignUp.classList.remove('hidden');
+                if (mobileProfile) mobileProfile.classList.add('hidden');
+            }
         }
 
         let selectedCategory = null;
@@ -2254,10 +2314,12 @@
         });
 
         checkLoginStatus();
+        updateMobileMenu();
         setInterval(() => {
             if (localStorage.getItem('wabblenews_current_user')) {
                 if (!validateSession()) {
                     checkLoginStatus();
+                    updateMobileMenu();
                 }
             }
         }, 60000);

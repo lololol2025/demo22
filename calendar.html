@@ -27,6 +27,19 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: #020204; color: white; font-family: 'Montserrat', sans-serif; font-weight: 700; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); z-index: 9999; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .mobile-menu-content { padding: 20px; height: 100%; display: flex; flex-direction: column; }
+        .mobile-menu-close { align-self: flex-end; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 12px; padding: 12px; color: white; cursor: pointer; }
+        .mobile-menu-close:hover { background: rgba(255, 255, 255, 0.2); }
+        .mobile-nav { display: flex; flex-direction: column; gap: 8px; margin-top: 40px; }
+        .mobile-nav-link { padding: 16px 20px; color: white; text-decoration: none; font-weight: 700; font-size: 18px; border-radius: 12px; }
+        .mobile-nav-link:hover, .mobile-nav-link.active { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .mobile-nav-link.signup-link { background: linear-gradient(135deg, #3b82f6, #2563eb); text-align: center; margin-top: 20px; }
+        .mobile-profile-btn { display: flex; align-items: center; gap: 12px; padding: 16px 20px; color: white; font-weight: 700; font-size: 18px; border-radius: 12px; cursor: pointer; background: rgba(59, 130, 246, 0.2); margin-top: 20px; }
+        .mobile-profile-btn.hidden { display: none; }
+
         header { background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 
         .logo-container { position: relative; display: flex; align-items: center; gap: 12px; }
@@ -163,6 +176,26 @@
             </button>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu hidden">
+        <div class="mobile-menu-content">
+            <button onclick="toggleMenu()" class="mobile-menu-close">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <nav class="mobile-nav">
+                <a href="index.html" class="mobile-nav-link">Home</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+                <a href="social-media.html" class="mobile-nav-link">Social Media</a>
+                <a href="calendar.html" class="mobile-nav-link active">Calendar</a>
+                <a href="#" id="mobileSignUpBtn" onclick="openAuthModal(); toggleMenu(); return false;" class="mobile-nav-link signup-link">Sign Up/Sign In</a>
+                <div id="mobileProfileBtn" class="mobile-profile-btn hidden" onclick="openProfileModal(); toggleMenu();">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span>Profile</span>
+                </div>
+            </nav>
+        </div>
+    </div>
 
     <div class="settings-bar">
         <div class="max-w-7xl mx-auto px-6 flex items-center justify-end gap-4">
@@ -341,17 +374,62 @@
         let notificationsEnabled = localStorage.getItem('calendar_notifications') === 'true';
         let economicEvents = [];
 
-        // Sample economic events data (in production, this would come from DBnomics API)
-        const sampleEvents = [
-            { id: 1, name: 'US Unemployment Claims', country: 'us', countryName: 'United States', time: new Date(Date.now() + 900000), impact: 'high', forecast: '220K', previous: '218K', actual: null, history: [{ date: 'Dec 19', value: '218K' }, { date: 'Dec 12', value: '211K' }, { date: 'Dec 5', value: '225K' }] },
-            { id: 2, name: 'ECB Interest Rate Decision', country: 'eu', countryName: 'European Union', time: new Date(Date.now() + 3600000), impact: 'high', forecast: '4.25%', previous: '4.50%', actual: null, history: [{ date: 'Nov 14', value: '4.50%' }, { date: 'Oct 17', value: '4.50%' }] },
-            { id: 3, name: 'UK GDP (QoQ)', country: 'gb', countryName: 'United Kingdom', time: new Date(Date.now() + 86400000), impact: 'medium', forecast: '0.2%', previous: '0.1%', actual: null, history: [{ date: 'Sep 30', value: '0.1%' }, { date: 'Jun 30', value: '0.0%' }] },
-            { id: 4, name: 'US Core PCE Price Index', country: 'us', countryName: 'United States', time: new Date(Date.now() + 90000000), impact: 'high', forecast: '0.3%', previous: '0.2%', actual: null, history: [{ date: 'Nov 30', value: '0.2%' }, { date: 'Oct 31', value: '0.3%' }] },
-            { id: 5, name: 'Japan Industrial Production', country: 'jp', countryName: 'Japan', time: new Date(Date.now() + 172800000), impact: 'medium', forecast: '1.2%', previous: '-0.6%', actual: null, history: [{ date: 'Nov 29', value: '-0.6%' }] },
-            { id: 6, name: 'China Manufacturing PMI', country: 'cn', countryName: 'China', time: new Date(Date.now() + 259200000), impact: 'high', forecast: '50.2', previous: '50.3', actual: null, history: [{ date: 'Nov 30', value: '50.3' }, { date: 'Oct 31', value: '49.5' }] },
-            { id: 7, name: 'US Consumer Confidence', country: 'us', countryName: 'United States', time: new Date(Date.now() - 3600000), impact: 'medium', forecast: '112.0', previous: '111.7', actual: '113.2', history: [] },
-            { id: 8, name: 'EU Inflation Rate', country: 'eu', countryName: 'European Union', time: new Date(Date.now() + 432000000), impact: 'low', forecast: '2.3%', previous: '2.4%', actual: null, history: [] }
-        ];
+        // FinanceFlow API
+        const CALENDAR_API_KEY = '8572343ae727904ed9d2823906f35fb18680bd98fe4fcdf759caf77d9ad9db00';
+        const CALENDAR_API_URL = 'https://financeflowapi.com/api/v1/financial-calendar';
+
+        // Country code mapping
+        const countryCodeMap = {
+            'United States': 'us', 'European Union': 'eu', 'United Kingdom': 'gb', 'Japan': 'jp',
+            'China': 'cn', 'Germany': 'de', 'France': 'fr', 'Italy': 'it', 'Canada': 'ca',
+            'Australia': 'au', 'Switzerland': 'ch', 'Brazil': 'br', 'India': 'in', 'Russia': 'ru',
+            'South Korea': 'kr', 'Mexico': 'mx', 'Spain': 'es', 'Netherlands': 'nl', 'Turkey': 'tr'
+        };
+
+        // Impact mapping
+        function mapImpact(impact) {
+            if (!impact) return 'low';
+            const lower = impact.toLowerCase();
+            if (lower.includes('high') || lower.includes('major')) return 'high';
+            if (lower.includes('moderate') || lower.includes('medium')) return 'medium';
+            return 'low';
+        }
+
+        async function fetchCalendarEvents() {
+            const container = document.getElementById('eventList');
+            container.innerHTML = '<div class="no-events"><p style="color: #60a5fa;">Loading...</p></div>';
+            
+            try {
+                const today = new Date();
+                const dateFrom = today.toISOString().split('T')[0];
+                const dateTo = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                
+                const url = `${CALENDAR_API_URL}?api_key=${CALENDAR_API_KEY}&date_from=${dateFrom}&date_to=${dateTo}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success && data.data) {
+                    economicEvents = data.data.map((event, index) => ({
+                        id: index + 1,
+                        name: event.report_name || 'Unknown Event',
+                        country: countryCodeMap[event.country] || event.country?.toLowerCase().substring(0, 2) || 'us',
+                        countryName: event.country || 'Unknown',
+                        time: new Date(event.datetime),
+                        impact: mapImpact(event.economicImpact),
+                        forecast: event.consensus || '-',
+                        previous: event.previous || '-',
+                        actual: event.actual || null,
+                        history: []
+                    }));
+                    renderEvents();
+                } else {
+                    container.innerHTML = '<div class="no-events"><p>Unable to load events</p></div>';
+                }
+            } catch (error) {
+                console.error('Calendar API error:', error);
+                container.innerHTML = '<div class="no-events"><p>Failed to load economic events</p></div>';
+            }
+        }
 
         function getTimezoneOffset() {
             if (currentTimezone === 'auto') return 0;
@@ -474,7 +552,7 @@
 
         function renderEvents() {
             const container = document.getElementById('eventList');
-            let filtered = sampleEvents.filter(e => {
+            let filtered = economicEvents.filter(e => {
                 // Multi-select country filter
                 if (!selectedCountries.has('all') && !selectedCountries.has(e.country)) return false;
                 // Multi-select impact filter
@@ -545,7 +623,26 @@
             });
         }
 
-        function toggleMenu() { console.log('Menu toggle'); }
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+                document.body.style.overflow = menu.classList.contains('hidden') ? '' : 'hidden';
+            }
+            lucide.createIcons();
+        }
+        function updateMobileMenu() {
+            const currentUser = localStorage.getItem('wabblenews_current_user');
+            const mobileSignUp = document.getElementById('mobileSignUpBtn');
+            const mobileProfile = document.getElementById('mobileProfileBtn');
+            if (currentUser) {
+                if (mobileSignUp) mobileSignUp.classList.add('hidden');
+                if (mobileProfile) mobileProfile.classList.remove('hidden');
+            } else {
+                if (mobileSignUp) mobileSignUp.classList.remove('hidden');
+                if (mobileProfile) mobileProfile.classList.add('hidden');
+            }
+        }
 
         function initSettings() {
             const savedTz = localStorage.getItem('wabblenews_timezone');
@@ -575,7 +672,9 @@
 
         initSettings();
         checkLoginStatus();
-        setInterval(renderEvents, 1000);
+        updateMobileMenu();
+        fetchCalendarEvents();
+        setInterval(fetchCalendarEvents, 300000);
         setInterval(checkNotifications, 60000);
     </script>
 </body>
