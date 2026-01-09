@@ -398,18 +398,28 @@
 
         async function fetchCalendarEvents() {
             const container = document.getElementById('eventList');
-            container.innerHTML = '<div class="no-events"><p style="color: #60a5fa;">Loading...</p></div>';
+            container.innerHTML = '<div class="no-events"><p style="color: #60a5fa;"><i data-lucide="loader-2" class="w-6 h-6 animate-spin" style="display: inline-block; margin-right: 8px;"></i>Loading events...</p></div>';
+            lucide.createIcons();
             
             try {
+                // Fetch 30 days of data to cover all views
                 const today = new Date();
-                const dateFrom = today.toISOString().split('T')[0];
-                const dateTo = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                const dateFrom = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                const dateTo = new Date(today.getTime() + 21 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
                 
                 const url = `${CALENDAR_API_URL}?api_key=${CALENDAR_API_KEY}&date_from=${dateFrom}&date_to=${dateTo}`;
-                const response = await fetch(url);
-                const data = await response.json();
+                console.log('Fetching calendar:', url.replace(CALENDAR_API_KEY, '***'));
                 
-                if (data.success && data.data) {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Calendar API response:', data);
+                
+                if (data.success && data.data && Array.isArray(data.data)) {
                     economicEvents = data.data.map((event, index) => ({
                         id: index + 1,
                         name: event.report_name || 'Unknown Event',
@@ -419,16 +429,19 @@
                         impact: mapImpact(event.economicImpact),
                         forecast: event.consensus || '-',
                         previous: event.previous || '-',
-                        actual: event.actual || null,
+                        actual: event.actual && event.actual.trim() !== '' ? event.actual : null,
                         history: []
                     }));
+                    console.log('Parsed events:', economicEvents.length);
                     renderEvents();
+                } else if (data.message) {
+                    container.innerHTML = `<div class="no-events"><p style="color: #ef4444;">API Error: ${data.message}</p></div>`;
                 } else {
-                    container.innerHTML = '<div class="no-events"><p>Unable to load events</p></div>';
+                    container.innerHTML = '<div class="no-events"><p>No events returned from API</p></div>';
                 }
             } catch (error) {
                 console.error('Calendar API error:', error);
-                container.innerHTML = '<div class="no-events"><p>Failed to load economic events</p></div>';
+                container.innerHTML = `<div class="no-events"><p style="color: #ef4444;">Failed to load: ${error.message}</p><p style="font-size: 12px; margin-top: 8px; color: #9ca3af;">Check console for details</p></div>`;
             }
         }
 
@@ -530,6 +543,30 @@
 
         let currentDateView = 'week';
 
+        function getDateRange(view) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+            const dayOfWeek = today.getDay();
+            const weekStart = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+            const weekEnd = new Date(weekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
+            const nextWeekStart = new Date(weekEnd.getTime());
+            const nextWeekEnd = new Date(nextWeekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+            switch (view) {
+                case 'today':
+                    return { start: today, end: tomorrow };
+                case 'nextday':
+                    return { start: tomorrow, end: new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000) };
+                case 'week':
+                    return { start: weekStart, end: weekEnd };
+                case 'nextweek':
+                    return { start: nextWeekStart, end: nextWeekEnd };
+                default:
+                    return { start: today, end: new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000) };
+            }
+        }
+
         function setDateView(view) {
             currentDateView = view;
             const titles = { today: 'Today', week: 'This Week', nextday: 'Tomorrow', nextweek: 'Next Week' };
@@ -537,13 +574,13 @@
             document.querySelectorAll('.calendar-nav .nav-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.view === view);
             });
-            renderEvents();
+            fetchCalendarEvents();
         }
 
         function changeWeek(delta) {
             currentWeekOffset += delta;
             document.getElementById('currentWeek').textContent = currentWeekOffset === 0 ? 'This Week' : (currentWeekOffset > 0 ? `+${currentWeekOffset} Week${currentWeekOffset > 1 ? 's' : ''}` : `${currentWeekOffset} Week${currentWeekOffset < -1 ? 's' : ''}`);
-            renderEvents();
+            fetchCalendarEvents();
         }
 
         function goToToday() {
@@ -553,7 +590,11 @@
 
         function renderEvents() {
             const container = document.getElementById('eventList');
+            const dateRange = getDateRange(currentDateView);
+            
             let filtered = economicEvents.filter(e => {
+                // Date filter based on view
+                if (e.time < dateRange.start || e.time >= dateRange.end) return false;
                 // Multi-select country filter
                 if (!selectedCountries.has('all') && !selectedCountries.has(e.country)) return false;
                 // Multi-select impact filter
@@ -564,7 +605,8 @@
             filtered.sort((a, b) => a.time - b.time);
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="no-events"><p>No events match your filters</p></div>';
+                const viewName = { today: 'today', week: 'this week', nextday: 'tomorrow', nextweek: 'next week' }[currentDateView] || 'selected period';
+                container.innerHTML = `<div class="no-events"><p>No events for ${viewName}</p><p style="font-size: 13px; margin-top: 8px; color: #6b7280;">Try selecting a different time period or adjusting your filters</p></div>`;
                 return;
             }
 
