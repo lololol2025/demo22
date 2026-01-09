@@ -3114,10 +3114,29 @@
             }
         }
 
+        // Handle URL parameters for redirects from other pages
+        function handleUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const action = params.get('action');
+            if (action === 'signup' || action === 'signin') {
+                setTimeout(() => openAuthModal(action), 100);
+                history.replaceState(null, '', window.location.pathname);
+            } else if (action === 'profile') {
+                const currentUser = localStorage.getItem('wabblenews_current_user');
+                if (currentUser) {
+                    setTimeout(() => openProfileModal(), 100);
+                } else {
+                    setTimeout(() => openAuthModal('signin'), 100);
+                }
+                history.replaceState(null, '', window.location.pathname);
+            }
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             checkLoginStatus();
             lucide.createIcons();
+            handleUrlParams();
         });
         
         // Also run immediately in case DOM is already loaded
@@ -3125,10 +3144,12 @@
             document.addEventListener('DOMContentLoaded', function() {
                 checkLoginStatus();
                 lucide.createIcons();
+                handleUrlParams();
             });
         } else {
             checkLoginStatus();
             lucide.createIcons();
+            handleUrlParams();
         }
         
         setInterval(() => {
