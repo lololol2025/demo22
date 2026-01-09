@@ -445,8 +445,9 @@
                     container.innerHTML = '<div class="no-events"><p>No events returned from API</p></div>';
                 }
             } catch (error) {
-                console.error('Calendar API error:', error);
-                container.innerHTML = `<div class="no-events"><p style="color: #ef4444;">Failed to load: ${error.message}</p><p style="font-size: 12px; margin-top: 8px; color: #9ca3af;">Check console for details</p></div>`;
+                console.error('Calendar API error:', error.message || error);
+                const errorMsg = error.message || 'Network error - check your connection';
+                container.innerHTML = `<div class="no-events"><p style="color: #ef4444;">Failed to load: ${errorMsg}</p><p style="font-size: 12px; margin-top: 8px; color: #9ca3af;">The calendar API may be temporarily unavailable</p></div>`;
             }
         }
 
@@ -715,7 +716,7 @@
             }
         }
 
-        function openAuthModal() { window.location.href = 'index.html?action=signup'; }
+        function openAuthModal(mode = 'signup') { window.location.href = 'index.html?action=' + mode; }
         function openProfileModal() { window.location.href = 'index.html?action=profile'; }
 
         initSettings();
